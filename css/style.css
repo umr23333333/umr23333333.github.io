@@ -1,0 +1,413 @@
+/* ================= 1. 全局重置 ================= */
+html, body {
+  height: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  background-color: transparent !important;
+  color: #222222 !important;
+  transition: color 0.3s ease !important;
+}
+
+html.dark, html.dark body {
+  color: #f0f0f0 !important;
+}
+
+body {
+  min-height: 100vh !important;
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+.appbar-transparent {
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+/* ================= 2. 全屏背景图 ================= */
+.full-bg {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  background-size: cover !important;
+  background-position: center !important;
+  background-repeat: no-repeat !important;
+  z-index: -2 !important;
+}
+
+.full-bg::after {
+  content: "" !important;
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  background: rgba(0, 0, 0, 0.2) !important;
+  transition: background 0.3s ease !important;
+}
+
+html.dark .full-bg::after {
+  background: rgba(0, 0, 0, 0.55) !important;
+}
+
+/* ================= 3. 布局容器 ================= */
+.main-container {
+  flex: 1 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 80px 20px 40px !important;
+  box-sizing: border-box !important;
+}
+
+.home-wrapper, .main-post-container {
+  width: 100% !important;
+}
+
+/* ================= 4. 毛玻璃卡片 ================= */
+.profile-card, .post-card-list, .post-detail-card {
+  background: rgba(255, 255, 255, 0.85) !important;
+  backdrop-filter: blur(20px) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
+  border-radius: 28px !important;
+  padding: 35px !important;
+  border: 1px solid rgba(255, 255, 255, 0.6) !important;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12) !important;
+  position: relative !important;
+  transition: all 0.3s ease !important;
+  box-sizing: border-box !important;
+}
+
+.profile-card {
+  margin-top: 48px !important;
+  padding-top: 0 !important;
+}
+
+html.dark .profile-card, 
+html.dark .post-card-list, 
+html.dark .post-detail-card {
+  background: rgba(25, 25, 25, 0.88) !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4) !important;
+}
+
+/* ================= 5. 头像约束 ================= */
+.profile-avatar-wrapper {
+  text-align: center !important;
+  margin-top: -48px !important;
+  margin-bottom: 15px !important;
+  height: 96px !important;
+}
+
+img.profile-avatar {
+  width: 96px !important;
+  height: 96px !important;
+  max-width: 96px !important;
+  max-height: 96px !important;
+  border-radius: 50% !important;
+  border: 4px solid #ffffff !important;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15) !important;
+  object-fit: cover !important;
+  background-color: #fff !important;
+  display: inline-block !important;
+  transition: border-color 0.3s ease !important;
+}
+
+html.dark img.profile-avatar {
+  border-color: #333333 !important;
+}
+
+/* ================= 6. 文本与打字效果 ================= */
+.profile-header {
+  text-align: center !important;
+}
+
+.profile-author {
+  font-size: 1.25rem !important;
+  font-weight: 600 !important;
+  margin-bottom: 6px !important;
+}
+
+.profile-motto {
+  opacity: 0.85 !important;
+  font-size: 0.95rem !important;
+  margin: 0 !important;
+  min-height: 1.5em !important;
+}
+
+.typed-cursor {
+  opacity: 1 !important;
+  animation: typed-blink 0.7s infinite !important;
+}
+
+@keyframes typed-blink {
+  0% { opacity: 1; }
+  50% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+.profile-divider {
+  height: 1px !important;
+  background: rgba(0, 0, 0, 0.08) !important;
+  margin: 20px 0 !important;
+}
+
+html.dark .profile-divider {
+  background: rgba(255, 255, 255, 0.12) !important;
+}
+
+.about-detail {
+  padding: 5px 10px 15px !important;
+  line-height: 1.8 !important;
+  text-align: center !important;
+}
+
+/* ================= 7. 圆角胶囊按钮 ================= */
+.blog-action-area {
+  text-align: center !important;
+  margin: 20px 0 15px !important;
+}
+
+a.rounded-blog-btn {
+  display: inline-block !important;
+  padding: 10px 32px !important;
+  border-radius: 50px !important;
+  background: #ffffff !important;
+  color: #222222 !important;
+  font-weight: 600 !important;
+  text-decoration: none !important;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1) !important;
+  transition: all 0.25s ease !important;
+}
+
+a.rounded-blog-btn:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15) !important;
+  background: #fdfdfd !important;
+}
+
+html.dark a.rounded-blog-btn {
+  background: #333333 !important;
+  color: #ffffff !important;
+}
+
+html.dark a.rounded-blog-btn:hover {
+  background: #444444 !important;
+}
+
+/* ================= 8. 社交图标栏 ================= */
+.profile-social {
+  display: flex !important;
+  justify-content: center !important;
+  gap: 10px !important;
+  margin-top: 10px !important;
+}
+
+a.social-icon-btn {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 40px !important;
+  height: 40px !important;
+  border-radius: 50% !important;
+  background: rgba(255, 255, 255, 0.6) !important;
+  color: inherit !important;
+  transition: all 0.2s ease !important;
+  text-decoration: none !important;
+}
+
+a.social-icon-btn:hover {
+  background: rgba(255, 255, 255, 0.95) !important;
+  transform: scale(1.08) !important;
+}
+
+html.dark a.social-icon-btn {
+  background: rgba(255, 255, 255, 0.1) !important;
+}
+
+html.dark a.social-icon-btn:hover {
+  background: rgba(255, 255, 255, 0.25) !important;
+}
+
+/* ================= 9. 文章归档与详情页样式强化 ================= */
+.archive-title {
+  margin-top: 0 !important;
+  margin-bottom: 24px !important;
+  padding-bottom: 12px !important;
+  font-size: 1.5rem !important;
+  font-weight: 700 !important;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08) !important;
+}
+
+html.dark .archive-title {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12) !important;
+}
+
+a.post-list-item {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  padding: 14px 18px !important;
+  border-radius: 12px !important;
+  margin-bottom: 10px !important;
+  color: inherit !important;
+  text-decoration: none !important;
+  background: rgba(255, 255, 255, 0.4) !important;
+  transition: all 0.2s ease !important;
+}
+
+a.post-list-item:hover {
+  background: rgba(255, 255, 255, 0.8) !important;
+  transform: translateX(4px) !important;
+}
+
+html.dark a.post-list-item {
+  background: rgba(255, 255, 255, 0.05) !important;
+}
+
+html.dark a.post-list-item:hover {
+  background: rgba(255, 255, 255, 0.12) !important;
+}
+
+.post-item-title {
+  font-weight: 600 !important;
+  font-size: 1.05rem !important;
+}
+
+.post-item-date {
+  font-size: 0.85rem !important;
+  opacity: 0.65 !important;
+}
+
+.post-detail-title {
+  margin-top: 0 !important;
+  margin-bottom: 12px !important;
+  font-size: 1.75rem !important;
+  font-weight: 700 !important;
+  line-height: 1.3 !important;
+}
+
+.post-detail-meta {
+  font-size: 0.85rem !important;
+  opacity: 0.65 !important;
+  margin-bottom: 24px !important;
+  padding-bottom: 12px !important;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08) !important;
+}
+
+html.dark .post-detail-meta {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12) !important;
+}
+
+.post-detail-content {
+  line-height: 1.85 !important;
+  font-size: 1.02rem !important;
+}
+
+/* ================= 10. 全透明侧边栏与图标修复 ================= */
+.custom-drawer {
+  top: 64px !important;
+  height: calc(100% - 64px) !important;
+  background: transparent !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+  border-right: none !important;
+  box-shadow: none !important;
+}
+
+html.dark .custom-drawer {
+  background: transparent !important;
+  border-right: none !important;
+  box-shadow: none !important;
+}
+
+.custom-drawer .mdui-list-item {
+  transition: background-color 0.2s ease !important;
+}
+
+.custom-drawer .mdui-list-item:hover {
+  background-color: rgba(255, 255, 255, 0.25) !important;
+}
+
+html.dark .custom-drawer .mdui-list-item:hover {
+  background-color: rgba(255, 255, 255, 0.15) !important;
+}
+
+.mdui-icon.material-icons {
+  font-family: 'Material Icons' !important;
+  font-weight: normal !important;
+  font-style: normal !important;
+  display: inline-block !important;
+  line-height: 1 !important;
+  text-transform: none !important;
+  letter-spacing: normal !important;
+  word-wrap: normal !important;
+  white-space: nowrap !important;
+  direction: ltr !important;
+  -webkit-font-smoothing: antialiased !important;
+}
+
+/* ================= 11. 底部版权与自定义信息样式 ================= */
+.site-footer {
+  text-align: center !important;
+  padding: 15px 20px 25px !important;
+  font-size: 0.85rem !important;
+  opacity: 0.85 !important;
+  line-height: 1.6 !important;
+}
+
+.footer-custom {
+  margin-bottom: 4px !important;
+}
+
+.site-footer a {
+  color: inherit !important;
+  text-decoration: none !important;
+  border-bottom: 1px dotted currentColor !important;
+  transition: opacity 0.2s ease !important;
+}
+
+.site-footer a:hover {
+  opacity: 0.7 !important;
+}
+
+/* ================= 12. 右下角固定夜间模式按钮 ================= */
+button#dark-mode-toggle.dark-btn-fixed {
+  position: fixed !important;
+  right: 24px !important;
+  bottom: 24px !important;
+  top: auto !important;
+  left: auto !important;
+  z-index: 9999 !important;
+  background: rgba(255, 255, 255, 0.85) !important;
+  backdrop-filter: blur(8px) !important;
+  -webkit-backdrop-filter: blur(8px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.5) !important;
+  width: 46px !important;
+  height: 46px !important;
+  border-radius: 50% !important;
+  cursor: pointer !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  color: inherit !important;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15) !important;
+  transition: all 0.25s ease !important;
+  outline: none !important;
+}
+
+button#dark-mode-toggle.dark-btn-fixed:hover {
+  transform: scale(1.1) !important;
+  background: rgba(255, 255, 255, 1) !important;
+}
+
+html.dark button#dark-mode-toggle.dark-btn-fixed {
+  background: rgba(30, 30, 30, 0.85) !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4) !important;
+}
+
+html.dark button#dark-mode-toggle.dark-btn-fixed:hover {
+  background: rgba(45, 45, 45, 1) !important;
+}
