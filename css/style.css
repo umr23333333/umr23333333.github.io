@@ -372,14 +372,18 @@ html.dark .custom-drawer .mdui-list-item:hover {
   opacity: 0.7 !important;
 }
 
-/* ================= 12. 右下角固定夜间模式按钮 ================= */
-button#dark-mode-toggle.dark-btn-fixed {
+/* ================= 12. 右下角固定悬浮按钮组 ================= */
+.fab-group-fixed {
   position: fixed !important;
   right: 24px !important;
   bottom: 24px !important;
-  top: auto !important;
-  left: auto !important;
   z-index: 9999 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 12px !important;
+}
+
+button.fab-btn {
   background: rgba(255, 255, 255, 0.85) !important;
   backdrop-filter: blur(8px) !important;
   -webkit-backdrop-filter: blur(8px) !important;
@@ -395,19 +399,38 @@ button#dark-mode-toggle.dark-btn-fixed {
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15) !important;
   transition: all 0.25s ease !important;
   outline: none !important;
+  padding: 0 !important;
 }
 
-button#dark-mode-toggle.dark-btn-fixed:hover {
+button.fab-btn:hover {
   transform: scale(1.1) !important;
   background: rgba(255, 255, 255, 1) !important;
 }
 
-html.dark button#dark-mode-toggle.dark-btn-fixed {
+/* 阅读进度文字效果 */
+#scroll-progress-text {
+  font-size: 0.75rem !important;
+  font-weight: 700 !important;
+  user-select: none !important;
+}
+
+/* 夜间模式适配 */
+html.dark button.fab-btn {
   background: rgba(30, 30, 30, 0.85) !important;
   border: 1px solid rgba(255, 255, 255, 0.15) !important;
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4) !important;
 }
 
-html.dark button#dark-mode-toggle.dark-btn-fixed:hover {
+html.dark button.fab-btn:hover {
   background: rgba(45, 45, 45, 1) !important;
+}
+
+/* ================= 13. 修复删除线穿过超链接问题 ================= */
+del a, s a, strike a,
+a del, a s, a strike {
+  text-decoration: line-through !important;
+}
+
+del, s, strike {
+  text-decoration: line-through !important;
 }

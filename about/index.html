@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-HK">
+<html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -69,6 +69,24 @@
               <div class="mdui-list-item-content">网站公告</div>
             </a>
           
+            <a href="/history/" class="mdui-list-item mdui-ripple">
+              
+                
+                  <i class="mdui-list-item-icon fa fa-bookmark" style="display: flex; align-items: center; justify-content: center; font-size: 1.25rem;"></i>
+                
+              
+              <div class="mdui-list-item-content">网站历史</div>
+            </a>
+          
+            <a href="/links/" class="mdui-list-item mdui-ripple">
+              
+                
+                  <i class="mdui-list-item-icon fa fa-link" style="display: flex; align-items: center; justify-content: center; font-size: 1.25rem;"></i>
+                
+              
+              <div class="mdui-list-item-content">友情链接</div>
+            </a>
+          
         
       </ul>
     </div>
@@ -117,13 +135,119 @@
     </div>
   </footer>
 
-  <!-- 右下角固定悬浮夜间模式按钮 -->
-  <button id="dark-mode-toggle" class="dark-btn-fixed" mdui-tooltip="{content: '切换夜间模式', position: 'left'}">
-    <i class="mdui-icon material-icons" id="dark-icon">brightness_4</i>
-  </button>
+  <!-- 右下角固定悬浮按钮组 -->
+  <div class="fab-group-fixed">
+    <!-- 最上方：繁简切换按钮 -->
+    
+    
+      <button id="lang-toggle-btn" class="fab-btn" mdui-tooltip="{content: '切换繁简体', position: 'left'}">
+        <span id="lang-toggle-text" style="font-weight: bold; font-size: 1.1rem;">繁</span>
+      </button>
+    
+
+    <!-- 中间：夜间模式切换按钮 -->
+    <button id="dark-mode-toggle" class="fab-btn" mdui-tooltip="{content: '切换夜间模式', position: 'left'}">
+      <i class="mdui-icon material-icons" id="dark-icon">brightness_4</i>
+    </button>
+    
+    <!-- 下方：回到顶部 / 阅读进度按钮 -->
+    <button id="scroll-top-btn" class="fab-btn" mdui-tooltip="{content: '回到顶部', position: 'left'}">
+      <span id="scroll-progress-text" style="display: inline-block;">0%</span>
+      <i class="mdui-icon material-icons" id="scroll-top-icon" style="display: none !important;">keyboard_arrow_up</i>
+    </button>
+  </div>
 
   <script src="https://unpkg.com/mdui@1.0.2/dist/js/mdui.min.js"></script>
+
+  
+    <!-- OpenCC 纯前端繁简转换依赖 -->
+    <script src="https://cdn.jsdelivr.net/npm/opencc-js@1.0.5/dist/umd/full.js"></script>
+    <script>
+      // 1. 简繁体切换逻辑（遍历文本节点，不破坏 DOM 与事件）
+      (function() {
+        const langBtn = document.getElementById('lang-toggle-btn');
+        const langText = document.getElementById('lang-toggle-text');
+        
+        const defaultIsTraditional = false;
+        let currentTarget = localStorage.getItem('theme_lang_target'); 
+
+        // 建立转换器
+        const converterS2T = OpenCC.Converter({ from: 'cn', to: 'hk' });
+        const converterT2S = OpenCC.Converter({ from: 'hk', to: 'cn' });
+
+        // 只遍历并转换页面中的文本节点
+        function convertTextNodes(converter) {
+          const walk = document.createTreeWalker(
+            document.body,
+            NodeFilter.SHOW_TEXT,
+            {
+              acceptNode: function(node) {
+                // 跳过 SCRIPT、STYLE 节点以及按钮内部的文本，避免冲突
+                const parentName = node.parentElement ? node.parentElement.tagName : '';
+                if (['SCRIPT', 'STYLE', 'NOSCRIPT'].includes(parentName)) {
+                  return NodeFilter.FILTER_REJECT;
+                }
+                if (node.parentElement && node.parentElement.id === 'lang-toggle-text') {
+                  return NodeFilter.FILTER_REJECT;
+                }
+                return NodeFilter.FILTER_ACCEPT;
+              }
+            },
+            false
+          );
+
+          let node;
+          while ((node = walk.nextNode())) {
+            if (node.nodeValue && node.nodeValue.trim().length > 0) {
+              node.nodeValue = converter(node.nodeValue);
+            }
+          }
+        }
+
+        function applyLanguage(target) {
+          if (!target) {
+            // 默认状态
+            langText.innerText = defaultIsTraditional ? '简' : '繁';
+            return;
+          }
+
+          if (target === 'zh-TW') {
+            langText.innerText = '简';
+            convertTextNodes(converterS2T);
+          } else if (target === 'zh-CN') {
+            langText.innerText = '繁';
+            convertTextNodes(converterT2S);
+          }
+        }
+
+        // 初始化判断
+        if (currentTarget) {
+          applyLanguage(currentTarget);
+        }
+
+        if (langBtn) {
+          langBtn.addEventListener('click', () => {
+            const nowTarget = localStorage.getItem('theme_lang_target');
+            let nextTarget;
+
+            if (defaultIsTraditional) {
+              // 默认繁体：点击切换到简体，再点切回繁体
+              nextTarget = (nowTarget === 'zh-CN') ? 'zh-TW' : 'zh-CN';
+            } else {
+              // 默认简体：点击切换到繁体，再点切回简体
+              nextTarget = (nowTarget === 'zh-TW') ? 'zh-CN' : 'zh-TW';
+            }
+
+            localStorage.setItem('theme_lang_target', nextTarget);
+            location.reload(); // 重新加载页面即可平滑转换
+          });
+        }
+      })();
+    </script>
+  
+
   <script>
+    // 2. 夜间模式切换逻辑
     const toggleBtn = document.getElementById('dark-mode-toggle');
     const darkIcon = document.getElementById('dark-icon');
     
@@ -144,6 +268,50 @@
       const isDark = document.documentElement.classList.toggle('dark');
       darkIcon.innerText = isDark ? 'brightness_7' : 'brightness_4';
       localStorage.setItem('theme_dark', isDark);
+    });
+
+    // 3. 回到顶部与阅读进度计算逻辑
+    const scrollTopBtn = document.getElementById('scroll-top-btn');
+    const progressText = document.getElementById('scroll-progress-text');
+    const scrollTopIcon = document.getElementById('scroll-top-icon');
+
+    function updateScrollProgress() {
+      const scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
+      const scrollHeight = document.documentElement.scrollHeight || document.body.scrollHeight || 0;
+      const clientHeight = document.documentElement.clientHeight || window.innerHeight || 0;
+
+      const maxScroll = scrollHeight - clientHeight;
+      let progress = 0;
+
+      if (maxScroll > 0) {
+        progress = Math.min(100, Math.max(0, Math.round((scrollTop / maxScroll) * 100)));
+      } else {
+        progress = 100;
+      }
+
+      // 未到底部（0% ~ 99%）：纯数字，绝对隐藏箭头
+      // 达到底部（100%）：隐藏数字，显示箭头
+      if (progress >= 100) {
+        progressText.style.setProperty('display', 'none', 'important');
+        scrollTopIcon.style.setProperty('display', 'inline-block', 'important');
+      } else {
+        progressText.style.setProperty('display', 'inline-block', 'important');
+        progressText.innerText = progress + '%';
+        scrollTopIcon.style.setProperty('display', 'none', 'important');
+      }
+    }
+
+    // 监听窗口滚动和大小调整
+    window.addEventListener('scroll', updateScrollProgress);
+    window.addEventListener('resize', updateScrollProgress);
+    document.addEventListener('DOMContentLoaded', updateScrollProgress);
+
+    // 点击按钮平滑滚动回到顶部
+    scrollTopBtn.addEventListener('click', () => {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
     });
   </script>
 </body>
