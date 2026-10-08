@@ -4,9 +4,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+  <!-- 引入 Pjax 库，实现真正不断音的无刷新跳转 -->
+  <script src="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js"></script>
+
   <!-- 浏览器标题：主标题 - 副标题 (或 文章标题 - 主标题) -->
   
-  <title>网站公告 - 飞天鼠鼠大王の小破站</title>
+  <title>网站公告 - 飞天鼠鼠大王の小破站</title> 
   
   <link rel="icon" type="image/png" href="/img/favicon.png">
   
@@ -101,8 +104,8 @@
     </div>
   
 
-  <!-- 主体区域 -->
-  <main class="main-container">
+  <!-- 主体替换区域（PJAX 仅替换此容器中的内容，保证容器外的 BGM 彻底不断音） -->
+  <main class="main-container" id="pjax-container">
     <div class="mdui-row main-post-container">
   <div class="mdui-col-xs-12 mdui-col-md-8 mdui-col-offset-md-2">
     <article class="post-detail-card">
@@ -134,18 +137,18 @@
     </div>
   </footer>
 
-<!-- 右下角悬浮按钮组 -->
-<div class="fab-group-fixed" style="position: fixed; right: 20px; bottom: 20px; z-index: 9999; display: flex; flex-direction: column; gap: 10px;">
-  
-<!-- 背景音乐播放按钮 -->
+  <!-- 右下角悬浮按钮组 (PJAX 局部刷新范围之外，全局持久化) -->
+  <div class="fab-group-fixed" style="position: fixed; right: 20px; bottom: 20px; z-index: 9999; display: flex; flex-direction: column; gap: 10px;">
+    
+    <!-- 背景音乐播放按钮 -->
+    
+      <button id="bgm-toggle-btn" class="fab-btn" mdui-tooltip="{content: '背景音乐', position: 'left'}" style="width: 42px; height: 42px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; border: none; outline: none; background: rgba(255, 255, 255, 0.9); box-shadow: 0 2px 8px rgba(0,0,0,0.15); -webkit-tap-highlight-color: transparent;">
+        <i class="mdui-icon material-icons" id="bgm-icon" style="font-size: 20px; color: #777; transition: transform 0.3s ease;">volume_off</i>
+      </button>
+      <audio id="bgm-player" src="/bgm/meow.mp3" loop preload="auto"></audio>
+    
 
-  <button id="bgm-toggle-btn" class="fab-btn" mdui-tooltip="{content: '背景音乐', position: 'left'}" style="width: 42px; height: 42px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; border: none; outline: none; background: rgba(255, 255, 255, 0.9); box-shadow: 0 2px 8px rgba(0,0,0,0.15); -webkit-tap-highlight-color: transparent;">
-    <i class="mdui-icon material-icons" id="bgm-icon" style="font-size: 20px; color: #777; transition: transform 0.3s ease;">volume_off</i>
-  </button>
-  <audio id="bgm-player" src="/bgm/meow.mp3" loop preload="auto"></audio>
-
-
-  <!-- 最上方：繁简切换按钮 -->
+    <!-- 繁简切换按钮 -->
     
     
       <button id="lang-toggle-btn" class="fab-btn" mdui-tooltip="{content: '切换繁简体', position: 'left'}">
@@ -153,12 +156,12 @@
       </button>
     
 
-    <!-- 中间：夜间模式切换按钮 -->
+    <!-- 夜间模式切换按钮 -->
     <button id="dark-mode-toggle" class="fab-btn" mdui-tooltip="{content: '切换夜间模式', position: 'left'}">
       <i class="mdui-icon material-icons" id="dark-icon">brightness_4</i>
     </button>
     
-    <!-- 下方：回到顶部 / 阅读进度按钮 -->
+    <!-- 回到顶部 / 阅读进度按钮 -->
     <button id="scroll-top-btn" class="fab-btn" mdui-tooltip="{content: '回到顶部', position: 'left'}">
       <span id="scroll-progress-text" style="display: inline-block;">0%</span>
       <i class="mdui-icon material-icons" id="scroll-top-icon" style="display: none !important;">keyboard_arrow_up</i>
@@ -167,11 +170,31 @@
 
   <script src="https://unpkg.com/mdui@1.0.2/dist/js/mdui.min.js"></script>
 
+  <!-- PJAX 无刷新跳转初始化 -->
+  <script>
+    var pjax;
+    document.addEventListener('DOMContentLoaded', function () {
+      pjax = new Pjax({
+        selectors: [
+          'title',           // 动态更新文章/页面 Title
+          '#pjax-container'  // 仅无感替换主体区域，音频/悬浮按钮绝不销毁
+        ],
+        cacheBust: false
+      });
+    });
+
+    // PJAX 页面无刷新加载完成后自动重置 MDUI 动画与组件
+    document.addEventListener('pjax:complete', function () {
+      if (window.mdui) {
+        mdui.mutation();
+      }
+    });
+  </script>
+
+  <!-- 简繁体切换功能 -->
   
-    <!-- OpenCC 纯前端繁简转换依赖 -->
     <script src="https://cdn.jsdelivr.net/npm/opencc-js@1.0.5/dist/umd/full.js"></script>
     <script>
-      // 1. 简繁体切换逻辑（遍历文本节点，不破坏 DOM 与事件）
       (function() {
         const langBtn = document.getElementById('lang-toggle-btn');
         const langText = document.getElementById('lang-toggle-text');
@@ -179,18 +202,15 @@
         const defaultIsTraditional = false;
         let currentTarget = localStorage.getItem('theme_lang_target'); 
 
-        // 建立转换器
         const converterS2T = OpenCC.Converter({ from: 'cn', to: 'hk' });
         const converterT2S = OpenCC.Converter({ from: 'hk', to: 'cn' });
 
-        // 只遍历并转换页面中的文本节点
         function convertTextNodes(converter) {
           const walk = document.createTreeWalker(
             document.body,
             NodeFilter.SHOW_TEXT,
             {
               acceptNode: function(node) {
-                // 跳过 SCRIPT、STYLE 节点以及按钮内部的文本，避免冲突
                 const parentName = node.parentElement ? node.parentElement.tagName : '';
                 if (['SCRIPT', 'STYLE', 'NOSCRIPT'].includes(parentName)) {
                   return NodeFilter.FILTER_REJECT;
@@ -214,7 +234,6 @@
 
         function applyLanguage(target) {
           if (!target) {
-            // 默认状态
             langText.innerText = defaultIsTraditional ? '简' : '繁';
             return;
           }
@@ -228,7 +247,6 @@
           }
         }
 
-        // 初始化判断
         if (currentTarget) {
           applyLanguage(currentTarget);
         }
@@ -239,232 +257,218 @@
             let nextTarget;
 
             if (defaultIsTraditional) {
-              // 默认繁体：点击切换到简体，再点切回繁体
               nextTarget = (nowTarget === 'zh-CN') ? 'zh-TW' : 'zh-CN';
             } else {
-              // 默认简体：点击切换到繁体，再点切回简体
               nextTarget = (nowTarget === 'zh-TW') ? 'zh-CN' : 'zh-TW';
             }
 
             localStorage.setItem('theme_lang_target', nextTarget);
-            location.reload(); // 重新加载页面即可平滑转换
+            location.reload();
           });
         }
       })();
     </script>
   
 
-
-<style>
-  /* 旋转动画 */
-  @keyframes music-rotate {
-    from {
-      transform: rotate(0deg);
-    }
-    to {
-      transform: rotate(360deg);
-    }
-  }
-
-  /* 播放状态高亮与旋转 */
-  .bgm-playing #bgm-icon {
-    animation: music-rotate 3s linear infinite;
-    color: #3f51b5 !important;
-  }
-</style>
-
-<script>
-  (function () {
-    function initBgm() {
-      var bgmBtn = document.getElementById('bgm-toggle-btn');
-      var bgmPlayer = document.getElementById('bgm-player');
-      var bgmIcon = document.getElementById('bgm-icon');
-      
-      if (!bgmBtn || !bgmPlayer || !bgmIcon) return;
-
-      var isAutoplay = true;
-
-      // 切换状态更新函数
-      function updateUI(isPlaying) {
-        if (isPlaying) {
-          bgmBtn.classList.add('bgm-playing');
-          bgmIcon.textContent = 'music_note'; // 播放时显示音符
-        } else {
-          bgmBtn.classList.remove('bgm-playing');
-          bgmIcon.textContent = 'volume_off'; // 静音/暂停时显示带斜杠的喇叭
-        }
+  <!-- 背景音乐独立生命周期控制器 -->
+  
+    <style>
+      @keyframes music-rotate {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
       }
-
-      // 播放/暂停逻辑
-      function togglePlay() {
-        if (bgmPlayer.paused) {
-          bgmPlayer.play().then(function () {
-            updateUI(true);
-          }).catch(function (err) {
-            console.log('播放失败:', err);
-          });
-        } else {
-          bgmPlayer.pause();
-          updateUI(false);
-        }
+      .bgm-playing #bgm-icon {
+        animation: music-rotate 3s linear infinite;
+        color: #3f51b5 !important;
       }
+    </style>
 
-      // 绑定按钮点击事件
-      bgmBtn.addEventListener('click', function (e) {
-        e.preventDefault();
-        togglePlay();
-      });
+    <script>
+      (function () {
+        function initBgm() {
+          var bgmBtn = document.getElementById('bgm-toggle-btn');
+          var bgmPlayer = document.getElementById('bgm-player');
+          var bgmIcon = document.getElementById('bgm-icon');
+          if (!bgmBtn || !bgmPlayer || !bgmIcon) return;
 
-      // 处理自动播放
-      if (isAutoplay) {
-        var startPlay = function () {
-          bgmPlayer.play().then(function () {
-            updateUI(true);
-          }).catch(function () {
-            // 如果被浏览器策略拦截，等待用户第一次点击页面任何地方后静默触发
-            var onFirstTouch = function () {
-              bgmPlayer.play().then(function () {
+          var isAutoplay = true;
+
+          function updateUI(isPlaying) {
+            if (isPlaying) {
+              bgmBtn.classList.add('bgm-playing');
+              bgmIcon.textContent = 'music_note';
+            } else {
+              bgmBtn.classList.remove('bgm-playing');
+              bgmIcon.textContent = 'volume_off';
+            }
+          }
+
+          function startPlay() {
+            var promise = bgmPlayer.play();
+            if (promise !== undefined) {
+              promise.then(function () {
                 updateUI(true);
+              }).catch(function (err) {
+                updateUI(false);
               });
-              document.removeEventListener('click', onFirstTouch);
-              document.removeEventListener('touchstart', onFirstTouch);
-            };
-            document.addEventListener('click', onFirstTouch);
-            document.addEventListener('touchstart', onFirstTouch);
+            }
+          }
+
+          bgmBtn.addEventListener('click', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            if (bgmPlayer.paused) {
+              startPlay();
+            } else {
+              bgmPlayer.pause();
+              updateUI(false);
+            }
           });
-        };
 
-        startPlay();
-      }
-    }
+          if (isAutoplay) {
+            startPlay();
 
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', initBgm);
-    } else {
-      initBgm();
-    }
-  })();
-</script>
+            var unlockHandler = function () {
+              if (bgmPlayer.paused) {
+                startPlay();
+              }
+              ['click', 'touchstart', 'pointerdown', 'mousedown', 'keydown'].forEach(function (evt) {
+                document.removeEventListener(evt, unlockHandler, true);
+              });
+            };
 
-
-<style>
-  /* 确保 Canvas 始终置顶、透明且不挡住页面交互 */
-  #falling-canvas {
-    position: fixed !important;
-    top: 0 !important;
-    left: 0 !important;
-    width: 100vw !important;
-    height: 100vh !important;
-    pointer-events: none !important;
-    z-index: 999999 !important; /* 最高层级 */
-  }
-</style>
-
-<script>
-  (function () {
-    function initFallingEffect() {
-      // 防止重复创建 canvas
-      if (document.getElementById('falling-canvas')) return;
-
-      var config = {
-        type: 'sakura',
-        count: 30
-      };
-
-      var canvas = document.createElement('canvas');
-      canvas.id = 'falling-canvas';
-      document.body.appendChild(canvas);
-
-      var ctx = canvas.getContext('2d');
-      var width = (canvas.width = window.innerWidth);
-      var height = (canvas.height = window.innerHeight);
-
-      window.addEventListener('resize', function () {
-        width = canvas.width = window.innerWidth;
-        height = canvas.height = window.innerHeight;
-      });
-
-      var particles = [];
-      var particleCount = config.count;
-
-      function Particle() {
-        this.reset();
-      }
-
-      Particle.prototype.reset = function () {
-        this.x = Math.random() * width;
-        this.y = Math.random() * -height;
-        this.size = Math.random() * 8 + 6;
-        this.speedY = Math.random() * 1.2 + 0.8;
-        this.speedX = Math.random() * 1 - 0.5;
-        this.rotation = Math.random() * 360;
-        this.rotationSpeed = (Math.random() - 0.5) * 1.5;
-        this.opacity = Math.random() * 0.5 + 0.5;
-      };
-
-      Particle.prototype.update = function () {
-        this.y += this.speedY;
-        this.x += Math.sin(this.y / 30) + this.speedX;
-        this.rotation += this.rotationSpeed;
-
-        if (this.y > height || this.x < -20 || this.x > width + 20) {
-          this.reset();
-          this.y = -10;
+            ['click', 'touchstart', 'pointerdown', 'mousedown', 'keydown'].forEach(function (evt) {
+              document.addEventListener(evt, unlockHandler, true);
+            });
+          }
         }
-      };
 
-      Particle.prototype.draw = function () {
-        ctx.save();
-        ctx.translate(this.x, this.y);
-        ctx.rotate((this.rotation * Math.PI) / 180);
-        ctx.globalAlpha = this.opacity;
-
-        if (config.type === 'snow') {
-          // 雪花效果
-          ctx.beginPath();
-          ctx.arc(0, 0, this.size / 2.5, 0, Math.PI * 2);
-          ctx.fillStyle = '#ffffff';
-          ctx.shadowBlur = 4;
-          ctx.shadowColor = 'rgba(255, 255, 255, 0.8)';
-          ctx.fill();
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', initBgm);
         } else {
-          // 樱花瓣效果
-          ctx.beginPath();
-          ctx.moveTo(0, 0);
-          ctx.bezierCurveTo(-this.size / 2, -this.size / 2, -this.size, this.size / 3, 0, this.size);
-          ctx.bezierCurveTo(this.size, this.size / 3, this.size / 2, -this.size / 2, 0, 0);
-          ctx.fillStyle = '#ffb7c5';
-          ctx.fill();
+          initBgm();
+        }
+      })();
+    </script>
+  
+
+  <!-- 飘落特效控制脚本 -->
+  
+    <style>
+      #falling-canvas {
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        width: 100vw !important;
+        height: 100vh !important;
+        pointer-events: none !important;
+        z-index: 999999 !important;
+      }
+    </style>
+
+    <script>
+      (function () {
+        function initFallingEffect() {
+          if (document.getElementById('falling-canvas')) return;
+
+          var config = {
+            type: 'sakura',
+            count: 30
+          };
+
+          var canvas = document.createElement('canvas');
+          canvas.id = 'falling-canvas';
+          document.body.appendChild(canvas);
+
+          var ctx = canvas.getContext('2d');
+          var width = (canvas.width = window.innerWidth);
+          var height = (canvas.height = window.innerHeight);
+
+          window.addEventListener('resize', function () {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+          });
+
+          var particles = [];
+          var particleCount = config.count;
+
+          function Particle() {
+            this.reset();
+          }
+
+          Particle.prototype.reset = function () {
+            this.x = Math.random() * width;
+            this.y = Math.random() * -height;
+            this.size = Math.random() * 8 + 6;
+            this.speedY = Math.random() * 1.2 + 0.8;
+            this.speedX = Math.random() * 1 - 0.5;
+            this.rotation = Math.random() * 360;
+            this.rotationSpeed = (Math.random() - 0.5) * 1.5;
+            this.opacity = Math.random() * 0.5 + 0.5;
+          };
+
+          Particle.prototype.update = function () {
+            this.y += this.speedY;
+            this.x += Math.sin(this.y / 30) + this.speedX;
+            this.rotation += this.rotationSpeed;
+
+            if (this.y > height || this.x < -20 || this.x > width + 20) {
+              this.reset();
+              this.y = -10;
+            }
+          };
+
+          Particle.prototype.draw = function () {
+            ctx.save();
+            ctx.translate(this.x, this.y);
+            ctx.rotate((this.rotation * Math.PI) / 180);
+            ctx.globalAlpha = this.opacity;
+
+            if (config.type === 'snow') {
+              ctx.beginPath();
+              ctx.arc(0, 0, this.size / 2.5, 0, Math.PI * 2);
+              ctx.fillStyle = '#ffffff';
+              ctx.shadowBlur = 4;
+              ctx.shadowColor = 'rgba(255, 255, 255, 0.8)';
+              ctx.fill();
+            } else {
+              ctx.beginPath();
+              ctx.moveTo(0, 0);
+              ctx.bezierCurveTo(-this.size / 2, -this.size / 2, -this.size, this.size / 3, 0, this.size);
+              ctx.bezierCurveTo(this.size, this.size / 3, this.size / 2, -this.size / 2, 0, 0);
+              ctx.fillStyle = '#ffb7c5';
+              ctx.fill();
+            }
+
+            ctx.restore();
+          };
+
+          for (var i = 0; i < particleCount; i++) {
+            var p = new Particle();
+            p.y = Math.random() * height;
+            particles.push(p);
+          }
+
+          function render() {
+            ctx.clearRect(0, 0, width, height);
+            for (var i = 0; i < particles.length; i++) {
+              particles[i].update();
+              particles[i].draw();
+            }
+            requestAnimationFrame(render);
+          }
+
+          render();
         }
 
-        ctx.restore();
-      };
-
-      for (var i = 0; i < particleCount; i++) {
-        var p = new Particle();
-        p.y = Math.random() * height;
-        particles.push(p);
-      }
-
-      function render() {
-        ctx.clearRect(0, 0, width, height);
-        for (var i = 0; i < particles.length; i++) {
-          particles[i].update();
-          particles[i].draw();
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', initFallingEffect);
+        } else {
+          initFallingEffect();
         }
-        requestAnimationFrame(render);
-      }
-
-      render();
-    }
-
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', initFallingEffect);
-    } else {
-      initFallingEffect();
-    }
-  })();
-</script>
+      })();
+    </script>
+  
 
 </body>
 </html>
