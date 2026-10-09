@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- 引入 Pjax 庫（實現頁面切換背景音樂完全不斷音） -->
+  <script src="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js"></script>
+
+  <!-- 浏览器标题：主标题 - 副标题 (或 文章标题 - 主标题) -->
+  
+  <title>umr2333主题 1.2版本发布 - 飞天鼠鼠大王の小破站</title>
+  
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  
+  <!-- Material Icons & Font Awesome 6 字体库 -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="https://unpkg.com/mdui@1.0.2/dist/css/mdui.min.css"/>
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+<body>
+
+  <!-- 全局固定背景图 -->
+  
+  <div class="full-bg" style="background-image: url('/img/back.jpg');"></div>
+
+  <!-- 顶部导航栏 -->
+  <div class="mdui-appbar mdui-appbar-fixed mdui-shadow-0 appbar-transparent">
+    <div class="mdui-toolbar">
+      
+        <span class="mdui-btn mdui-btn-icon" mdui-drawer="{target: '#left-drawer'}">
+          <i class="mdui-icon material-icons">menu</i>
+        </span>
+      
+      <div class="mdui-toolbar-spacer"></div>
+    </div>
+  </div>
+
+  <!-- 动态抽屉侧边栏 -->
+  
+    <div class="mdui-drawer mdui-drawer-close custom-drawer" id="left-drawer">
+      <ul class="mdui-list">
+        
+          
+            <a href="/" class="mdui-list-item mdui-ripple">
+              
+                
+                  <i class="mdui-list-item-icon mdui-icon material-icons">home</i>
+                
+              
+              <div class="mdui-list-item-content">首页</div>
+            </a>
+          
+            <a href="/archives/" class="mdui-list-item mdui-ripple">
+              
+                
+                  <i class="mdui-list-item-icon mdui-icon material-icons">archive</i>
+                
+              
+              <div class="mdui-list-item-content">归档 / 文章</div>
+            </a>
+          
+            <a href="/announcement/" class="mdui-list-item mdui-ripple">
+              
+                
+                  <i class="mdui-list-item-icon fas fa-bullhorn" style="display: flex; align-items: center; justify-content: center; font-size: 1.25rem;"></i>
+                
+              
+              <div class="mdui-list-item-content">网站公告</div>
+            </a>
+          
+            <a href="/history/" class="mdui-list-item mdui-ripple">
+              
+                
+                  <i class="mdui-list-item-icon fa fa-bookmark" style="display: flex; align-items: center; justify-content: center; font-size: 1.25rem;"></i>
+                
+              
+              <div class="mdui-list-item-content">网站历史</div>
+            </a>
+          
+            <a href="/links/" class="mdui-list-item mdui-ripple">
+              
+                
+                  <i class="mdui-list-item-icon fa fa-link" style="display: flex; align-items: center; justify-content: center; font-size: 1.25rem;"></i>
+                
+              
+              <div class="mdui-list-item-content">友情链接</div>
+            </a>
+          
+            <a target="_blank" rel="noopener" href="https://stats.uptimerobot.com/Q0Cdf2ohVv" class="mdui-list-item mdui-ripple">
+              
+                
+                  <i class="mdui-list-item-icon fa fa-tachometer" style="display: flex; align-items: center; justify-content: center; font-size: 1.25rem;"></i>
+                
+              
+              <div class="mdui-list-item-content">今天寄了没</div>
+            </a>
+          
+        
+      </ul>
+    </div>
+  
+
+  <!-- 主体区域（PJAX 仅替换此容器中的内容，保证容器外的 BGM 彻底不断音） -->
+  <main class="main-container" id="pjax-container">
+    <div class="mdui-row main-post-container">
+  <div class="mdui-col-xs-12 mdui-col-md-8 mdui-col-offset-md-2">
+    <article class="post-detail-card">
+      <h1 class="post-detail-title">umr2333主题 1.2版本发布</h1>
+      <div class="post-detail-meta">
+        <span>发布于 2026-10-08</span>
+      </div>
+      <div class="post-detail-content mdui-typo">
+        <p>别问我为什么1.0和1.1版本的时候没写</p>
+<p>问就是懒</p>
+<p>主包作为一个懒癌晚期患者+重度拖延症患者是这样的</p>
+<p>熟悉我的朋友都知道我是一只大鸽子ovo</p>
+<br>
+
+<p>本次更新内容：</p>
+<p>新增背景音乐播放和樱花&#x2F;爱心&#x2F;雪花飘落的特效</p>
+<p>可以通过配置文件中# 飘落特效设定 # 背景音乐配置 的选项进行设置</p>
+<br>
+
+<p>接下来是碎碎念</p>
+<p>虽然更新两个功能听起来很少，但是也折腾了好久</p>
+<p>添加特效这个功能倒是处理得挺快的</p>
+<p>但是自动播放音乐的事情折腾了很久，发现确实不可能，一定要有交互才能触发</p>
+<p>并且这雷霆ai老是修好了这忘了那，先是切换不同页面音乐重新播放的问题，然后是夜间模式按钮和回到顶部按钮作废的问题</p>
+<p>修这个夜间模式按钮折腾死我了，最后把1.1的layout.ejs原文发给他他才想起来应该是怎么样的</p>
+<p><del>而且我一开始让他加个花瓣飘落的特效他搞个爱心跟我说这是樱花</del></p>
+<br>
+
+<p>介绍一下这个主题：</p>
+<p>本主题发布于2026年9月8日，因为看到几个朋友都在搞自介的主页突发奇想</p>
+<p>我能不能就用hexo搞一个，正好把网站首页扔过来了，因为服务器不稳定说炸就炸</p>
+<p>找了半天别人的感觉还是差点意思，于是打算自己搞了</p>
+<p>说干就干，于是这个雷霆主题就诞生了</p>
+<p>1.0版本非常简陋，只有一个雷霆大主页</p>
+<p>1.1版本重写readme.md <del>（写1.0的时候我不知道可以直接新建修改根目录下_config.主题.yml达到配置的效果，还以为这个要特别设置）</del><br>博客文章按钮可自定义<br>新增简繁体切换开关<br>新增友情链接页面创建<br>新增回到顶部按钮<br>新增首页头像旋转功能<br>新增版本号显示<br>修复了删除线不穿过超链接的bug<br>优化了文件结构</p>
+<p>至于这个1.1.0只是小改动，发布以后发现漏了东西。更新readme.md以及补充link.yml相关内容</p>
+<br>
+
+<p>本次更新是觉得主页不够酷炫加一点新功能，下次更新不知道啥时候了，嗯对就这样</p>
+<p>散会。</p>
+
+      </div>
+    </article>
+  </div>
+</div>
+  </main>
+
+  <!-- 底部版权信息区域 -->
+  <footer class="site-footer">
+    
+      <div class="footer-custom">
+        Copyright ©2019-2026 umr2333.com All Rights Reserved.<br><a target="_blank" rel="noopener" href='https://icp.gov.moe/?keyword=20200222'><img class='icp-icon' src='https://icp.gov.moe/images/ico64.png' width='20px'><span>萌ICP备 20200222号</span></a>
+      </div>
+    
+    <div class="footer-copyright">
+      Powered by <a href="https://hexo.io" target="_blank" rel="noopener">Hexo</a> | Theme by <a href="https://github.com/umr23333333/hexo-theme-umr2333" target="_blank" rel="noopener">umr2333 1.2</a>
+    </div>
+  </footer>
+
+  <!-- 右下角固定悬浮按钮组（PJAX 局部刷新范围之外，全局持久化） -->
+  <div class="fab-group-fixed">
+
+    <!-- 背景音乐播放按钮 -->
+    
+      <button id="bgm-toggle-btn" class="fab-btn" mdui-tooltip="{content: '背景音乐', position: 'left'}" style="width: 42px; height: 42px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; border: none; outline: none; background: rgba(255, 255, 255, 0.9); box-shadow: 0 2px 8px rgba(0,0,0,0.15); -webkit-tap-highlight-color: transparent;">
+        <i class="mdui-icon material-icons" id="bgm-icon" style="font-size: 20px; color: #777; transition: transform 0.3s ease;">volume_off</i>
+      </button>
+      <audio id="bgm-player" src="/bgm/meow.mp3" loop preload="auto"></audio>
+    
+
+    <!-- 最上方：繁简切换按钮 -->
+    
+    
+      <button id="lang-toggle-btn" class="fab-btn" mdui-tooltip="{content: '切换繁简体', position: 'left'}">
+        <span id="lang-toggle-text" style="font-weight: bold; font-size: 1.1rem;">繁</span>
+      </button>
+    
+
+    <!-- 中间：夜间模式切换按钮 -->
+    <button id="dark-mode-toggle" class="fab-btn" mdui-tooltip="{content: '切换夜间模式', position: 'left'}">
+      <i class="mdui-icon material-icons" id="dark-icon">brightness_4</i>
+    </button>
+    
+    <!-- 下方：回到顶部 / 阅读进度按钮 -->
+    <button id="scroll-top-btn" class="fab-btn" mdui-tooltip="{content: '回到顶部', position: 'left'}">
+      <span id="scroll-progress-text" style="display: inline-block;">0%</span>
+      <i class="mdui-icon material-icons" id="scroll-top-icon" style="display: none !important;">keyboard_arrow_up</i>
+    </button>
+  </div>
+
+  <script src="https://unpkg.com/mdui@1.0.2/dist/js/mdui.min.js"></script>
+
+  <!-- PJAX 引擎初始化 -->
+  <script>
+    var pjax;
+    document.addEventListener('DOMContentLoaded', function () {
+      pjax = new Pjax({
+        selectors: [
+          'title',
+          '#pjax-container'
+        ],
+        cacheBust: false
+      });
+    });
+
+    // PJAX 刷新完成后重新应用 MDUI UI 组建
+    document.addEventListener('pjax:complete', function () {
+      if (window.mdui) {
+        mdui.mutation();
+      }
+    });
+  </script>
+
+  <!-- 1. 繁简转换逻辑 -->
+  
+    <script src="https://cdn.jsdelivr.net/npm/opencc-js@1.0.5/dist/umd/full.js"></script>
+    <script>
+      (function() {
+        const langBtn = document.getElementById('lang-toggle-btn');
+        const langText = document.getElementById('lang-toggle-text');
+        
+        const defaultIsTraditional = false;
+        let currentTarget = localStorage.getItem('theme_lang_target'); 
+
+        const converterS2T = OpenCC.Converter({ from: 'cn', to: 'hk' });
+        const converterT2S = OpenCC.Converter({ from: 'hk', to: 'cn' });
+
+        function convertTextNodes(converter) {
+          const walk = document.createTreeWalker(
+            document.body,
+            NodeFilter.SHOW_TEXT,
+            {
+              acceptNode: function(node) {
+                const parentName = node.parentElement ? node.parentElement.tagName : '';
+                if (['SCRIPT', 'STYLE', 'NOSCRIPT'].includes(parentName)) {
+                  return NodeFilter.FILTER_REJECT;
+                }
+                if (node.parentElement && node.parentElement.id === 'lang-toggle-text') {
+                  return NodeFilter.FILTER_REJECT;
+                }
+                return NodeFilter.FILTER_ACCEPT;
+              }
+            },
+            false
+          );
+
+          let node;
+          while ((node = walk.nextNode())) {
+            if (node.nodeValue && node.nodeValue.trim().length > 0) {
+              node.nodeValue = converter(node.nodeValue);
+            }
+          }
+        }
+
+        function applyLanguage(target) {
+          if (!target) {
+            langText.innerText = defaultIsTraditional ? '简' : '繁';
+            return;
+          }
+
+          if (target === 'zh-TW') {
+            langText.innerText = '简';
+            convertTextNodes(converterS2T);
+          } else if (target === 'zh-CN') {
+            langText.innerText = '繁';
+            convertTextNodes(converterT2S);
+          }
+        }
+
+        if (currentTarget) {
+          applyLanguage(currentTarget);
+        }
+
+        if (langBtn) {
+          langBtn.addEventListener('click', () => {
+            const nowTarget = localStorage.getItem('theme_lang_target');
+            let nextTarget;
+
+            if (defaultIsTraditional) {
+              nextTarget = (nowTarget === 'zh-CN') ? 'zh-TW' : 'zh-CN';
+            } else {
+              nextTarget = (nowTarget === 'zh-TW') ? 'zh-CN' : 'zh-TW';
+            }
+
+            localStorage.setItem('theme_lang_target', nextTarget);
+            location.reload();
+          });
+        }
+      })();
+    </script>
+  
+
+  <!-- 2. 完全复原的原版夜间模式 + 3. 回到顶部与阅读进度逻辑 -->
+  <script>
+    (function() {
+      const toggleBtn = document.getElementById('dark-mode-toggle');
+      const darkIcon = document.getElementById('dark-icon');
+      
+      function applyTheme(isDark) {
+        if (isDark) {
+          document.documentElement.classList.add('dark');
+          if (darkIcon) darkIcon.innerText = 'brightness_7';
+        } else {
+          document.documentElement.classList.remove('dark');
+          if (darkIcon) darkIcon.innerText = 'brightness_4';
+        }
+      }
+
+      const savedTheme = localStorage.getItem('theme_dark') === 'true';
+      applyTheme(savedTheme);
+
+      if (toggleBtn) {
+        toggleBtn.addEventListener('click', () => {
+          const isDark = document.documentElement.classList.toggle('dark');
+          if (darkIcon) darkIcon.innerText = isDark ? 'brightness_7' : 'brightness_4';
+          localStorage.setItem('theme_dark', isDark);
+        });
+      }
+
+      // 回到顶部与阅读进度计算逻辑（完全原版逻辑）
+      const scrollTopBtn = document.getElementById('scroll-top-btn');
+      const progressText = document.getElementById('scroll-progress-text');
+      const scrollTopIcon = document.getElementById('scroll-top-icon');
+
+      function updateScrollProgress() {
+        const scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
+        const scrollHeight = document.documentElement.scrollHeight || document.body.scrollHeight || 0;
+        const clientHeight = document.documentElement.clientHeight || window.innerHeight || 0;
+
+        const maxScroll = scrollHeight - clientHeight;
+        let progress = 0;
+
+        if (maxScroll > 0) {
+          progress = Math.min(100, Math.max(0, Math.round((scrollTop / maxScroll) * 100)));
+        } else {
+          progress = 100;
+        }
+
+        // 未到底部（0% ~ 99%）：纯数字，绝对隐藏箭头
+        // 达到底部（100%）：隐藏数字，显示箭头
+        if (progress >= 100) {
+          if (progressText) progressText.style.setProperty('display', 'none', 'important');
+          if (scrollTopIcon) scrollTopIcon.style.setProperty('display', 'inline-block', 'important');
+        } else {
+          if (progressText) {
+            progressText.style.setProperty('display', 'inline-block', 'important');
+            progressText.innerText = progress + '%';
+          }
+          if (scrollTopIcon) scrollTopIcon.style.setProperty('display', 'none', 'important');
+        }
+      }
+
+      window.addEventListener('scroll', updateScrollProgress);
+      window.addEventListener('resize', updateScrollProgress);
+      document.addEventListener('DOMContentLoaded', updateScrollProgress);
+
+      if (scrollTopBtn) {
+        scrollTopBtn.addEventListener('click', () => {
+          window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+          });
+        });
+      }
+
+      // PJAX 跳转后自动更新一次进度与保持主题状态
+      document.addEventListener('pjax:complete', function() {
+        const isDark = localStorage.getItem('theme_dark') === 'true';
+        applyTheme(isDark);
+        updateScrollProgress();
+      });
+    })();
+  </script>
+
+  <!-- 4. 背景音乐独立控制（PJAX 跨页面续播） -->
+  
+    <style>
+      @keyframes music-rotate {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+      }
+      .bgm-playing #bgm-icon {
+        animation: music-rotate 3s linear infinite;
+        color: #3f51b5 !important;
+      }
+    </style>
+
+    <script>
+      (function () {
+        function initBgm() {
+          var bgmBtn = document.getElementById('bgm-toggle-btn');
+          var bgmPlayer = document.getElementById('bgm-player');
+          var bgmIcon = document.getElementById('bgm-icon');
+          if (!bgmBtn || !bgmPlayer || !bgmIcon) return;
+
+          var isAutoplay = true;
+
+          function updateUI(isPlaying) {
+            if (isPlaying) {
+              bgmBtn.classList.add('bgm-playing');
+              bgmIcon.textContent = 'music_note';
+            } else {
+              bgmBtn.classList.remove('bgm-playing');
+              bgmIcon.textContent = 'volume_off';
+            }
+          }
+
+          function startPlay() {
+            var promise = bgmPlayer.play();
+            if (promise !== undefined) {
+              promise.then(function () {
+                updateUI(true);
+              }).catch(function (err) {
+                updateUI(false);
+              });
+            }
+          }
+
+          bgmBtn.addEventListener('click', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            if (bgmPlayer.paused) {
+              startPlay();
+            } else {
+              bgmPlayer.pause();
+              updateUI(false);
+            }
+          });
+
+          if (isAutoplay) {
+            startPlay();
+
+            var unlockHandler = function () {
+              if (bgmPlayer.paused) {
+                startPlay();
+              }
+              ['click', 'touchstart', 'pointerdown', 'mousedown', 'keydown'].forEach(function (evt) {
+                document.removeEventListener(evt, unlockHandler, true);
+              });
+            };
+
+            ['click', 'touchstart', 'pointerdown', 'mousedown', 'keydown'].forEach(function (evt) {
+              document.addEventListener(evt, unlockHandler, true);
+            });
+          }
+        }
+
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', initBgm);
+        } else {
+          initBgm();
+        }
+      })();
+    </script>
+  
+
+  <!-- 5. 飘落特效脚本（支持 sakura / heart / snow 自由切换） -->
+
+  <style>
+    #falling-canvas {
+      position: fixed !important;
+      top: 0 !important;
+      left: 0 !important;
+      width: 100vw !important;
+      height: 100vh !important;
+      pointer-events: none !important;
+      z-index: 999999 !important;
+    }
+  </style>
+
+  <script>
+    (function () {
+      function initFallingEffect() {
+        if (document.getElementById('falling-canvas')) return;
+
+        var config = {
+          type: 'heart', // 支持: sakura(樱花花瓣) / heart(爱心) / snow(雪花)
+          count: 30
+        };
+
+        var canvas = document.createElement('canvas');
+        canvas.id = 'falling-canvas';
+        document.body.appendChild(canvas);
+
+        var ctx = canvas.getContext('2d');
+        var width = (canvas.width = window.innerWidth);
+        var height = (canvas.height = window.innerHeight);
+
+        window.addEventListener('resize', function () {
+          width = canvas.width = window.innerWidth;
+          height = canvas.height = window.innerHeight;
+        });
+
+        var particles = [];
+        var particleCount = config.count;
+
+        function Particle() {
+          this.reset();
+        }
+
+        Particle.prototype.reset = function () {
+          this.x = Math.random() * width;
+          this.y = Math.random() * -height;
+          this.size = Math.random() * 8 + 6;
+          this.speedY = Math.random() * 1.2 + 0.8;
+          this.speedX = Math.random() * 1 - 0.5;
+          this.rotation = Math.random() * 360;
+          this.rotationSpeed = (Math.random() - 0.5) * 1.5;
+          this.opacity = Math.random() * 0.5 + 0.5;
+        };
+
+        Particle.prototype.update = function () {
+          this.y += this.speedY;
+          this.x += Math.sin(this.y / 30) + this.speedX;
+          this.rotation += this.rotationSpeed;
+
+          if (this.y > height || this.x < -20 || this.x > width + 20) {
+            this.reset();
+            this.y = -10;
+          }
+        };
+
+        Particle.prototype.draw = function () {
+          ctx.save();
+          ctx.translate(this.x, this.y);
+          ctx.rotate((this.rotation * Math.PI) / 180);
+          ctx.globalAlpha = this.opacity;
+
+          if (config.type === 'snow') {
+            // 1. 洁白雪花效果
+            ctx.beginPath();
+            ctx.arc(0, 0, this.size / 2.5, 0, Math.PI * 2);
+            ctx.fillStyle = '#ffffff';
+            ctx.shadowBlur = 4;
+            ctx.shadowColor = 'rgba(255, 255, 255, 0.8)';
+            ctx.fill();
+          } else if (config.type === 'heart') {
+            // 2. 爱心效果
+            ctx.beginPath();
+            ctx.moveTo(0, 0);
+            ctx.bezierCurveTo(-this.size / 2, -this.size / 2, -this.size, this.size / 3, 0, this.size);
+            ctx.bezierCurveTo(this.size, this.size / 3, this.size / 2, -this.size / 2, 0, 0);
+            ctx.fillStyle = '#ffb7c5';
+            ctx.fill();
+          } else {
+            // 3. 真实樱花花瓣效果 (sakura - 默认)
+            ctx.beginPath();
+            ctx.moveTo(0, 0);
+            // 绘制带有微曲凹槽的单片椭圆樱花花瓣
+            ctx.quadraticCurveTo(-this.size / 2, this.size / 2, 0, this.size);
+            ctx.quadraticCurveTo(this.size / 2, this.size / 2, 0, 0);
+            ctx.fillStyle = '#ffc0cb'; // 柔和樱花粉
+            ctx.fill();
+          }
+
+          ctx.restore();
+        };
+
+        for (var i = 0; i < particleCount; i++) {
+          var p = new Particle();
+          p.y = Math.random() * height;
+          particles.push(p);
+        }
+
+        function render() {
+          ctx.clearRect(0, 0, width, height);
+          for (var i = 0; i < particles.length; i++) {
+            particles[i].update();
+            particles[i].draw();
+          }
+          requestAnimationFrame(render);
+        }
+
+        render();
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initFallingEffect);
+      } else {
+        initFallingEffect();
+      }
+    })();
+  </script>
+
+
+</body>
+</html>
