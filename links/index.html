@@ -131,7 +131,7 @@
       </div>
     
     <div class="footer-copyright">
-      Powered by <a href="https://hexo.io" target="_blank" rel="noopener">Hexo</a> | Theme by <a href="https://github.com/umr23333333/hexo-theme-umr2333" target="_blank" rel="noopener">umr2333 1.2.1 Beta</a>
+      Powered by <a href="https://hexo.io" target="_blank" rel="noopener">Hexo</a> | Theme by <a href="https://github.com/umr23333333/hexo-theme-umr2333" target="_blank" rel="noopener">umr2333 1.2.1</a>
     </div>
   </footer>
 
@@ -167,7 +167,7 @@
 
   <script src="https://unpkg.com/mdui@1.0.2/dist/js/mdui.min.js"></script>
 
-  <!-- PJAX 引擎初始化（标准规范版：只接管站内相对路径，彻底杜绝协议错乱） -->
+  <!-- PJAX 引擎初始化（智能环境适配：线上自动清洗协议，本地保持原样） -->
   <script>
     var pjax;
     document.addEventListener('DOMContentLoaded', function () {
@@ -175,18 +175,33 @@
         try { window.pjax.destroy(); } catch (e) {}
       }
 
+      // 仅在线上 HTTPS 环境下才进行 http -> https 清洗，本地 HTTP 环境直接放行
+      if (window.location.protocol === 'https:') {
+        document.querySelectorAll('a').forEach(function(el) {
+          if (el.href && el.href.startsWith('http://') && el.href.includes(window.location.host)) {
+            el.href = el.href.replace('http://', 'https://');
+          }
+        });
+      }
+
       pjax = new Pjax({
         selectors: [
           'title',
           '#pjax-container'
         ],
-        cacheBust: false,
-        // 核心：限制 Pjax 只抓取以 / 开头或者当前域名的相对链接，
-        // 任何带绝对协议（http:// 或 https://）的链接一律不走 Pjax，改走浏览器正常跳转，
-        // 这样无论本地还是线上，绝对不会再触发任何 Mixed Content 或协议错乱！
-        elements: 'a[href^="/"]:not([target="_blank"]):not([no-pjax])'
+        cacheBust: false
       });
     });
+
+    // 智能拦截点击
+    document.addEventListener('click', function (e) {
+      var link = e.target.closest('a');
+      if (link && link.href && window.location.protocol === 'https:') {
+        if (link.href.startsWith('http://') && link.href.includes(window.location.host)) {
+          link.href = link.href.replace('http://', 'https://');
+        }
+      }
+    }, true);
 
     // PJAX 刷新完成后重新应用组件与同步 BGM 状态
     document.addEventListener('pjax:complete', function () {
@@ -195,6 +210,14 @@
       }
       if (typeof window.syncBgmUI === 'function') {
         window.syncBgmUI();
+      }
+      // 局部刷新后同样根据环境智能处理
+      if (window.location.protocol === 'https:') {
+        document.querySelectorAll('a').forEach(function(el) {
+          if (el.href && el.href.startsWith('http://') && el.href.includes(window.location.host)) {
+            el.href = el.href.replace('http://', 'https://');
+          }
+        });
       }
     });
   </script>
@@ -323,7 +346,7 @@
         bindDarkToggleEvent();
       }
 
-      // 回到顶部与阅读进度计算逻辑
+      // 阅读进度与回到顶部
       const scrollTopBtn = document.getElementById('scroll-top-btn');
       const progressText = document.getElementById('scroll-progress-text');
       const scrollTopIcon = document.getElementById('scroll-top-icon');
@@ -395,14 +418,13 @@
         const BGM_TIME_KEY = 'umr_blog_bgm_time';
         const BGM_STATE_KEY = 'umr_blog_bgm_playing';
 
-        // 1. 全局单例初始化
+        // 全局单例初始化
         if (!window.__globalBgmPlayer) {
           window.__globalBgmPlayer = document.createElement('audio');
           window.__globalBgmPlayer.src = '/bgm/meow.mp3';
           window.__globalBgmPlayer.loop = true;
           window.__globalBgmPlayer.preload = 'auto';
           
-          // 尝试从本地缓存恢复上一次播放的秒数
           var savedTime = localStorage.getItem(BGM_TIME_KEY);
           if (savedTime) {
             window.__globalBgmPlayer.currentTime = parseFloat(savedTime);
@@ -414,14 +436,12 @@
         var bgmPlayer = window.__globalBgmPlayer;
         var isAutoplay = true;
 
-        // 实时同步播放进度到 localStorage
         bgmPlayer.addEventListener('timeupdate', function () {
           if (!bgmPlayer.paused) {
             localStorage.setItem(BGM_TIME_KEY, bgmPlayer.currentTime);
           }
         });
 
-        // 同步 UI 状态函数
         window.syncBgmUI = function() {
           var bgmBtn = document.getElementById('bgm-toggle-btn');
           var bgmIcon = document.getElementById('bgm-icon');
@@ -436,7 +456,6 @@
           }
         };
 
-        // 统一播放动作
         function tryPlayBgm() {
           var promise = bgmPlayer.play();
           if (promise !== undefined) {
@@ -449,7 +468,6 @@
           }
         }
 
-        // 全局点击事件代理按钮
         document.addEventListener('click', function (e) {
           var btn = e.target.closest('#bgm-toggle-btn');
           if (btn) {
@@ -468,13 +486,11 @@
           }
         });
 
-        // 页面跳转前最后保存一次状态
         window.addEventListener('beforeunload', function () {
           localStorage.setItem(BGM_TIME_KEY, bgmPlayer.currentTime);
           localStorage.setItem(BGM_STATE_KEY, !bgmPlayer.paused);
         });
 
-        // 初始化播放判定：如果之前处于播放状态，或者配置了自动播放
         var wasPlaying = localStorage.getItem(BGM_STATE_KEY) === 'true';
         if (wasPlaying || isAutoplay) {
           tryPlayBgm();
@@ -492,7 +508,6 @@
           });
         }
 
-        // 首次加载同步
         if (document.readyState === 'loading') {
           document.addEventListener('DOMContentLoaded', window.syncBgmUI);
         } else {
@@ -502,7 +517,7 @@
     </script>
   
 
-  <!-- 5. 飘落特效脚本（支持 sakura / heart / snow 自由切换） -->
+  <!-- 5. 飘落特效脚本 -->
   
     <style>
       #falling-canvas {
