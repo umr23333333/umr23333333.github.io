@@ -238,7 +238,7 @@
       </div>
     
     <div class="footer-copyright">
-      Powered by <a href="https://hexo.io" target="_blank" rel="noopener">Hexo</a> | Theme by <a href="https://github.com/umr23333333/hexo-theme-umr2333" target="_blank" rel="noopener">umr2333 1.2.1 Beta</a>
+      Powered by <a href="https://hexo.io" target="_blank" rel="noopener">Hexo</a> | Theme by <a href="https://github.com/umr23333333/hexo-theme-umr2333" target="_blank" rel="noopener">umr2333 1.2.1</a>
     </div>
   </footer>
 
@@ -274,16 +274,14 @@
 
   <script src="https://unpkg.com/mdui@1.0.2/dist/js/mdui.min.js"></script>
 
-  <!-- PJAX 引擎初始化（终极防 Mixed Content 拦截版） -->
+  <!-- PJAX 引擎初始化（完美平滑过渡与协议修正） -->
   <script>
     var pjax;
     document.addEventListener('DOMContentLoaded', function () {
-      // 1. 如果 Pjax 已经存在，先销毁防止重复绑定
       if (window.Pjax && window.pjax) {
         try { window.pjax.destroy(); } catch (e) {}
       }
 
-      // 2. 初始化 Pjax
       pjax = new Pjax({
         selectors: [
           'title',
@@ -292,38 +290,20 @@
         cacheBust: false
       });
 
-      // 3. 核心大招：直接 Hook（拦截）Pjax 内部加载页面的底层方法
       if (pjax && typeof pjax.loadUrl === 'function') {
         const originalLoadUrl = pjax.loadUrl.bind(pjax);
         pjax.loadUrl = function(destination, options) {
-          // 强制将即将请求的 URL 协议转换为当前页面的协议（本地 http，线上 https）
           try {
             const urlObj = new URL(destination, window.location.origin);
             urlObj.protocol = window.location.protocol;
             destination = urlObj.href;
-          } catch (err) {
-            console.warn('URL 协议转换失败，使用原地址:', destination);
-          }
+          } catch (err) {}
           return originalLoadUrl(destination, options);
         };
       }
     });
 
-    // 容错降级：万一报错，安全跳转
-    document.addEventListener('pjax:error', function (event) {
-      console.warn('PJAX 请求异常，正在安全跳转...', event.triggerElement);
-      if (event.triggerElement && event.triggerElement.href) {
-        let fallbackUrl = event.triggerElement.href;
-        try {
-          const urlObj = new URL(fallbackUrl, window.location.origin);
-          urlObj.protocol = window.location.protocol;
-          fallbackUrl = urlObj.href;
-        } catch (e) {}
-        window.location.href = fallbackUrl;
-      }
-    });
-
-    // PJAX 刷新完成后重新应用 MDUI 组件与同步 BGM 状态
+    // PJAX 刷新完成后重新应用组件与同步 BGM 状态
     document.addEventListener('pjax:complete', function () {
       if (window.mdui) {
         mdui.mutation();
@@ -334,17 +314,12 @@
     });
   </script>
 
-  <!-- 1. 繁简转换逻辑 -->
+  <!-- 1. 繁简转换逻辑（纯前端无刷新，完美联动 PJAX） -->
   
     <script src="https://cdn.jsdelivr.net/npm/opencc-js@1.0.5/dist/umd/full.js"></script>
     <script>
       (function() {
-        const langBtn = document.getElementById('lang-toggle-btn');
-        const langText = document.getElementById('lang-toggle-text');
-        
         const defaultIsTraditional = false;
-        let currentTarget = localStorage.getItem('theme_lang_target'); 
-
         const converterS2T = OpenCC.Converter({ from: 'cn', to: 'hk' });
         const converterT2S = OpenCC.Converter({ from: 'hk', to: 'cn' });
 
@@ -358,7 +333,7 @@
                 if (['SCRIPT', 'STYLE', 'NOSCRIPT'].includes(parentName)) {
                   return NodeFilter.FILTER_REJECT;
                 }
-                if (node.parentElement && node.parentElement.id === 'lang-toggle-text') {
+                if (node.parentElement && (node.parentElement.id === 'lang-toggle-text' || node.parentElement.id === 'scroll-progress-text')) {
                   return NodeFilter.FILTER_REJECT;
                 }
                 return NodeFilter.FILTER_ACCEPT;
@@ -375,51 +350,60 @@
           }
         }
 
-        function applyLanguage(target) {
-          if (!target) {
-            langText.innerText = defaultIsTraditional ? '简' : '繁';
+        function applyCurrentLanguage() {
+          const langText = document.getElementById('lang-toggle-text');
+          const currentTarget = localStorage.getItem('theme_lang_target');
+          
+          if (!currentTarget) {
+            if (langText) langText.innerText = defaultIsTraditional ? '简' : '繁';
             return;
           }
 
-          if (target === 'zh-TW') {
-            langText.innerText = '简';
+          if (currentTarget === 'zh-TW') {
+            if (langText) langText.innerText = '简';
             convertTextNodes(converterS2T);
-          } else if (target === 'zh-CN') {
-            langText.innerText = '繁';
+          } else if (currentTarget === 'zh-CN') {
+            if (langText) langText.innerText = '繁';
             convertTextNodes(converterT2S);
           }
         }
 
-        if (currentTarget) {
-          applyLanguage(currentTarget);
-        }
+        // 初始化和每次 PJAX 切换后应用语言转换
+        applyCurrentLanguage();
+        document.addEventListener('pjax:complete', applyCurrentLanguage);
 
-        if (langBtn) {
-          langBtn.addEventListener('click', () => {
-            const nowTarget = localStorage.getItem('theme_lang_target');
-            let nextTarget;
+        // 绑定切换按钮点击事件
+        function bindLangToggleEvent() {
+          const langBtn = document.getElementById('lang-toggle-btn');
+          if (!langBtn) return;
 
-            if (defaultIsTraditional) {
-              nextTarget = (nowTarget === 'zh-CN') ? 'zh-TW' : 'zh-CN';
-            } else {
-              nextTarget = (nowTarget === 'zh-TW') ? 'zh-CN' : 'zh-TW';
-            }
+          langBtn.onclick = function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            const currentTarget = localStorage.getItem('theme_lang_target') || (defaultIsTraditional ? 'zh-TW' : 'zh-CN');
+            let nextTarget = (currentTarget === 'zh-CN') ? 'zh-TW' : 'zh-CN';
 
             localStorage.setItem('theme_lang_target', nextTarget);
-            location.reload();
-          });
+            applyCurrentLanguage();
+          };
         }
+
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', bindLangToggleEvent);
+        } else {
+          bindLangToggleEvent();
+        }
+        document.addEventListener('pjax:complete', bindLangToggleEvent);
       })();
     </script>
   
 
-  <!-- 2. 原版夜间模式 + 3. 回到顶部与阅读进度逻辑 -->
+  <!-- 2. 夜间模式 + 3. 回到顶部与阅读进度逻辑 -->
   <script>
     (function() {
-      const toggleBtn = document.getElementById('dark-mode-toggle');
-      const darkIcon = document.getElementById('dark-icon');
-      
       function applyTheme(isDark) {
+        const darkIcon = document.getElementById('dark-icon');
         if (isDark) {
           document.documentElement.classList.add('dark');
           if (darkIcon) darkIcon.innerText = 'brightness_7';
@@ -432,12 +416,26 @@
       const savedTheme = localStorage.getItem('theme_dark') === 'true';
       applyTheme(savedTheme);
 
-      if (toggleBtn) {
-        toggleBtn.addEventListener('click', () => {
+      // 稳健绑定夜间模式按钮
+      function bindDarkToggleEvent() {
+        const toggleBtn = document.getElementById('dark-mode-toggle');
+        if (!toggleBtn) return;
+
+        toggleBtn.onclick = function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+
           const isDark = document.documentElement.classList.toggle('dark');
+          const darkIcon = document.getElementById('dark-icon');
           if (darkIcon) darkIcon.innerText = isDark ? 'brightness_7' : 'brightness_4';
           localStorage.setItem('theme_dark', isDark);
-        });
+        };
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', bindDarkToggleEvent);
+      } else {
+        bindDarkToggleEvent();
       }
 
       // 回到顶部与阅读进度计算逻辑
@@ -476,18 +474,20 @@
       document.addEventListener('DOMContentLoaded', updateScrollProgress);
 
       if (scrollTopBtn) {
-        scrollTopBtn.addEventListener('click', () => {
+        scrollTopBtn.onclick = function() {
           window.scrollTo({
             top: 0,
             behavior: 'smooth'
           });
-        });
+        };
       }
 
+      // PJAX 刷新完成后重新对齐主题状态与滚动进度，并重新绑定按钮事件
       document.addEventListener('pjax:complete', function() {
         const isDark = localStorage.getItem('theme_dark') === 'true';
         applyTheme(isDark);
         updateScrollProgress();
+        bindDarkToggleEvent();
       });
     })();
   </script>
