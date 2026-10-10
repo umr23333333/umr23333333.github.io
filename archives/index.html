@@ -150,7 +150,6 @@
       <button id="bgm-toggle-btn" class="fab-btn" mdui-tooltip="{content: '背景音乐', position: 'left'}" style="width: 42px; height: 42px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; border: none; outline: none; background: rgba(255, 255, 255, 0.9); box-shadow: 0 2px 8px rgba(0,0,0,0.15); -webkit-tap-highlight-color: transparent;">
         <i class="mdui-icon material-icons" id="bgm-icon" style="font-size: 20px; color: #777; transition: transform 0.3s ease;">volume_off</i>
       </button>
-      <audio id="bgm-player" src="/bgm/meow.mp3" loop preload="auto"></audio>
     
 
     <!-- 最上方：繁简切换按钮 -->
@@ -175,36 +174,29 @@
 
   <script src="https://unpkg.com/mdui@1.0.2/dist/js/mdui.min.js"></script>
 
-  <!-- PJAX 引擎初始化（完美适配本地 HTTP 与线上 HTTPS） -->
-<script>
-  var pjax;
-  document.addEventListener('DOMContentLoaded', function () {
-    pjax = new Pjax({
-      selectors: [
-        'title',
-        '#pjax-container'
-      ],
-      cacheBust: false,
-      // 核心：强制所有 PJAX 请求都使用与当前页面完全相同的协议（location.protocol），
-      // 这样无论是在本地 http:// 还是线上 https://，协议都 100% 匹配，绝对不会触发 Mixed Content 错误！
+  <!-- PJAX 引擎初始化 -->
+  <script>
+    var pjax;
+    document.addEventListener('DOMContentLoaded', function () {
+      pjax = new Pjax({
+        selectors: [
+          'title',
+          '#pjax-container'
+        ],
+        cacheBust: false
+      });
     });
-  });
 
-  // PJAX 刷新完成后重新应用 MDUI 组件
-  document.addEventListener('pjax:complete', function () {
-    if (window.mdui) {
-      mdui.mutation();
-    }
-  });
-
-  // 额外安全捕获：如果 PJAX 在线上因为某些原因请求失败，自动降级为标准页面跳转，绝不会卡死无响应
-  document.addEventListener('pjax:error', function (event) {
-    console.warn('PJAX 请求失败，正在降级为普通跳转...', event.triggerElement);
-    if (event.triggerElement && event.triggerElement.href) {
-      window.location.href = event.triggerElement.href;
-    }
-  });
-</script>
+    // PJAX 刷新完成后重新应用 MDUI 组件与同步 BGM 状态
+    document.addEventListener('pjax:complete', function () {
+      if (window.mdui) {
+        mdui.mutation();
+      }
+      if (typeof window.syncBgmUI === 'function') {
+        window.syncBgmUI();
+      }
+    });
+  </script>
 
   <!-- 1. 繁简转换逻辑 -->
   
@@ -285,7 +277,7 @@
     </script>
   
 
-  <!-- 2. 完全复原的原版夜间模式 + 3. 回到顶部与阅读进度逻辑 -->
+  <!-- 2. 原版夜间模式 + 3. 回到顶部与阅读进度逻辑 -->
   <script>
     (function() {
       const toggleBtn = document.getElementById('dark-mode-toggle');
@@ -312,7 +304,7 @@
         });
       }
 
-      // 回到顶部与阅读进度计算逻辑（完全原版逻辑）
+      // 回到顶部与阅读进度计算逻辑
       const scrollTopBtn = document.getElementById('scroll-top-btn');
       const progressText = document.getElementById('scroll-progress-text');
       const scrollTopIcon = document.getElementById('scroll-top-icon');
@@ -331,8 +323,6 @@
           progress = 100;
         }
 
-        // 未到底部（0% ~ 99%）：纯数字，绝对隐藏箭头
-        // 达到底部（100%）：隐藏数字，显示箭头
         if (progress >= 100) {
           if (progressText) progressText.style.setProperty('display', 'none', 'important');
           if (scrollTopIcon) scrollTopIcon.style.setProperty('display', 'inline-block', 'important');
@@ -358,7 +348,6 @@
         });
       }
 
-      // PJAX 跳转后自动更新一次进度与保持主题状态
       document.addEventListener('pjax:complete', function() {
         const isDark = localStorage.getItem('theme_dark') === 'true';
         applyTheme(isDark);
@@ -367,238 +356,219 @@
     })();
   </script>
 
-  <!-- 4. 背景音乐独立控制（极简稳健版：跨页面完美续播） -->
-
-  <style>
-    @keyframes music-rotate {
-      from { transform: rotate(0deg); }
-      to { transform: rotate(360deg); }
-    }
-    .bgm-playing #bgm-icon {
-      animation: music-rotate 3s linear infinite;
-      color: #3f51b5 !important;
-    }
-  </style>
-
-  <script>
-    (function () {
-      // 1. 全局单例检查：确保不重复创建 audio 元素
-      var bgmPlayer = document.getElementById('bgm-player');
-      if (!bgmPlayer) {
-        bgmPlayer = document.createElement('audio');
-        bgmPlayer.id = 'bgm-player';
-        bgmPlayer.src = '/bgm/meow.mp3';
-        bgmPlayer.loop = true;
-        bgmPlayer.preload = 'auto';
-        document.body.appendChild(bgmPlayer);
+  <!-- 4. 背景音乐独立控制（全局单例防重置强化版） -->
+  
+    <style>
+      @keyframes music-rotate {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
       }
+      .bgm-playing #bgm-icon {
+        animation: music-rotate 3s linear infinite;
+        color: #3f51b5 !important;
+      }
+    </style>
 
-      var isAutoplay = true;
-
-      // 更新按钮图标与旋转状态
-      function updateUI() {
-        var bgmBtn = document.getElementById('bgm-toggle-btn');
-        var bgmIcon = document.getElementById('bgm-icon');
-        if (!bgmBtn || !bgmIcon) return;
-
-        if (!bgmPlayer.paused) {
-          bgmBtn.classList.add('bgm-playing');
-          bgmIcon.textContent = 'music_note';
-        } else {
-          bgmBtn.classList.remove('bgm-playing');
-          bgmIcon.textContent = 'volume_off';
+    <script>
+      (function () {
+        if (!window.__globalBgmPlayer) {
+          window.__globalBgmPlayer = document.createElement('audio');
+          window.__globalBgmPlayer.src = '/bgm/meow.mp3';
+          window.__globalBgmPlayer.loop = true;
+          window.__globalBgmPlayer.preload = 'auto';
+          document.body.appendChild(window.__globalBgmPlayer);
         }
-      }
+        var bgmPlayer = window.__globalBgmPlayer;
+        var isAutoplay = true;
 
-      // 执行播放
-      function tryPlay() {
-        var promise = bgmPlayer.play();
-        if (promise !== undefined) {
-          promise.then(function () {
-            updateUI();
-          }).catch(function (err) {
-            console.log('自动播放被浏览器拦截，等待用户交互');
-            updateUI();
-          });
-        }
-      }
+        window.syncBgmUI = function() {
+          var bgmBtn = document.getElementById('bgm-toggle-btn');
+          var bgmIcon = document.getElementById('bgm-icon');
+          if (!bgmBtn || !bgmIcon) return;
 
-      // 绑定点击事件（使用事件委派，防止 PJAX 刷新导致按钮失效）
-      document.addEventListener('click', function (e) {
-        var btn = e.target.closest('#bgm-toggle-btn');
-        if (btn) {
-          e.preventDefault();
-          e.stopPropagation();
-          if (bgmPlayer.paused) {
-            bgmPlayer.play().then(updateUI);
+          if (!bgmPlayer.paused) {
+            bgmBtn.classList.add('bgm-playing');
+            bgmIcon.textContent = 'music_note';
           } else {
-            bgmPlayer.pause();
-            updateUI();
+            bgmBtn.classList.remove('bgm-playing');
+            bgmIcon.textContent = 'volume_off';
+          }
+        };
+
+        function tryPlayBgm() {
+          var promise = bgmPlayer.play();
+          if (promise !== undefined) {
+            promise.then(function () {
+              window.syncBgmUI();
+            }).catch(function (err) {
+              window.syncBgmUI();
+            });
           }
         }
-      });
 
-      // 初始化：如果之前在播，或者配置了自动播放
-      if (isAutoplay) {
-        tryPlay();
-
-        // 浏览器首次点击/触摸解除自动播放限制
-        var unlockHandler = function () {
-          if (bgmPlayer.paused) {
-            tryPlay();
+        document.addEventListener('click', function (e) {
+          var btn = e.target.closest('#bgm-toggle-btn');
+          if (btn) {
+            e.preventDefault();
+            e.stopPropagation();
+            if (bgmPlayer.paused) {
+              bgmPlayer.play().then(window.syncBgmUI);
+            } else {
+              bgmPlayer.pause();
+              window.syncBgmUI();
+            }
           }
-          ['click', 'touchstart', 'pointerdown', 'mousedown', 'keydown'].forEach(function (evt) {
-            document.removeEventListener(evt, unlockHandler, true);
-          });
-        };
-        ['click', 'touchstart', 'pointerdown', 'mousedown', 'keydown'].forEach(function (evt) {
-          document.addEventListener(evt, unlockHandler, true);
         });
-      }
 
-      // PJAX 切换页面后立刻同步按钮状态
-      document.addEventListener('pjax:complete', function () {
-        updateUI();
-      });
+        if (isAutoplay && bgmPlayer.paused) {
+          tryPlayBgm();
 
-      // 页面初次加载同步状态
-      if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', updateUI);
-      } else {
-        updateUI();
-      }
-    })();
-  </script>
+          var unlockHandler = function () {
+            if (bgmPlayer.paused) {
+              tryPlayBgm();
+            }
+            ['click', 'touchstart', 'pointerdown', 'mousedown', 'keydown'].forEach(function (evt) {
+              document.removeEventListener(evt, unlockHandler, true);
+            });
+          };
+          ['click', 'touchstart', 'pointerdown', 'mousedown', 'keydown'].forEach(function (evt) {
+            document.addEventListener(evt, unlockHandler, true);
+          });
+        }
 
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', window.syncBgmUI);
+        } else {
+          window.syncBgmUI();
+        }
+      })();
+    </script>
+  
 
   <!-- 5. 飘落特效脚本（支持 sakura / heart / snow 自由切换） -->
+  
+    <style>
+      #falling-canvas {
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        width: 100vw !important;
+        height: 100vh !important;
+        pointer-events: none !important;
+        z-index: 999999 !important;
+      }
+    </style>
 
-  <style>
-    #falling-canvas {
-      position: fixed !important;
-      top: 0 !important;
-      left: 0 !important;
-      width: 100vw !important;
-      height: 100vh !important;
-      pointer-events: none !important;
-      z-index: 999999 !important;
-    }
-  </style>
+    <script>
+      (function () {
+        function initFallingEffect() {
+          if (document.getElementById('falling-canvas')) return;
 
-  <script>
-    (function () {
-      function initFallingEffect() {
-        if (document.getElementById('falling-canvas')) return;
+          var config = {
+            type: 'heart',
+            count: 30
+          };
 
-        var config = {
-          type: 'heart', // 支持: sakura(樱花花瓣) / heart(爱心) / snow(雪花)
-          count: 30
-        };
+          var canvas = document.createElement('canvas');
+          canvas.id = 'falling-canvas';
+          document.body.appendChild(canvas);
 
-        var canvas = document.createElement('canvas');
-        canvas.id = 'falling-canvas';
-        document.body.appendChild(canvas);
+          var ctx = canvas.getContext('2d');
+          var width = (canvas.width = window.innerWidth);
+          var height = (canvas.height = window.innerHeight);
 
-        var ctx = canvas.getContext('2d');
-        var width = (canvas.width = window.innerWidth);
-        var height = (canvas.height = window.innerHeight);
+          window.addEventListener('resize', function () {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+          });
 
-        window.addEventListener('resize', function () {
-          width = canvas.width = window.innerWidth;
-          height = canvas.height = window.innerHeight;
-        });
+          var particles = [];
+          var particleCount = config.count;
 
-        var particles = [];
-        var particleCount = config.count;
-
-        function Particle() {
-          this.reset();
-        }
-
-        Particle.prototype.reset = function () {
-          this.x = Math.random() * width;
-          this.y = Math.random() * -height;
-          this.size = Math.random() * 8 + 6;
-          this.speedY = Math.random() * 1.2 + 0.8;
-          this.speedX = Math.random() * 1 - 0.5;
-          this.rotation = Math.random() * 360;
-          this.rotationSpeed = (Math.random() - 0.5) * 1.5;
-          this.opacity = Math.random() * 0.5 + 0.5;
-        };
-
-        Particle.prototype.update = function () {
-          this.y += this.speedY;
-          this.x += Math.sin(this.y / 30) + this.speedX;
-          this.rotation += this.rotationSpeed;
-
-          if (this.y > height || this.x < -20 || this.x > width + 20) {
+          function Particle() {
             this.reset();
-            this.y = -10;
-          }
-        };
-
-        Particle.prototype.draw = function () {
-          ctx.save();
-          ctx.translate(this.x, this.y);
-          ctx.rotate((this.rotation * Math.PI) / 180);
-          ctx.globalAlpha = this.opacity;
-
-          if (config.type === 'snow') {
-            // 1. 洁白雪花效果
-            ctx.beginPath();
-            ctx.arc(0, 0, this.size / 2.5, 0, Math.PI * 2);
-            ctx.fillStyle = '#ffffff';
-            ctx.shadowBlur = 4;
-            ctx.shadowColor = 'rgba(255, 255, 255, 0.8)';
-            ctx.fill();
-          } else if (config.type === 'heart') {
-            // 2. 爱心效果
-            ctx.beginPath();
-            ctx.moveTo(0, 0);
-            ctx.bezierCurveTo(-this.size / 2, -this.size / 2, -this.size, this.size / 3, 0, this.size);
-            ctx.bezierCurveTo(this.size, this.size / 3, this.size / 2, -this.size / 2, 0, 0);
-            ctx.fillStyle = '#ffb7c5';
-            ctx.fill();
-          } else {
-            // 3. 真实樱花花瓣效果 (sakura - 默认)
-            ctx.beginPath();
-            ctx.moveTo(0, 0);
-            // 绘制带有微曲凹槽的单片椭圆樱花花瓣
-            ctx.quadraticCurveTo(-this.size / 2, this.size / 2, 0, this.size);
-            ctx.quadraticCurveTo(this.size / 2, this.size / 2, 0, 0);
-            ctx.fillStyle = '#ffc0cb'; // 柔和樱花粉
-            ctx.fill();
           }
 
-          ctx.restore();
-        };
+          Particle.prototype.reset = function () {
+            this.x = Math.random() * width;
+            this.y = Math.random() * -height;
+            this.size = Math.random() * 8 + 6;
+            this.speedY = Math.random() * 1.2 + 0.8;
+            this.speedX = Math.random() * 1 - 0.5;
+            this.rotation = Math.random() * 360;
+            this.rotationSpeed = (Math.random() - 0.5) * 1.5;
+            this.opacity = Math.random() * 0.5 + 0.5;
+          };
 
-        for (var i = 0; i < particleCount; i++) {
-          var p = new Particle();
-          p.y = Math.random() * height;
-          particles.push(p);
+          Particle.prototype.update = function () {
+            this.y += this.speedY;
+            this.x += Math.sin(this.y / 30) + this.speedX;
+            this.rotation += this.rotationSpeed;
+
+            if (this.y > height || this.x < -20 || this.x > width + 20) {
+              this.reset();
+              this.y = -10;
+            }
+          };
+
+          Particle.prototype.draw = function () {
+            ctx.save();
+            ctx.translate(this.x, this.y);
+            ctx.rotate((this.rotation * Math.PI) / 180);
+            ctx.globalAlpha = this.opacity;
+
+            if (config.type === 'snow') {
+              ctx.beginPath();
+              ctx.arc(0, 0, this.size / 2.5, 0, Math.PI * 2);
+              ctx.fillStyle = '#ffffff';
+              ctx.shadowBlur = 4;
+              ctx.shadowColor = 'rgba(255, 255, 255, 0.8)';
+              ctx.fill();
+            } else if (config.type === 'heart') {
+              ctx.beginPath();
+              ctx.moveTo(0, 0);
+              ctx.bezierCurveTo(-this.size / 2, -this.size / 2, -this.size, this.size / 3, 0, this.size);
+              ctx.bezierCurveTo(this.size, this.size / 3, this.size / 2, -this.size / 2, 0, 0);
+              ctx.fillStyle = '#ffb7c5';
+              ctx.fill();
+            } else {
+              ctx.beginPath();
+              ctx.moveTo(0, 0);
+              ctx.quadraticCurveTo(-this.size / 2, this.size / 2, 0, this.size);
+              ctx.quadraticCurveTo(this.size / 2, this.size / 2, 0, 0);
+              ctx.fillStyle = '#ffc0cb';
+              ctx.fill();
+            }
+
+            ctx.restore();
+          };
+
+          for (var i = 0; i < particleCount; i++) {
+            var p = new Particle();
+            p.y = Math.random() * height;
+            particles.push(p);
+          }
+
+          function render() {
+            ctx.clearRect(0, 0, width, height);
+            for (var i = 0; i < particles.length; i++) {
+              particles[i].update();
+              particles[i].draw();
+            }
+            requestAnimationFrame(render);
+          }
+
+          render();
         }
 
-        function render() {
-          ctx.clearRect(0, 0, width, height);
-          for (var i = 0; i < particles.length; i++) {
-            particles[i].update();
-            particles[i].draw();
-          }
-          requestAnimationFrame(render);
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', initFallingEffect);
+        } else {
+          initFallingEffect();
         }
-
-        render();
-      }
-
-      if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', initFallingEffect);
-      } else {
-        initFallingEffect();
-      }
-    })();
-  </script>
-
+      })();
+    </script>
+  
 
 </body>
 </html>
