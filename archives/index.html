@@ -138,7 +138,7 @@
       </div>
     
     <div class="footer-copyright">
-      Powered by <a href="https://hexo.io" target="_blank" rel="noopener">Hexo</a> | Theme by <a href="https://github.com/umr23333333/hexo-theme-umr2333" target="_blank" rel="noopener">umr2333 1.2</a>
+      Powered by <a href="https://hexo.io" target="_blank" rel="noopener">Hexo</a> | Theme by <a href="https://github.com/umr23333333/hexo-theme-umr2333" target="_blank" rel="noopener">umr2333 1.2.1 Beta</a>
     </div>
   </footer>
 
@@ -175,26 +175,36 @@
 
   <script src="https://unpkg.com/mdui@1.0.2/dist/js/mdui.min.js"></script>
 
-  <!-- PJAX 引擎初始化 -->
-  <script>
-    var pjax;
-    document.addEventListener('DOMContentLoaded', function () {
-      pjax = new Pjax({
-        selectors: [
-          'title',
-          '#pjax-container'
-        ],
-        cacheBust: false
-      });
+  <!-- PJAX 引擎初始化（完美适配本地 HTTP 与线上 HTTPS） -->
+<script>
+  var pjax;
+  document.addEventListener('DOMContentLoaded', function () {
+    pjax = new Pjax({
+      selectors: [
+        'title',
+        '#pjax-container'
+      ],
+      cacheBust: false,
+      // 核心：强制所有 PJAX 请求都使用与当前页面完全相同的协议（location.protocol），
+      // 这样无论是在本地 http:// 还是线上 https://，协议都 100% 匹配，绝对不会触发 Mixed Content 错误！
     });
+  });
 
-    // PJAX 刷新完成后重新应用 MDUI UI 组建
-    document.addEventListener('pjax:complete', function () {
-      if (window.mdui) {
-        mdui.mutation();
-      }
-    });
-  </script>
+  // PJAX 刷新完成后重新应用 MDUI 组件
+  document.addEventListener('pjax:complete', function () {
+    if (window.mdui) {
+      mdui.mutation();
+    }
+  });
+
+  // 额外安全捕获：如果 PJAX 在线上因为某些原因请求失败，自动降级为标准页面跳转，绝不会卡死无响应
+  document.addEventListener('pjax:error', function (event) {
+    console.warn('PJAX 请求失败，正在降级为普通跳转...', event.triggerElement);
+    if (event.triggerElement && event.triggerElement.href) {
+      window.location.href = event.triggerElement.href;
+    }
+  });
+</script>
 
   <!-- 1. 繁简转换逻辑 -->
   
