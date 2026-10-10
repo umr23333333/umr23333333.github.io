@@ -160,7 +160,7 @@
       </div>
     
     <div class="footer-copyright">
-      Powered by <a href="https://hexo.io" target="_blank" rel="noopener">Hexo</a> | Theme by <a href="https://github.com/umr23333333/hexo-theme-umr2333" target="_blank" rel="noopener">umr2333 1.2.1</a>
+      Powered by <a href="https://hexo.io" target="_blank" rel="noopener">Hexo</a> | Theme by <a href="https://github.com/umr23333333/hexo-theme-umr2333" target="_blank" rel="noopener">umr2333 1.2.1 Beta</a>
     </div>
   </footer>
 
@@ -196,7 +196,7 @@
 
   <script src="https://unpkg.com/mdui@1.0.2/dist/js/mdui.min.js"></script>
 
-  <!-- PJAX 引擎初始化（完美平滑过渡与协议修正） -->
+  <!-- PJAX 引擎初始化（标准规范版：只接管站内相对路径，彻底杜绝协议错乱） -->
   <script>
     var pjax;
     document.addEventListener('DOMContentLoaded', function () {
@@ -209,20 +209,12 @@
           'title',
           '#pjax-container'
         ],
-        cacheBust: false
+        cacheBust: false,
+        // 核心：限制 Pjax 只抓取以 / 开头或者当前域名的相对链接，
+        // 任何带绝对协议（http:// 或 https://）的链接一律不走 Pjax，改走浏览器正常跳转，
+        // 这样无论本地还是线上，绝对不会再触发任何 Mixed Content 或协议错乱！
+        elements: 'a[href^="/"]:not([target="_blank"]):not([no-pjax])'
       });
-
-      if (pjax && typeof pjax.loadUrl === 'function') {
-        const originalLoadUrl = pjax.loadUrl.bind(pjax);
-        pjax.loadUrl = function(destination, options) {
-          try {
-            const urlObj = new URL(destination, window.location.origin);
-            urlObj.protocol = window.location.protocol;
-            destination = urlObj.href;
-          } catch (err) {}
-          return originalLoadUrl(destination, options);
-        };
-      }
     });
 
     // PJAX 刷新完成后重新应用组件与同步 BGM 状态
