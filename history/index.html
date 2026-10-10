@@ -160,7 +160,7 @@
       </div>
     
     <div class="footer-copyright">
-      Powered by <a href="https://hexo.io" target="_blank" rel="noopener">Hexo</a> | Theme by <a href="https://github.com/umr23333333/hexo-theme-umr2333" target="_blank" rel="noopener">umr2333 1.2.1 Beta</a>
+      Powered by <a href="https://hexo.io" target="_blank" rel="noopener">Hexo</a> | Theme by <a href="https://github.com/umr23333333/hexo-theme-umr2333" target="_blank" rel="noopener">umr2333 1.2.1 Beta ovo</a>
     </div>
   </footer>
 
@@ -196,7 +196,7 @@
 
   <script src="https://unpkg.com/mdui@1.0.2/dist/js/mdui.min.js"></script>
 
-  <!-- PJAX 引擎初始化（绝对路径变相对路径终极版：彻底根治协议拦截） -->
+  <!-- PJAX 引擎初始化（显式排除右下角按钮区，彻底让按钮闭嘴） -->
   <script>
     var pjax;
     document.addEventListener('DOMContentLoaded', function () {
@@ -204,30 +204,22 @@
         try { window.pjax.destroy(); } catch (e) {}
       }
 
-      // 核心：把全站所有带域名的绝对链接，原地抹掉域名，变成纯相对路径 /xxx
-      // 这样 Pjax 发起的 AJAX 请求就会自动继承当前页面的 https 协议，绝不报错！
-      const currentHost = window.location.host;
-      document.querySelectorAll('a').forEach(function(el) {
-        var href = el.getAttribute('href');
-        if (href) {
-          // 如果是以 http:// 或 https:// 开头且包含本站域名的，全部转成纯相对路径
-          if (href.indexOf(currentHost) !== -1 || href.startsWith('http://') || href.startsWith('https://')) {
-            try {
-              var urlObj = new URL(href, window.location.origin);
-              if (urlObj.host === currentHost) {
-                el.setAttribute('href', urlObj.pathname + urlObj.search + urlObj.hash);
-              }
-            } catch (e) {}
-          }
-        }
-      });
-
       pjax = new Pjax({
         selectors: [
           'title',
           '#pjax-container'
         ],
-        cacheBust: false
+        cacheBust: false,
+        // 核心：直接忽略右下角悬浮按钮组及其内部的一切点击/请求！
+        // 告诉 Pjax：只要是 .fab-group-fixed 里面的东西，一律不要管、不要拦截、不要报错。
+        filters: [
+          function(el) {
+            if (el.closest && el.closest('.fab-group-fixed')) {
+              return true; // 返回 true 代表让 Pjax 忽略该元素
+            }
+            return false;
+          }
+        ]
       });
     });
 
@@ -239,21 +231,6 @@
       if (typeof window.syncBgmUI === 'function') {
         window.syncBgmUI();
       }
-      // 每次局部刷新后，同样把新加载内容里的绝对路径清洗成相对路径
-      const currentHost = window.location.host;
-      document.querySelectorAll('a').forEach(function(el) {
-        var href = el.getAttribute('href');
-        if (href) {
-          if (href.indexOf(currentHost) !== -1 || href.startsWith('http://') || href.startsWith('https://')) {
-            try {
-              var urlObj = new URL(href, window.location.origin);
-              if (urlObj.host === currentHost) {
-                el.setAttribute('href', urlObj.pathname + urlObj.search + urlObj.hash);
-              }
-            } catch (e) {}
-          }
-        }
-      });
     });
   </script>
 
