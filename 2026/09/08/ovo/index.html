@@ -165,21 +165,12 @@
 
   <script src="https://unpkg.com/mdui@1.0.2/dist/js/mdui.min.js"></script>
 
-  <!-- PJAX 引擎初始化（智能环境适配：线上自动清洗协议，本地保持原样） -->
+  <!-- PJAX 引擎初始化（強制協議對齊版） -->
   <script>
     var pjax;
     document.addEventListener('DOMContentLoaded', function () {
       if (window.Pjax && window.pjax) {
         try { window.pjax.destroy(); } catch (e) {}
-      }
-
-      // 仅在线上 HTTPS 环境下才进行 http -> https 清洗，本地 HTTP 环境直接放行
-      if (window.location.protocol === 'https:') {
-        document.querySelectorAll('a').forEach(function(el) {
-          if (el.href && el.href.startsWith('http://') && el.href.includes(window.location.host)) {
-            el.href = el.href.replace('http://', 'https://');
-          }
-        });
       }
 
       pjax = new Pjax({
@@ -189,17 +180,20 @@
         ],
         cacheBust: false
       });
-    });
 
-    // 智能拦截点击
-    document.addEventListener('click', function (e) {
-      var link = e.target.closest('a');
-      if (link && link.href && window.location.protocol === 'https:') {
-        if (link.href.startsWith('http://') && link.href.includes(window.location.host)) {
-          link.href = link.href.replace('http://', 'https://');
-        }
+      // 強制劫持 Pjax 的載入行為，確保所有請求的 URL 協議與當前網頁嚴格一致（HTTPS）
+      if (pjax && typeof pjax.loadUrl === 'function') {
+        const originalLoadUrl = pjax.loadUrl.bind(pjax);
+        pjax.loadUrl = function(destination, options) {
+          try {
+            const urlObj = new URL(destination, window.location.origin);
+            urlObj.protocol = window.location.protocol; // 自動將 http 強制改為 https
+            destination = urlObj.href;
+          } catch (err) {}
+          return originalLoadUrl(destination, options);
+        };
       }
-    }, true);
+    });
 
     // PJAX 刷新完成后重新应用组件与同步 BGM 状态
     document.addEventListener('pjax:complete', function () {
@@ -208,14 +202,6 @@
       }
       if (typeof window.syncBgmUI === 'function') {
         window.syncBgmUI();
-      }
-      // 局部刷新后同样根据环境智能处理
-      if (window.location.protocol === 'https:') {
-        document.querySelectorAll('a').forEach(function(el) {
-          if (el.href && el.href.startsWith('http://') && el.href.includes(window.location.host)) {
-            el.href = el.href.replace('http://', 'https://');
-          }
-        });
       }
     });
   </script>
