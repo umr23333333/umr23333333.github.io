@@ -161,7 +161,7 @@
       </div>
     
     <div class="footer-copyright">
-      Powered by <a href="https://hexo.io" target="_blank" rel="noopener">Hexo</a> | Theme by <a href="https://github.com/umr23333333/hexo-theme-umr2333" target="_blank" rel="noopener">umr2333 1.2.1</a>
+      Powered by <a href="https://hexo.io" target="_blank" rel="noopener">Hexo</a> | Theme by <a href="https://github.com/umr23333333/hexo-theme-umr2333" target="_blank" rel="noopener">umr2333 1.2.1 Beta</a>
     </div>
   </footer>
 
@@ -197,13 +197,31 @@
 
   <script src="https://unpkg.com/mdui@1.0.2/dist/js/mdui.min.js"></script>
 
-  <!-- PJAX 引擎初始化（強制協議對齊版） -->
+  <!-- PJAX 引擎初始化（绝对路径变相对路径终极版：彻底根治协议拦截） -->
   <script>
     var pjax;
     document.addEventListener('DOMContentLoaded', function () {
       if (window.Pjax && window.pjax) {
         try { window.pjax.destroy(); } catch (e) {}
       }
+
+      // 核心：把全站所有带域名的绝对链接，原地抹掉域名，变成纯相对路径 /xxx
+      // 这样 Pjax 发起的 AJAX 请求就会自动继承当前页面的 https 协议，绝不报错！
+      const currentHost = window.location.host;
+      document.querySelectorAll('a').forEach(function(el) {
+        var href = el.getAttribute('href');
+        if (href) {
+          // 如果是以 http:// 或 https:// 开头且包含本站域名的，全部转成纯相对路径
+          if (href.indexOf(currentHost) !== -1 || href.startsWith('http://') || href.startsWith('https://')) {
+            try {
+              var urlObj = new URL(href, window.location.origin);
+              if (urlObj.host === currentHost) {
+                el.setAttribute('href', urlObj.pathname + urlObj.search + urlObj.hash);
+              }
+            } catch (e) {}
+          }
+        }
+      });
 
       pjax = new Pjax({
         selectors: [
@@ -212,19 +230,6 @@
         ],
         cacheBust: false
       });
-
-      // 強制劫持 Pjax 的載入行為，確保所有請求的 URL 協議與當前網頁嚴格一致（HTTPS）
-      if (pjax && typeof pjax.loadUrl === 'function') {
-        const originalLoadUrl = pjax.loadUrl.bind(pjax);
-        pjax.loadUrl = function(destination, options) {
-          try {
-            const urlObj = new URL(destination, window.location.origin);
-            urlObj.protocol = window.location.protocol; // 自動將 http 強制改為 https
-            destination = urlObj.href;
-          } catch (err) {}
-          return originalLoadUrl(destination, options);
-        };
-      }
     });
 
     // PJAX 刷新完成后重新应用组件与同步 BGM 状态
@@ -235,6 +240,21 @@
       if (typeof window.syncBgmUI === 'function') {
         window.syncBgmUI();
       }
+      // 每次局部刷新后，同样把新加载内容里的绝对路径清洗成相对路径
+      const currentHost = window.location.host;
+      document.querySelectorAll('a').forEach(function(el) {
+        var href = el.getAttribute('href');
+        if (href) {
+          if (href.indexOf(currentHost) !== -1 || href.startsWith('http://') || href.startsWith('https://')) {
+            try {
+              var urlObj = new URL(href, window.location.origin);
+              if (urlObj.host === currentHost) {
+                el.setAttribute('href', urlObj.pathname + urlObj.search + urlObj.hash);
+              }
+            } catch (e) {}
+          }
+        }
+      });
     });
   </script>
 
