@@ -389,87 +389,109 @@
     })();
   </script>
 
-  <!-- 4. 背景音乐独立控制（PJAX 跨页面续播） -->
-  
-    <style>
-      @keyframes music-rotate {
-        from { transform: rotate(0deg); }
-        to { transform: rotate(360deg); }
+  <!-- 4. 背景音乐独立控制（极简稳健版：跨页面完美续播） -->
+
+  <style>
+    @keyframes music-rotate {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+    .bgm-playing #bgm-icon {
+      animation: music-rotate 3s linear infinite;
+      color: #3f51b5 !important;
+    }
+  </style>
+
+  <script>
+    (function () {
+      // 1. 全局单例检查：确保不重复创建 audio 元素
+      var bgmPlayer = document.getElementById('bgm-player');
+      if (!bgmPlayer) {
+        bgmPlayer = document.createElement('audio');
+        bgmPlayer.id = 'bgm-player';
+        bgmPlayer.src = '/bgm/meow.mp3';
+        bgmPlayer.loop = true;
+        bgmPlayer.preload = 'auto';
+        document.body.appendChild(bgmPlayer);
       }
-      .bgm-playing #bgm-icon {
-        animation: music-rotate 3s linear infinite;
-        color: #3f51b5 !important;
-      }
-    </style>
 
-    <script>
-      (function () {
-        function initBgm() {
-          var bgmBtn = document.getElementById('bgm-toggle-btn');
-          var bgmPlayer = document.getElementById('bgm-player');
-          var bgmIcon = document.getElementById('bgm-icon');
-          if (!bgmBtn || !bgmPlayer || !bgmIcon) return;
+      var isAutoplay = true;
 
-          var isAutoplay = true;
+      // 更新按钮图标与旋转状态
+      function updateUI() {
+        var bgmBtn = document.getElementById('bgm-toggle-btn');
+        var bgmIcon = document.getElementById('bgm-icon');
+        if (!bgmBtn || !bgmIcon) return;
 
-          function updateUI(isPlaying) {
-            if (isPlaying) {
-              bgmBtn.classList.add('bgm-playing');
-              bgmIcon.textContent = 'music_note';
-            } else {
-              bgmBtn.classList.remove('bgm-playing');
-              bgmIcon.textContent = 'volume_off';
-            }
-          }
-
-          function startPlay() {
-            var promise = bgmPlayer.play();
-            if (promise !== undefined) {
-              promise.then(function () {
-                updateUI(true);
-              }).catch(function (err) {
-                updateUI(false);
-              });
-            }
-          }
-
-          bgmBtn.addEventListener('click', function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-            if (bgmPlayer.paused) {
-              startPlay();
-            } else {
-              bgmPlayer.pause();
-              updateUI(false);
-            }
-          });
-
-          if (isAutoplay) {
-            startPlay();
-
-            var unlockHandler = function () {
-              if (bgmPlayer.paused) {
-                startPlay();
-              }
-              ['click', 'touchstart', 'pointerdown', 'mousedown', 'keydown'].forEach(function (evt) {
-                document.removeEventListener(evt, unlockHandler, true);
-              });
-            };
-
-            ['click', 'touchstart', 'pointerdown', 'mousedown', 'keydown'].forEach(function (evt) {
-              document.addEventListener(evt, unlockHandler, true);
-            });
-          }
-        }
-
-        if (document.readyState === 'loading') {
-          document.addEventListener('DOMContentLoaded', initBgm);
+        if (!bgmPlayer.paused) {
+          bgmBtn.classList.add('bgm-playing');
+          bgmIcon.textContent = 'music_note';
         } else {
-          initBgm();
+          bgmBtn.classList.remove('bgm-playing');
+          bgmIcon.textContent = 'volume_off';
         }
-      })();
-    </script>
-  
+      }
+
+      // 执行播放
+      function tryPlay() {
+        var promise = bgmPlayer.play();
+        if (promise !== undefined) {
+          promise.then(function () {
+            updateUI();
+          }).catch(function (err) {
+            console.log('自动播放被浏览器拦截，等待用户交互');
+            updateUI();
+          });
+        }
+      }
+
+      // 绑定点击事件（使用事件委派，防止 PJAX 刷新导致按钮失效）
+      document.addEventListener('click', function (e) {
+        var btn = e.target.closest('#bgm-toggle-btn');
+        if (btn) {
+          e.preventDefault();
+          e.stopPropagation();
+          if (bgmPlayer.paused) {
+            bgmPlayer.play().then(updateUI);
+          } else {
+            bgmPlayer.pause();
+            updateUI();
+          }
+        }
+      });
+
+      // 初始化：如果之前在播，或者配置了自动播放
+      if (isAutoplay) {
+        tryPlay();
+
+        // 浏览器首次点击/触摸解除自动播放限制
+        var unlockHandler = function () {
+          if (bgmPlayer.paused) {
+            tryPlay();
+          }
+          ['click', 'touchstart', 'pointerdown', 'mousedown', 'keydown'].forEach(function (evt) {
+            document.removeEventListener(evt, unlockHandler, true);
+          });
+        };
+        ['click', 'touchstart', 'pointerdown', 'mousedown', 'keydown'].forEach(function (evt) {
+          document.addEventListener(evt, unlockHandler, true);
+        });
+      }
+
+      // PJAX 切换页面后立刻同步按钮状态
+      document.addEventListener('pjax:complete', function () {
+        updateUI();
+      });
+
+      // 页面初次加载同步状态
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', updateUI);
+      } else {
+        updateUI();
+      }
+    })();
+  </script>
+
 
   <!-- 5. 飘落特效脚本（支持 sakura / heart / snow 自由切换） -->
 
