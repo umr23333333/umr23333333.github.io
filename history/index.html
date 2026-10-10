@@ -414,7 +414,7 @@
     })();
   </script>
 
-  <!-- 4. 背景音乐独立控制（全局单例防重置强化版） -->
+  <!-- 4. 背景音乐独立控制（具备 localStorage 进度记忆与防重置强化版） -->
   
     <style>
       @keyframes music-rotate {
@@ -429,16 +429,36 @@
 
     <script>
       (function () {
+        const BGM_TIME_KEY = 'umr_blog_bgm_time';
+        const BGM_STATE_KEY = 'umr_blog_bgm_playing';
+
+        // 1. 全局单例初始化
         if (!window.__globalBgmPlayer) {
           window.__globalBgmPlayer = document.createElement('audio');
           window.__globalBgmPlayer.src = '/bgm/meow.mp3';
           window.__globalBgmPlayer.loop = true;
           window.__globalBgmPlayer.preload = 'auto';
+          
+          // 尝试从本地缓存恢复上一次播放的秒数
+          var savedTime = localStorage.getItem(BGM_TIME_KEY);
+          if (savedTime) {
+            window.__globalBgmPlayer.currentTime = parseFloat(savedTime);
+          }
+          
           document.body.appendChild(window.__globalBgmPlayer);
         }
+
         var bgmPlayer = window.__globalBgmPlayer;
         var isAutoplay = true;
 
+        // 实时同步播放进度到 localStorage
+        bgmPlayer.addEventListener('timeupdate', function () {
+          if (!bgmPlayer.paused) {
+            localStorage.setItem(BGM_TIME_KEY, bgmPlayer.currentTime);
+          }
+        });
+
+        // 同步 UI 状态函数
         window.syncBgmUI = function() {
           var bgmBtn = document.getElementById('bgm-toggle-btn');
           var bgmIcon = document.getElementById('bgm-icon');
@@ -453,10 +473,12 @@
           }
         };
 
+        // 统一播放动作
         function tryPlayBgm() {
           var promise = bgmPlayer.play();
           if (promise !== undefined) {
             promise.then(function () {
+              localStorage.setItem(BGM_STATE_KEY, 'true');
               window.syncBgmUI();
             }).catch(function (err) {
               window.syncBgmUI();
@@ -464,25 +486,38 @@
           }
         }
 
+        // 全局点击事件代理按钮
         document.addEventListener('click', function (e) {
           var btn = e.target.closest('#bgm-toggle-btn');
           if (btn) {
             e.preventDefault();
             e.stopPropagation();
             if (bgmPlayer.paused) {
-              bgmPlayer.play().then(window.syncBgmUI);
+              bgmPlayer.play().then(function() {
+                localStorage.setItem(BGM_STATE_KEY, 'true');
+                window.syncBgmUI();
+              });
             } else {
               bgmPlayer.pause();
+              localStorage.setItem(BGM_STATE_KEY, 'false');
               window.syncBgmUI();
             }
           }
         });
 
-        if (isAutoplay && bgmPlayer.paused) {
+        // 页面跳转前最后保存一次状态
+        window.addEventListener('beforeunload', function () {
+          localStorage.setItem(BGM_TIME_KEY, bgmPlayer.currentTime);
+          localStorage.setItem(BGM_STATE_KEY, !bgmPlayer.paused);
+        });
+
+        // 初始化播放判定：如果之前处于播放状态，或者配置了自动播放
+        var wasPlaying = localStorage.getItem(BGM_STATE_KEY) === 'true';
+        if (wasPlaying || isAutoplay) {
           tryPlayBgm();
 
           var unlockHandler = function () {
-            if (bgmPlayer.paused) {
+            if (bgmPlayer.paused && localStorage.getItem(BGM_STATE_KEY) === 'true') {
               tryPlayBgm();
             }
             ['click', 'touchstart', 'pointerdown', 'mousedown', 'keydown'].forEach(function (evt) {
@@ -494,6 +529,7 @@
           });
         }
 
+        // 首次加载同步
         if (document.readyState === 'loading') {
           document.addEventListener('DOMContentLoaded', window.syncBgmUI);
         } else {
