@@ -179,7 +179,7 @@
 
   <script src="https://unpkg.com/mdui@1.0.2/dist/js/mdui.min.js"></script>
 
-  <!-- PJAX 引擎初始化 -->
+  <!-- PJAX 引擎初始化（自动自适应当前协议，本地与线上皆可正常点击） -->
   <script>
     var pjax;
     document.addEventListener('DOMContentLoaded', function () {
@@ -190,6 +190,30 @@
         ],
         cacheBust: false
       });
+    });
+
+    // 动态协议修复：发起 PJAX 请求前，确保请求协议与当前页面 (location.protocol) 保持绝对一致
+    document.addEventListener('pjax:send', function (event) {
+      if (event.relatedTarget && event.relatedTarget.href) {
+        var currentProtocol = window.location.protocol; // 本地是 http:，线上是 https:
+        var targetUrl = new URL(event.relatedTarget.href, window.location.origin);
+        
+        // 如果目标链接的协议与当前页面协议不一致（例如在 https 页面请求了 http 链接），强制自动修正
+        if (targetUrl.protocol !== currentProtocol && (targetUrl.protocol === 'http:' || targetUrl.protocol === 'https:')) {
+          targetUrl.protocol = currentProtocol;
+          event.relatedTarget.href = targetUrl.href;
+        }
+      }
+    });
+
+    // 容错降级：万一 PJAX 仍然因网络或跨域报错，安全自动降级为标准跳转
+    document.addEventListener('pjax:error', function (event) {
+      console.warn('PJAX 请求异常，正在降级跳转...', event.triggerElement);
+      if (event.triggerElement && event.triggerElement.href) {
+        var targetUrl = new URL(event.triggerElement.href, window.location.origin);
+        targetUrl.protocol = window.location.protocol;
+        window.location.href = targetUrl.href;
+      }
     });
 
     // PJAX 刷新完成后重新应用 MDUI 组件与同步 BGM 状态
