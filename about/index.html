@@ -179,10 +179,16 @@
 
   <script src="https://unpkg.com/mdui@1.0.2/dist/js/mdui.min.js"></script>
 
-  <!-- PJAX 引擎初始化（自动自适应当前协议，本地与线上皆可正常点击） -->
+  <!-- PJAX 引擎初始化（终极防 Mixed Content 拦截版） -->
   <script>
     var pjax;
     document.addEventListener('DOMContentLoaded', function () {
+      // 1. 如果 Pjax 已经存在，先销毁防止重复绑定
+      if (window.Pjax && window.pjax) {
+        try { window.pjax.destroy(); } catch (e) {}
+      }
+
+      // 2. 初始化 Pjax
       pjax = new Pjax({
         selectors: [
           'title',
@@ -190,29 +196,35 @@
         ],
         cacheBust: false
       });
-    });
 
-    // 动态协议修复：发起 PJAX 请求前，确保请求协议与当前页面 (location.protocol) 保持绝对一致
-    document.addEventListener('pjax:send', function (event) {
-      if (event.relatedTarget && event.relatedTarget.href) {
-        var currentProtocol = window.location.protocol; // 本地是 http:，线上是 https:
-        var targetUrl = new URL(event.relatedTarget.href, window.location.origin);
-        
-        // 如果目标链接的协议与当前页面协议不一致（例如在 https 页面请求了 http 链接），强制自动修正
-        if (targetUrl.protocol !== currentProtocol && (targetUrl.protocol === 'http:' || targetUrl.protocol === 'https:')) {
-          targetUrl.protocol = currentProtocol;
-          event.relatedTarget.href = targetUrl.href;
-        }
+      // 3. 核心大招：直接 Hook（拦截）Pjax 内部加载页面的底层方法
+      if (pjax && typeof pjax.loadUrl === 'function') {
+        const originalLoadUrl = pjax.loadUrl.bind(pjax);
+        pjax.loadUrl = function(destination, options) {
+          // 强制将即将请求的 URL 协议转换为当前页面的协议（本地 http，线上 https）
+          try {
+            const urlObj = new URL(destination, window.location.origin);
+            urlObj.protocol = window.location.protocol;
+            destination = urlObj.href;
+          } catch (err) {
+            console.warn('URL 协议转换失败，使用原地址:', destination);
+          }
+          return originalLoadUrl(destination, options);
+        };
       }
     });
 
-    // 容错降级：万一 PJAX 仍然因网络或跨域报错，安全自动降级为标准跳转
+    // 容错降级：万一报错，安全跳转
     document.addEventListener('pjax:error', function (event) {
-      console.warn('PJAX 请求异常，正在降级跳转...', event.triggerElement);
+      console.warn('PJAX 请求异常，正在安全跳转...', event.triggerElement);
       if (event.triggerElement && event.triggerElement.href) {
-        var targetUrl = new URL(event.triggerElement.href, window.location.origin);
-        targetUrl.protocol = window.location.protocol;
-        window.location.href = targetUrl.href;
+        let fallbackUrl = event.triggerElement.href;
+        try {
+          const urlObj = new URL(fallbackUrl, window.location.origin);
+          urlObj.protocol = window.location.protocol;
+          fallbackUrl = urlObj.href;
+        } catch (e) {}
+        window.location.href = fallbackUrl;
       }
     });
 
