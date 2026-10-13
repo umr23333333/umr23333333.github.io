@@ -1,0 +1,1112 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- 引入 Pjax 库 -->
+  <script src="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js"></script>
+
+  
+  <title>留言板 - 飞天鼠鼠大王の小破站</title>
+  
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="https://unpkg.com/mdui@1.0.2/dist/css/mdui.min.css"/>
+  
+<link rel="stylesheet" href="/css/style.css">
+
+
+  <!-- 代码块及毛玻璃大卡片全局样式 -->
+  <style>
+    .highlight {
+      position: relative;
+      border-radius: 12px !important;
+      margin: 1.2em 0 !important;
+      background: rgba(246, 248, 250, 0.75) !important;
+      backdrop-filter: blur(10px) !important;
+      -webkit-backdrop-filter: blur(10px) !important;
+      overflow: hidden !important;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.05) !important;
+      border: 1px solid rgba(255, 255, 255, 0.6) !important;
+      text-align: left !important;
+    }
+    html.dark .highlight {
+      background: rgba(30, 30, 30, 0.75) !important;
+      border: 1px solid rgba(255, 255, 255, 0.1) !important;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.4) !important;
+    }
+
+    .code-header {
+      position: sticky !important;
+      left: 0 !important;
+      top: 0 !important;
+      z-index: 10 !important;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 14px;
+      background: rgba(230, 235, 240, 0.9);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      font-size: 0.8rem;
+      color: #586069;
+      user-select: none;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+      width: 100% !important;
+      box-sizing: border-box;
+    }
+    html.dark .code-header {
+      background: rgba(40, 40, 40, 0.9);
+      color: #aaa;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .code-header .code-title-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .code-header .code-title-group:hover {
+      color: #24292e;
+    }
+    html.dark .code-header .code-title-group:hover {
+      color: #fff;
+    }
+
+    .code-header .fold-arrow {
+      transition: transform 0.25s ease;
+      font-size: 0.7rem;
+    }
+
+    .highlight.collapsed .fold-arrow {
+      transform: rotate(-90deg);
+    }
+    .highlight.collapsed .code-scroll-wrap,
+    .highlight.collapsed table {
+      display: none !important;
+    }
+
+    .code-copy-btn {
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      color: #586069;
+      font-size: 0.9rem;
+      padding: 4px 6px;
+      border-radius: 4px;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    html.dark .code-copy-btn {
+      color: #aaa;
+    }
+    .code-copy-btn:hover {
+      background: rgba(0, 0, 0, 0.08);
+      color: #24292e;
+    }
+    html.dark .code-copy-btn:hover {
+      background: rgba(255, 255, 255, 0.15);
+      color: #fff;
+    }
+
+    .code-scroll-wrap {
+      width: 100%;
+      overflow-x: auto !important;
+      overflow-y: hidden !important;
+      position: relative;
+    }
+
+    .highlight, 
+    .highlight figure, 
+    .highlight table, 
+    .highlight tr, 
+    .highlight td, 
+    .highlight pre,
+    .highlight code {
+      border: none !important;
+      background: transparent !important;
+      box-shadow: none !important;
+      text-align: left !important;
+      margin: 0 !important;
+    }
+    
+    .highlight table {
+      width: max-content !important;
+      min-width: 100% !important;
+      table-layout: auto !important;
+      border-collapse: collapse !important;
+    }
+
+    .highlight td.code,
+    .highlight td.code pre {
+      width: max-content !important;
+      max-width: none !important;
+      white-space: pre !important;
+      overflow: visible !important;
+    }
+
+    .highlight td.code .line {
+      white-space: pre !important;
+    }
+    
+    .highlight td {
+      padding: 6px 8px !important;
+      border: none !important;
+      text-align: left !important;
+      vertical-align: top !important;
+      white-space: pre !important;
+    }
+
+    .highlight td.gutter {
+      position: sticky !important;
+      left: 0 !important;
+      z-index: 5 !important;
+      width: 32px !important;
+      min-width: 32px !important;
+      max-width: 32px !important;
+      padding-left: 4px !important;
+      padding-right: 6px !important;
+      text-align: right !important;
+      color: rgba(27, 31, 35, 0.35);
+      border-right: 1px solid rgba(27, 31, 35, 0.08) !important;
+      user-select: none;
+      background: rgba(246, 248, 250, 0.98) !important;
+      backdrop-filter: blur(10px) !important;
+      vertical-align: top !important;
+      overflow: hidden !important;
+    }
+    
+    .highlight td.gutter pre {
+      overflow: hidden !important;
+      overflow-x: hidden !important;
+      overflow-y: hidden !important;
+      max-width: 30px !important;
+    }
+
+    html.dark .highlight td.gutter {
+      background: rgba(30, 30, 30, 0.98) !important;
+      color: rgba(255, 255, 255, 0.35);
+      border-right: 1px solid rgba(255, 255, 255, 0.08) !important;
+    }
+
+    .code-scroll-wrap::-webkit-scrollbar {
+      height: 6px !important;
+    }
+    .code-scroll-wrap::-webkit-scrollbar-thumb {
+      background: rgba(0, 0, 0, 0.18) !important;
+      border-radius: 4px !important;
+    }
+    html.dark .code-scroll-wrap::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.25) !important;
+    }
+    .code-scroll-wrap::-webkit-scrollbar-track {
+      background: rgba(0, 0, 0, 0.03) !important;
+    }
+    html.dark .code-scroll-wrap::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.03) !important;
+    }
+  </style>
+<meta name="generator" content="Hexo 7.3.0"></head>
+<body>
+
+  
+  <div class="full-bg" style="background-image: url('/img/back.jpg');"></div>
+
+  <!-- 顶部导航栏触发按钮 -->
+  <div class="mdui-appbar mdui-appbar-fixed mdui-shadow-0 appbar-transparent">
+    <div class="mdui-toolbar">
+      
+        <span class="mdui-btn mdui-btn-icon" mdui-drawer="{target: '#left-drawer'}">
+          <i class="mdui-icon material-icons">menu</i>
+        </span>
+      
+      <div class="mdui-toolbar-spacer"></div>
+    </div>
+  </div>
+
+  <!-- 侧边栏菜单 -->
+  
+    <div class="mdui-drawer mdui-drawer-close custom-drawer" id="left-drawer">
+      <ul class="mdui-list">
+        
+          
+            <a href="/" class="mdui-list-item mdui-ripple">
+              
+                
+                  <i class="mdui-list-item-icon mdui-icon material-icons">home</i>
+                
+              
+              <div class="mdui-list-item-content">首页</div>
+            </a>
+          
+            <a href="/archives/" class="mdui-list-item mdui-ripple">
+              
+                
+                  <i class="mdui-list-item-icon mdui-icon material-icons">archive</i>
+                
+              
+              <div class="mdui-list-item-content">归档 / 文章</div>
+            </a>
+          
+            <a href="/announcement/" class="mdui-list-item mdui-ripple">
+              
+                
+                  <i class="mdui-list-item-icon fas fa-bullhorn" style="display: flex; align-items: center; justify-content: center; font-size: 1.25rem;"></i>
+                
+              
+              <div class="mdui-list-item-content">网站公告</div>
+            </a>
+          
+            <a href="/history/" class="mdui-list-item mdui-ripple">
+              
+                
+                  <i class="mdui-list-item-icon fa fa-bookmark" style="display: flex; align-items: center; justify-content: center; font-size: 1.25rem;"></i>
+                
+              
+              <div class="mdui-list-item-content">网站历史</div>
+            </a>
+          
+            <a href="/links/" class="mdui-list-item mdui-ripple">
+              
+                
+                  <i class="mdui-list-item-icon fa fa-link" style="display: flex; align-items: center; justify-content: center; font-size: 1.25rem;"></i>
+                
+              
+              <div class="mdui-list-item-content">友情链接</div>
+            </a>
+          
+            <a href="/messages/" class="mdui-list-item mdui-ripple">
+              
+                
+                  <i class="mdui-list-item-icon fa fa-comments" style="display: flex; align-items: center; justify-content: center; font-size: 1.25rem;"></i>
+                
+              
+              <div class="mdui-list-item-content">留言板</div>
+            </a>
+          
+            <a target="_blank" rel="noopener" href="https://stats.uptimerobot.com/Q0Cdf2ohVv" class="mdui-list-item mdui-ripple">
+              
+                
+                  <i class="mdui-list-item-icon fa fa-tachometer" style="display: flex; align-items: center; justify-content: center; font-size: 1.25rem;"></i>
+                
+              
+              <div class="mdui-list-item-content">今天寄了没</div>
+            </a>
+          
+            <a href="/stats/" class="mdui-list-item mdui-ripple">
+              
+                
+                  <i class="mdui-list-item-icon fa fa-bar-chart" style="display: flex; align-items: center; justify-content: center; font-size: 1.25rem;"></i>
+                
+              
+              <div class="mdui-list-item-content">本站统计</div>
+            </a>
+          
+        
+      </ul>
+    </div>
+  
+
+  <!-- 主体内容容器 (Pjax 替换区域) -->
+  <main class="main-container" id="pjax-container">
+    
+
+<div class="mdui-row main-post-container">
+  <div class="mdui-col-xs-12 mdui-col-md-8 mdui-col-offset-md-2">
+    <article class="post-detail-card">
+      <h1 class="post-detail-title">留言板</h1>
+      
+      <div class="post-detail-meta" style="display: flex; flex-wrap: wrap; gap: 12px; align-items: center; color: rgba(0, 0, 0, 0.6); font-size: 0.85rem; margin-bottom: 20px; user-select: none;">
+        
+        <span style="display: inline-flex; align-items: center;">
+          <i class="fa-regular fa-calendar" style="margin-right: 5px;"></i>
+          发表于 2026-10-13
+        </span>
+
+        <span style="opacity: 0.4;">|</span>
+
+        <span style="display: inline-flex; align-items: center;">
+          <i class="fa-solid fa-history" style="margin-right: 5px;"></i>
+          更新于 2026-10-13
+        </span>
+
+        <span style="opacity: 0.4;">|</span>
+
+        
+          <span style="display: inline-flex; align-items: center;">
+            <i class="fa-regular fa-eye" style="margin-right: 5px;"></i>
+            浏览量: <span class="waline-pageview-count" style="margin-left: 3px;">-</span>
+          </span>
+        
+
+      </div>
+
+      <div class="post-detail-content mdui-typo">
+        
+      </div>
+
+      
+        <div class="post-comments-section" style="margin-top: 40px; border-top: 1px solid rgba(0,0,0,0.08); padding-top: 30px;">
+          <h3 style="font-size: 1.2rem; margin-bottom: 20px; font-weight: 600;">评论区</h3>
+          <div id="waline"></div>
+        </div>
+      
+
+    </article>
+  </div>
+</div>
+
+<style>
+  html.dark .post-detail-meta {
+    color: rgba(255, 255, 255, 0.6) !important;
+  }
+  html.dark .post-comments-section {
+    border-top-color: rgba(255, 255, 255, 0.1) !important;
+  }
+</style>
+
+
+  </main>
+
+  <!-- 页脚 -->
+  <footer class="site-footer">
+    
+      <div class="footer-custom">
+        Copyright ©2019-2026 umr2333.com All Rights Reserved.<br><a target="_blank" rel="noopener" href='https://icp.gov.moe/?keyword=20200222'><img class='icp-icon' src='https://icp.gov.moe/images/ico64.png' width='20px'><span>萌ICP备 20200222号</span></a>
+      </div>
+    
+    <div class="footer-copyright">
+      Powered by <a href="https://hexo.io" target="_blank" rel="noopener">Hexo</a> | Theme by <a href="https://github.com/umr23333333/hexo-theme-umr2333" target="_blank" rel="noopener">umr2333 1.3 Beta</a>
+    </div>
+  </footer>
+
+  <!-- 悬浮功能按钮组 (FAB) -->
+  <div class="fab-group-fixed">
+    
+      <button id="bgm-toggle-btn" class="fab-btn" mdui-tooltip="{content: '背景音乐', position: 'left'}" style="width: 42px; height: 42px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; border: none; outline: none; background: rgba(255, 255, 255, 0.9); box-shadow: 0 2px 8px rgba(0,0,0,0.15); -webkit-tap-highlight-color: transparent;">
+        <i class="mdui-icon material-icons" id="bgm-icon" style="font-size: 20px; color: #777; transition: transform 0.3s ease;">volume_off</i>
+      </button>
+    
+
+    
+    
+      <button id="lang-toggle-btn" class="fab-btn" mdui-tooltip="{content: '切换繁简体', position: 'left'}">
+        <span id="lang-toggle-text" style="font-weight: bold; font-size: 1.1rem;">繁</span>
+      </button>
+    
+
+    <button id="dark-mode-toggle" class="fab-btn" mdui-tooltip="{content: '切换夜间模式', position: 'left'}">
+      <i class="mdui-icon material-icons" id="dark-icon">brightness_4</i>
+    </button>
+    
+    <button id="scroll-top-btn" class="fab-btn" mdui-tooltip="{content: '回到顶部', position: 'left'}">
+      <span id="scroll-progress-text" style="display: inline-block;">0%</span>
+      <i class="mdui-icon material-icons" id="scroll-top-icon" style="display: none !important;">keyboard_arrow_up</i>
+    </button>
+  </div>
+
+  <script src="https://unpkg.com/mdui@1.0.2/dist/js/mdui.min.js"></script>
+
+  <!-- PJAX 引擎初始化与全局事件调度 -->
+  <script>
+    var pjax;
+    document.addEventListener('DOMContentLoaded', function () {
+      if (window.Pjax && window.pjax) {
+        try { window.pjax.destroy(); } catch (e) {}
+      }
+
+      pjax = new Pjax({
+        selectors: [
+          'title',
+          '#pjax-container'
+        ],
+        cacheBust: false
+      });
+
+      if (pjax && typeof pjax.loadUrl === 'function') {
+        const originalLoadUrl = pjax.loadUrl.bind(pjax);
+        pjax.loadUrl = function(destination, options) {
+          try {
+            const urlObj = new URL(destination, window.location.origin);
+            urlObj.protocol = window.location.protocol;
+            destination = urlObj.href;
+          } catch (err) {}
+          return originalLoadUrl(destination, options);
+        };
+      }
+    });
+
+    document.addEventListener('pjax:error', function (event) {
+      if (event.triggerElement && event.triggerElement.href) {
+        let fallbackUrl = event.triggerElement.href;
+        try {
+          const urlObj = new URL(fallbackUrl, window.location.origin);
+          urlObj.protocol = window.location.protocol;
+          fallbackUrl = urlObj.href;
+        } catch (e) {}
+        window.location.href = fallbackUrl;
+      }
+    });
+
+    // 💡 核心：Pjax 完成时自动触发 UI 刷新与全局 Waline 初始化
+    document.addEventListener('pjax:complete', function () {
+      if (window.mdui) {
+        mdui.mutation();
+      }
+      if (typeof window.syncBgmUI === 'function') {
+        window.syncBgmUI();
+      }
+      if (typeof window.initWaline === 'function') {
+        window.initWaline();
+      }
+      if (typeof window.initDashboardData === 'function') {
+        window.initDashboardData();
+      }
+    });
+  </script>
+
+  <!-- 统计页脚本统一放在 layout 中，确保 PJAX 切换页面后也能执行 -->
+  <script>
+    (function () {
+      function updateDashboardData() {
+        var dashboard = document.querySelector('[data-dashboard-since]');
+        if (!dashboard) return;
+
+        var siteStartTime = new Date(dashboard.getAttribute('data-dashboard-since'));
+        var now = new Date();
+        var diff = now - siteStartTime;
+        if (!Number.isFinite(diff) || diff < 0) diff = 0;
+
+        var days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        var hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        var minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        var seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+        var runtimeEl = document.getElementById('runtime');
+        if (runtimeEl) {
+          runtimeEl.textContent = days + '天 ' + hours + '小时 ' + minutes + '分 ' + seconds + '秒';
+        }
+
+        var currentYear = now.getFullYear();
+        var yearLabelEl = document.getElementById('current-year-label');
+        if (yearLabelEl) yearLabelEl.textContent = currentYear + '年';
+
+        var yearStart = new Date(currentYear, 0, 1);
+        var yearEnd = new Date(currentYear + 1, 0, 1);
+        var yearPercent = Math.min(100, Math.max(0, ((now - yearStart) / (yearEnd - yearStart)) * 100)).toFixed(2);
+        var progressBar = document.getElementById('year-progress-bar');
+        var progressText = document.getElementById('year-progress-text');
+        if (progressBar && progressText) {
+          progressBar.style.width = yearPercent + '%';
+          progressText.textContent = yearPercent + '%';
+        }
+      }
+
+      window.initDashboardData = function () {
+        if (window.dashboardTimer) {
+          clearInterval(window.dashboardTimer);
+          window.dashboardTimer = null;
+        }
+        if (!document.querySelector('[data-dashboard-since]')) return;
+        updateDashboardData();
+        window.dashboardTimer = setInterval(updateDashboardData, 1000);
+      };
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', window.initDashboardData);
+      } else {
+        window.initDashboardData();
+      }
+    })();
+  </script>
+
+  
+
+  <!-- 代码块自动化增强脚本 -->
+  <script>
+    (function() {
+      function enhanceCodeBlocks() {
+        const blocks = document.querySelectorAll('figure.highlight');
+        
+        blocks.forEach(block => {
+          const gutters = block.querySelectorAll('td.gutter');
+          gutters.forEach(gutter => {
+            const lines = gutter.querySelectorAll('.line');
+            lines.forEach(line => {
+              if (!/\d/.test(line.innerText)) {
+                line.style.setProperty('display', 'none', 'important');
+              }
+            });
+          });
+
+          if (block.querySelector('.code-header')) return;
+
+          let lang = 'CODE';
+          const classList = block.className.split(' ');
+          for (let cls of classList) {
+            if (cls !== 'highlight' && cls !== 'gutter') {
+              lang = cls;
+              break;
+            }
+          }
+          if (lang === 'CODE') {
+            const tableClass = block.querySelector('table');
+            if (tableClass) {
+              for (let cls of tableClass.classList) {
+                if (cls !== 'hljs') {
+                  lang = cls;
+                  break;
+                }
+              }
+            }
+          }
+
+          const header = document.createElement('div');
+          header.className = 'code-header';
+          
+          header.innerHTML = `
+            <div class="code-title-group" title="点击展开/收起">
+              <i class="fa-solid fa-chevron-down fold-arrow"></i>
+              <span>${lang.toUpperCase()}</span>
+            </div>
+            <button class="code-copy-btn" title="复制代码">
+              <i class="fa-regular fa-copy"></i>
+            </button>
+          `;
+
+          block.insertBefore(header, block.firstChild);
+
+          const codeTable = block.querySelector('table');
+          if (codeTable && !codeTable.parentElement.classList.contains('code-scroll-wrap')) {
+            const scrollWrap = document.createElement('div');
+            scrollWrap.className = 'code-scroll-wrap';
+            codeTable.parentNode.insertBefore(scrollWrap, codeTable);
+            scrollWrap.appendChild(codeTable);
+          }
+
+          const titleGroup = header.querySelector('.code-title-group');
+          titleGroup.addEventListener('click', function() {
+            block.classList.toggle('collapsed');
+          });
+
+          const copyBtn = header.querySelector('.code-copy-btn');
+          copyBtn.addEventListener('click', function (e) {
+            e.stopPropagation();
+
+            let codeText = '';
+            const codeLines = block.querySelectorAll('.code .line');
+            if (codeLines.length > 0) {
+              codeText = Array.from(codeLines).map(line => line.innerText).join('\n');
+            } else {
+              const tdCode = block.querySelector('td.code') || block;
+              codeText = tdCode.innerText;
+            }
+
+            navigator.clipboard.writeText(codeText).then(() => {
+              copyBtn.innerHTML = '<i class="fa-solid fa-check" style="color: #4caf50;"></i>';
+              setTimeout(() => {
+                copyBtn.innerHTML = '<i class="fa-regular fa-copy"></i>';
+              }, 2000);
+            }).catch(err => {
+              console.warn('复制失败', err);
+            });
+          });
+        });
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', enhanceCodeBlocks);
+      } else {
+        enhanceCodeBlocks();
+      }
+
+      document.addEventListener('pjax:complete', enhanceCodeBlocks);
+    })();
+  </script>
+
+  <!-- 繁简转换脚本 -->
+  
+    <script src="https://cdn.jsdelivr.net/npm/opencc-js@1.0.5/dist/umd/full.js"></script>
+    <script>
+      (function() {
+        const defaultIsTraditional = false;
+        const converterS2T = OpenCC.Converter({ from: 'cn', to: 'hk' });
+        const converterT2S = OpenCC.Converter({ from: 'hk', to: 'cn' });
+
+        function convertTextNodes(converter) {
+          const walk = document.createTreeWalker(
+            document.body,
+            NodeFilter.SHOW_TEXT,
+            {
+              acceptNode: function(node) {
+                const parentName = node.parentElement ? node.parentElement.tagName : '';
+                if (['SCRIPT', 'STYLE', 'NOSCRIPT'].includes(parentName)) {
+                  return NodeFilter.FILTER_REJECT;
+                }
+                if (node.parentElement && (node.parentElement.id === 'lang-toggle-text' || node.parentElement.id === 'scroll-progress-text')) {
+                  return NodeFilter.FILTER_REJECT;
+                }
+                return NodeFilter.FILTER_ACCEPT;
+              }
+            },
+            false
+          );
+
+          let node;
+          while ((node = walk.nextNode())) {
+            if (node.nodeValue && node.nodeValue.trim().length > 0) {
+              node.nodeValue = converter(node.nodeValue);
+            }
+          }
+        }
+
+        function applyCurrentLanguage() {
+          const langText = document.getElementById('lang-toggle-text');
+          const currentTarget = localStorage.getItem('theme_lang_target');
+          
+          if (!currentTarget) {
+            if (langText) langText.innerText = defaultIsTraditional ? '简' : '繁';
+            return;
+          }
+
+          if (currentTarget === 'zh-TW') {
+            if (langText) langText.innerText = '简';
+            convertTextNodes(converterS2T);
+          } else if (currentTarget === 'zh-CN') {
+            if (langText) langText.innerText = '繁';
+            convertTextNodes(converterT2S);
+          }
+        }
+
+        applyCurrentLanguage();
+        document.addEventListener('pjax:complete', applyCurrentLanguage);
+
+        function bindLangToggleEvent() {
+          const langBtn = document.getElementById('lang-toggle-btn');
+          if (!langBtn) return;
+
+          langBtn.onclick = function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            const currentTarget = localStorage.getItem('theme_lang_target') || (defaultIsTraditional ? 'zh-TW' : 'zh-CN');
+            let nextTarget = (currentTarget === 'zh-CN') ? 'zh-TW' : 'zh-CN';
+
+            localStorage.setItem('theme_lang_target', nextTarget);
+            applyCurrentLanguage();
+          };
+        }
+
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', bindLangToggleEvent);
+        } else {
+          bindLangToggleEvent();
+        }
+        document.addEventListener('pjax:complete', bindLangToggleEvent);
+      })();
+    </script>
+  
+
+  <!-- 夜间模式与滚动进度脚本 -->
+  <script>
+    (function() {
+      function applyTheme(isDark) {
+        const darkIcon = document.getElementById('dark-icon');
+        if (isDark) {
+          document.documentElement.classList.add('dark');
+          if (darkIcon) darkIcon.innerText = 'brightness_7';
+        } else {
+          document.documentElement.classList.remove('dark');
+          if (darkIcon) darkIcon.innerText = 'brightness_4';
+        }
+      }
+
+      const savedTheme = localStorage.getItem('theme_dark') === 'true';
+      applyTheme(savedTheme);
+
+      function bindDarkToggleEvent() {
+        const toggleBtn = document.getElementById('dark-mode-toggle');
+        if (!toggleBtn) return;
+
+        toggleBtn.onclick = function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+
+          const isDark = document.documentElement.classList.toggle('dark');
+          const darkIcon = document.getElementById('dark-icon');
+          if (darkIcon) darkIcon.innerText = isDark ? 'brightness_7' : 'brightness_4';
+          localStorage.setItem('theme_dark', isDark);
+        };
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', bindDarkToggleEvent);
+      } else {
+        bindDarkToggleEvent();
+      }
+
+      const scrollTopBtn = document.getElementById('scroll-top-btn');
+      const progressText = document.getElementById('scroll-progress-text');
+      const scrollTopIcon = document.getElementById('scroll-top-icon');
+
+      function updateScrollProgress() {
+        const scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
+        const scrollHeight = document.documentElement.scrollHeight || document.body.scrollHeight || 0;
+        const clientHeight = document.documentElement.clientHeight || window.innerHeight || 0;
+
+        const maxScroll = scrollHeight - clientHeight;
+        let progress = 0;
+
+        if (maxScroll > 0) {
+          progress = Math.min(100, Math.max(0, Math.round((scrollTop / maxScroll) * 100)));
+        } else {
+          progress = 100;
+        }
+
+        if (progress >= 100) {
+          if (progressText) progressText.style.setProperty('display', 'none', 'important');
+          if (scrollTopIcon) scrollTopIcon.style.setProperty('display', 'inline-block', 'important');
+        } else {
+          if (progressText) {
+            progressText.style.setProperty('display', 'inline-block', 'important');
+            progressText.innerText = progress + '%';
+          }
+          if (scrollTopIcon) scrollTopIcon.style.setProperty('display', 'none', 'important');
+        }
+      }
+
+      window.addEventListener('scroll', updateScrollProgress);
+      window.addEventListener('resize', updateScrollProgress);
+      document.addEventListener('DOMContentLoaded', updateScrollProgress);
+
+      if (scrollTopBtn) {
+        scrollTopBtn.onclick = function() {
+          window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+          });
+        };
+      }
+
+      document.addEventListener('pjax:complete', function() {
+        const isDark = localStorage.getItem('theme_dark') === 'true';
+        applyTheme(isDark);
+        updateScrollProgress();
+        bindDarkToggleEvent();
+      });
+    })();
+  </script>
+
+  <!-- 背景音乐控制脚本 -->
+  
+    <style>
+      @keyframes music-rotate {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+      }
+      .bgm-playing #bgm-icon {
+        animation: music-rotate 3s linear infinite;
+        color: #3f51b5 !important;
+      }
+    </style>
+
+    <script>
+      (function () {
+        const BGM_TIME_KEY = 'umr_blog_bgm_time';
+        const BGM_STATE_KEY = 'umr_blog_bgm_playing';
+
+        if (!window.__globalBgmPlayer) {
+          window.__globalBgmPlayer = document.createElement('audio');
+          window.__globalBgmPlayer.src = '/bgm/bydj.mp3';
+          window.__globalBgmPlayer.loop = true;
+          window.__globalBgmPlayer.preload = 'auto';
+          
+          var savedTime = localStorage.getItem(BGM_TIME_KEY);
+          if (savedTime) {
+            window.__globalBgmPlayer.currentTime = parseFloat(savedTime);
+          }
+          
+          document.body.appendChild(window.__globalBgmPlayer);
+        }
+
+        var bgmPlayer = window.__globalBgmPlayer;
+        var isAutoplay = true;
+
+        bgmPlayer.addEventListener('timeupdate', function () {
+          if (!bgmPlayer.paused) {
+            localStorage.setItem(BGM_TIME_KEY, bgmPlayer.currentTime);
+          }
+        });
+
+        window.syncBgmUI = function() {
+          var bgmBtn = document.getElementById('bgm-toggle-btn');
+          var bgmIcon = document.getElementById('bgm-icon');
+          if (!bgmBtn || !bgmIcon) return;
+
+          if (!bgmPlayer.paused) {
+            bgmBtn.classList.add('bgm-playing');
+            bgmIcon.textContent = 'music_note';
+          } else {
+            bgmBtn.classList.remove('bgm-playing');
+            bgmIcon.textContent = 'volume_off';
+          }
+        };
+
+        function tryPlayBgm() {
+          var promise = bgmPlayer.play();
+          if (promise !== undefined) {
+            promise.then(function () {
+              localStorage.setItem(BGM_STATE_KEY, 'true');
+              window.syncBgmUI();
+            }).catch(function (err) {
+              window.syncBgmUI();
+            });
+          }
+        }
+
+        document.addEventListener('click', function (e) {
+          var btn = e.target.closest('#bgm-toggle-btn');
+          if (btn) {
+            e.preventDefault();
+            e.stopPropagation();
+            if (bgmPlayer.paused) {
+              bgmPlayer.play().then(function() {
+                localStorage.setItem(BGM_STATE_KEY, 'true');
+                window.syncBgmUI();
+              });
+            } else {
+              bgmPlayer.pause();
+              localStorage.setItem(BGM_STATE_KEY, 'false');
+              window.syncBgmUI();
+            }
+          }
+        });
+
+        window.addEventListener('beforeunload', function () {
+          localStorage.setItem(BGM_TIME_KEY, bgmPlayer.currentTime);
+          localStorage.setItem(BGM_STATE_KEY, !bgmPlayer.paused);
+        });
+
+        var wasPlaying = localStorage.getItem(BGM_STATE_KEY) === 'true';
+        if (wasPlaying || isAutoplay) {
+          tryPlayBgm();
+
+          var unlockHandler = function () {
+            if (bgmPlayer.paused && localStorage.getItem(BGM_STATE_KEY) === 'true') {
+              tryPlayBgm();
+            }
+            ['click', 'touchstart', 'pointerdown', 'mousedown', 'keydown'].forEach(function (evt) {
+              document.removeEventListener(evt, unlockHandler, true);
+            });
+          };
+          ['click', 'touchstart', 'pointerdown', 'mousedown', 'keydown'].forEach(function (evt) {
+            document.addEventListener(evt, unlockHandler, true);
+          });
+        }
+
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', window.syncBgmUI);
+        } else {
+          window.syncBgmUI();
+        }
+      })();
+    </script>
+  
+
+  <!-- 飘落特效脚本 -->
+  
+    <style>
+      #falling-canvas {
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        width: 100vw !important;
+        height: 100vh !important;
+        pointer-events: none !important;
+        z-index: 999999 !important;
+      }
+    </style>
+
+    <script>
+      (function () {
+        function initFallingEffect() {
+          if (document.getElementById('falling-canvas')) return;
+
+          var config = {
+            type: 'heart',
+            count: 30
+          };
+
+          var canvas = document.createElement('canvas');
+          canvas.id = 'falling-canvas';
+          document.body.appendChild(canvas);
+
+          var ctx = canvas.getContext('2d');
+          var width = (canvas.width = window.innerWidth);
+          var height = (canvas.height = window.innerHeight);
+
+          window.addEventListener('resize', function () {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+          });
+
+          var particles = [];
+          var particleCount = config.count;
+
+          function Particle() {
+            this.reset();
+          }
+
+          Particle.prototype.reset = function () {
+            this.x = Math.random() * width;
+            this.y = Math.random() * -height;
+            this.size = Math.random() * 8 + 6;
+            this.speedY = Math.random() * 1.2 + 0.8;
+            this.speedX = Math.random() * 1 - 0.5;
+            this.rotation = Math.random() * 360;
+            this.rotationSpeed = (Math.random() - 0.5) * 1.5;
+            this.opacity = Math.random() * 0.5 + 0.5;
+          };
+
+          Particle.prototype.update = function () {
+            this.y += this.speedY;
+            this.x += Math.sin(this.y / 30) + this.speedX;
+            this.rotation += this.rotationSpeed;
+
+            if (this.y > height || this.x < -20 || this.x > width + 20) {
+              this.reset();
+              this.y = -10;
+            }
+          };
+
+          Particle.prototype.draw = function () {
+            ctx.save();
+            ctx.translate(this.x, this.y);
+            ctx.rotate((this.rotation * Math.PI) / 180);
+            ctx.globalAlpha = this.opacity;
+
+            if (config.type === 'snow') {
+              ctx.beginPath();
+              ctx.arc(0, 0, this.size / 2.5, 0, Math.PI * 2);
+              ctx.fillStyle = '#ffffff';
+              ctx.shadowBlur = 4;
+              ctx.shadowColor = 'rgba(255, 255, 255, 0.8)';
+              ctx.fill();
+            } else if (config.type === 'heart') {
+              ctx.beginPath();
+              ctx.moveTo(0, 0);
+              ctx.bezierCurveTo(-this.size / 2, -this.size / 2, -this.size, this.size / 3, 0, this.size);
+              ctx.bezierCurveTo(this.size, this.size / 3, this.size / 2, -this.size / 2, 0, 0);
+              ctx.fillStyle = '#ffb7c5';
+              ctx.fill();
+            } else {
+              ctx.beginPath();
+              ctx.moveTo(0, 0);
+              ctx.quadraticCurveTo(-this.size / 2, this.size / 2, 0, this.size);
+              ctx.quadraticCurveTo(this.size / 2, this.size / 2, 0, 0);
+              ctx.fillStyle = '#ffc0cb';
+              ctx.fill();
+            }
+
+            ctx.restore();
+          };
+
+          for (var i = 0; i < particleCount; i++) {
+            var p = new Particle();
+            p.y = Math.random() * height;
+            particles.push(p);
+          }
+
+          function render() {
+            ctx.clearRect(0, 0, width, height);
+            for (var i = 0; i < particles.length; i++) {
+              particles[i].update();
+              particles[i].draw();
+            }
+            requestAnimationFrame(render);
+          }
+
+          render();
+        }
+
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', initFallingEffect);
+        } else {
+          initFallingEffect();
+        }
+      })();
+    </script>
+  
+
+  
+    <!-- Waline 全局样式与初始化：放在 layout 中，避免 PJAX 切页时模块脚本不执行 -->
+    <link rel="stylesheet" href="https://unpkg.com/@waline/client@v2/dist/waline.css"/>
+    <script type="module">
+      import { init } from 'https://unpkg.com/@waline/client@v2/dist/waline.mjs';
+
+      let walineInstance = null;
+      let walineInitToken = 0;
+
+      window.initWaline = function () {
+        const token = ++walineInitToken;
+        const walineEl = document.getElementById('waline');
+
+        // 当前页面没有评论容器时，清理旧实例。
+        if (!walineEl) {
+          if (walineInstance && typeof walineInstance.destroy === 'function') {
+            walineInstance.destroy();
+          }
+          walineInstance = null;
+          return;
+        }
+
+        // 切换页面前销毁旧实例，避免重复挂载。
+        if (walineInstance && typeof walineInstance.destroy === 'function') {
+          walineInstance.destroy();
+        }
+        walineInstance = null;
+
+        // 防止快速连续 PJAX 跳转时，旧页面的初始化覆盖新页面。
+        if (token !== walineInitToken || document.getElementById('waline') !== walineEl) {
+          return;
+        }
+
+        walineInstance = init({
+          el: walineEl,
+          serverURL: "https://c.umr2333.com",
+          path: window.location.pathname,
+          reaction: true,
+          pageview: true,
+          comment: true,
+          meta: ['nick', 'mail', 'link'],
+          requiredMeta: ['nick','mail'],
+          lang: 'zh-CN',
+// 💡 在這裡加上 emoji 配置：
+        emoji: [
+          'https://unpkg.com/@waline/emojis@1.4.0/qq',
+          'https://unpkg.com/@waline/emojis@1.4.0/bilibili',   // 哔哩哔哩小黄脸
+          'https://unpkg.com/@waline/emojis@1.4.0/weibo',
+          'https://unpkg.com/@waline/emojis@1.4.0/tieba',
+          'https://unpkg.com/@waline/emojis@1.4.0/alus'      // 可愛阿鲁表情
+          ]
+        });
+      };
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', window.initWaline);
+      } else {
+        window.initWaline();
+      }
+    </script>
+  
+
+</body>
+</html>

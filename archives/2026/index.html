@@ -19,9 +19,8 @@
 <link rel="stylesheet" href="/css/style.css">
 
 
-  <!-- 1.3.23 Beta: 终极根除行号内部 pre 默认滚动条污染 -->
+  <!-- 代码块及毛玻璃大卡片全局样式 -->
   <style>
-    /* 外层毛玻璃大卡片 */
     .highlight {
       position: relative;
       border-radius: 12px !important;
@@ -40,7 +39,6 @@
       box-shadow: 0 4px 15px rgba(0,0,0,0.4) !important;
     }
 
-    /* 顶栏吸附在卡片最上方 */
     .code-header {
       position: sticky !important;
       left: 0 !important;
@@ -86,7 +84,6 @@
       font-size: 0.7rem;
     }
 
-    /* 折叠收起状态 */
     .highlight.collapsed .fold-arrow {
       transform: rotate(-90deg);
     }
@@ -95,7 +92,6 @@
       display: none !important;
     }
 
-    /* 复制按钮 */
     .code-copy-btn {
       background: transparent;
       border: none;
@@ -121,7 +117,6 @@
       color: #fff;
     }
 
-    /* 专属内部横向滚动容器 */
     .code-scroll-wrap {
       width: 100%;
       overflow-x: auto !important;
@@ -129,7 +124,6 @@
       position: relative;
     }
 
-    /* 基础表格清除 */
     .highlight, 
     .highlight figure, 
     .highlight table, 
@@ -144,7 +138,6 @@
       margin: 0 !important;
     }
     
-    /* 让表格按代码实际宽度展开；超出卡片的部分交给滚动容器处理 */
     .highlight table {
       width: max-content !important;
       min-width: 100% !important;
@@ -172,7 +165,6 @@
       white-space: pre !important;
     }
 
-    /* 【核心大招】：死死封杀行号列及其内部 pre 的所有溢出和滚动条！ */
     .highlight td.gutter {
       position: sticky !important;
       left: 0 !important;
@@ -192,7 +184,6 @@
       overflow: hidden !important;
     }
     
-    /* 强行剥夺行号裏面 pre 的全局滚动污染 */
     .highlight td.gutter pre {
       overflow: hidden !important;
       overflow-x: hidden !important;
@@ -206,7 +197,6 @@
       border-right: 1px solid rgba(255, 255, 255, 0.08) !important;
     }
 
-    /* 现代纤细圆角横向滚动条（完美位于卡片最底部） */
     .code-scroll-wrap::-webkit-scrollbar {
       height: 6px !important;
     }
@@ -230,6 +220,7 @@
   
   <div class="full-bg" style="background-image: url('/img/back.jpg');"></div>
 
+  <!-- 顶部导航栏触发按钮 -->
   <div class="mdui-appbar mdui-appbar-fixed mdui-shadow-0 appbar-transparent">
     <div class="mdui-toolbar">
       
@@ -241,6 +232,7 @@
     </div>
   </div>
 
+  <!-- 侧边栏菜单 -->
   
     <div class="mdui-drawer mdui-drawer-close custom-drawer" id="left-drawer">
       <ul class="mdui-list">
@@ -291,6 +283,15 @@
               <div class="mdui-list-item-content">友情链接</div>
             </a>
           
+            <a href="/messages/" class="mdui-list-item mdui-ripple">
+              
+                
+                  <i class="mdui-list-item-icon fa fa-comments" style="display: flex; align-items: center; justify-content: center; font-size: 1.25rem;"></i>
+                
+              
+              <div class="mdui-list-item-content">留言板</div>
+            </a>
+          
             <a target="_blank" rel="noopener" href="https://stats.uptimerobot.com/Q0Cdf2ohVv" class="mdui-list-item mdui-ripple">
               
                 
@@ -314,6 +315,7 @@
     </div>
   
 
+  <!-- 主体内容容器 (Pjax 替换区域) -->
   <main class="main-container" id="pjax-container">
     <div class="mdui-row main-post-container">
   <div class="mdui-col-xs-12 mdui-col-md-8 mdui-col-offset-md-2">
@@ -444,6 +446,7 @@
 </div>
   </main>
 
+  <!-- 页脚 -->
   <footer class="site-footer">
     
       <div class="footer-custom">
@@ -455,6 +458,7 @@
     </div>
   </footer>
 
+  <!-- 悬浮功能按钮组 (FAB) -->
   <div class="fab-group-fixed">
     
       <button id="bgm-toggle-btn" class="fab-btn" mdui-tooltip="{content: '背景音乐', position: 'left'}" style="width: 42px; height: 42px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; border: none; outline: none; background: rgba(255, 255, 255, 0.9); box-shadow: 0 2px 8px rgba(0,0,0,0.15); -webkit-tap-highlight-color: transparent;">
@@ -481,7 +485,7 @@
 
   <script src="https://unpkg.com/mdui@1.0.2/dist/js/mdui.min.js"></script>
 
-  <!-- PJAX 引擎初始化 -->
+  <!-- PJAX 引擎初始化与全局事件调度 -->
   <script>
     var pjax;
     document.addEventListener('DOMContentLoaded', function () {
@@ -522,6 +526,7 @@
       }
     });
 
+    // 💡 核心：Pjax 完成时自动触发 UI 刷新与全局 Waline 初始化
     document.addEventListener('pjax:complete', function () {
       if (window.mdui) {
         mdui.mutation();
@@ -529,17 +534,79 @@
       if (typeof window.syncBgmUI === 'function') {
         window.syncBgmUI();
       }
+      if (typeof window.initWaline === 'function') {
+        window.initWaline();
+      }
+      if (typeof window.initDashboardData === 'function') {
+        window.initDashboardData();
+      }
     });
   </script>
 
-  <!-- 1.3.11 Beta: 代码块自动化增强与行号灰条物理清除脚本 -->
+  <!-- 统计页脚本统一放在 layout 中，确保 PJAX 切换页面后也能执行 -->
+  <script>
+    (function () {
+      function updateDashboardData() {
+        var dashboard = document.querySelector('[data-dashboard-since]');
+        if (!dashboard) return;
+
+        var siteStartTime = new Date(dashboard.getAttribute('data-dashboard-since'));
+        var now = new Date();
+        var diff = now - siteStartTime;
+        if (!Number.isFinite(diff) || diff < 0) diff = 0;
+
+        var days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        var hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        var minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        var seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+        var runtimeEl = document.getElementById('runtime');
+        if (runtimeEl) {
+          runtimeEl.textContent = days + '天 ' + hours + '小时 ' + minutes + '分 ' + seconds + '秒';
+        }
+
+        var currentYear = now.getFullYear();
+        var yearLabelEl = document.getElementById('current-year-label');
+        if (yearLabelEl) yearLabelEl.textContent = currentYear + '年';
+
+        var yearStart = new Date(currentYear, 0, 1);
+        var yearEnd = new Date(currentYear + 1, 0, 1);
+        var yearPercent = Math.min(100, Math.max(0, ((now - yearStart) / (yearEnd - yearStart)) * 100)).toFixed(2);
+        var progressBar = document.getElementById('year-progress-bar');
+        var progressText = document.getElementById('year-progress-text');
+        if (progressBar && progressText) {
+          progressBar.style.width = yearPercent + '%';
+          progressText.textContent = yearPercent + '%';
+        }
+      }
+
+      window.initDashboardData = function () {
+        if (window.dashboardTimer) {
+          clearInterval(window.dashboardTimer);
+          window.dashboardTimer = null;
+        }
+        if (!document.querySelector('[data-dashboard-since]')) return;
+        updateDashboardData();
+        window.dashboardTimer = setInterval(updateDashboardData, 1000);
+      };
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', window.initDashboardData);
+      } else {
+        window.initDashboardData();
+      }
+    })();
+  </script>
+
+  
+
+  <!-- 代码块自动化增强脚本 -->
   <script>
     (function() {
       function enhanceCodeBlocks() {
         const blocks = document.querySelectorAll('figure.highlight');
         
         blocks.forEach(block => {
-          // 清理行号列里不包含数字的残余幽灵行
           const gutters = block.querySelectorAll('td.gutter');
           gutters.forEach(gutter => {
             const lines = gutter.querySelectorAll('.line');
@@ -587,7 +654,6 @@
 
           block.insertBefore(header, block.firstChild);
 
-          /* 把代码表格放进真正的横向滚动容器中 */
           const codeTable = block.querySelector('table');
           if (codeTable && !codeTable.parentElement.classList.contains('code-scroll-wrap')) {
             const scrollWrap = document.createElement('div');
@@ -636,7 +702,7 @@
     })();
   </script>
 
-  <!-- 1. 繁简转换逻辑 -->
+  <!-- 繁简转换脚本 -->
   
     <script src="https://cdn.jsdelivr.net/npm/opencc-js@1.0.5/dist/umd/full.js"></script>
     <script>
@@ -719,7 +785,7 @@
     </script>
   
 
-  <!-- 2. 夜间模式 + 3. 阅读进度与回到顶部 -->
+  <!-- 夜间模式与滚动进度脚本 -->
   <script>
     (function() {
       function applyTheme(isDark) {
@@ -809,7 +875,7 @@
     })();
   </script>
 
-  <!-- 4. 背景音乐独立控制 -->
+  <!-- 背景音乐控制脚本 -->
   
     <style>
       @keyframes music-rotate {
@@ -925,7 +991,7 @@
     </script>
   
 
-  <!-- 5. 飘落特效脚本 -->
+  <!-- 飘落特效脚本 -->
   
     <style>
       #falling-canvas {
@@ -1047,6 +1113,68 @@
           initFallingEffect();
         }
       })();
+    </script>
+  
+
+  
+    <!-- Waline 全局样式与初始化：放在 layout 中，避免 PJAX 切页时模块脚本不执行 -->
+    <link rel="stylesheet" href="https://unpkg.com/@waline/client@v2/dist/waline.css"/>
+    <script type="module">
+      import { init } from 'https://unpkg.com/@waline/client@v2/dist/waline.mjs';
+
+      let walineInstance = null;
+      let walineInitToken = 0;
+
+      window.initWaline = function () {
+        const token = ++walineInitToken;
+        const walineEl = document.getElementById('waline');
+
+        // 当前页面没有评论容器时，清理旧实例。
+        if (!walineEl) {
+          if (walineInstance && typeof walineInstance.destroy === 'function') {
+            walineInstance.destroy();
+          }
+          walineInstance = null;
+          return;
+        }
+
+        // 切换页面前销毁旧实例，避免重复挂载。
+        if (walineInstance && typeof walineInstance.destroy === 'function') {
+          walineInstance.destroy();
+        }
+        walineInstance = null;
+
+        // 防止快速连续 PJAX 跳转时，旧页面的初始化覆盖新页面。
+        if (token !== walineInitToken || document.getElementById('waline') !== walineEl) {
+          return;
+        }
+
+        walineInstance = init({
+          el: walineEl,
+          serverURL: "https://c.umr2333.com",
+          path: window.location.pathname,
+          reaction: true,
+          pageview: true,
+          comment: true,
+          meta: ['nick', 'mail', 'link'],
+          requiredMeta: ['nick','mail'],
+          lang: 'zh-CN',
+// 💡 在這裡加上 emoji 配置：
+        emoji: [
+          'https://unpkg.com/@waline/emojis@1.4.0/qq',
+          'https://unpkg.com/@waline/emojis@1.4.0/bilibili',   // 哔哩哔哩小黄脸
+          'https://unpkg.com/@waline/emojis@1.4.0/weibo',
+          'https://unpkg.com/@waline/emojis@1.4.0/tieba',
+          'https://unpkg.com/@waline/emojis@1.4.0/alus'      // 可愛阿鲁表情
+          ]
+        });
+      };
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', window.initWaline);
+      } else {
+        window.initWaline();
+      }
     </script>
   
 
