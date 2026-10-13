@@ -1004,9 +1004,375 @@
     </script>
   
 
-  
-    <!-- Waline 全局样式与初始化：放在 layout 中，避免 PJAX 切页时模块脚本不执行 -->
+  ```ejs
+
+
+    <!-- Waline 评论样式 -->
     <link rel="stylesheet" href="https://unpkg.com/@waline/client@v2/dist/waline.css"/>
+
+<style>
+/* ========================================
+   Waline 玉桂狗天空蓝主题
+   适用于 Waline v2
+   保留原有布局与评论功能
+======================================== */
+
+/* 1. 全局主题配色 */
+#waline {
+  --waline-theme-color: #79c9ef;
+  --waline-active-color: #48b4e8;
+  --waline-color: #526b7d;
+  --waline-bgcolor: #ffffff;
+  --waline-bgcolor-light: #f3faff;
+  --waline-border-color: #dceff8;
+  --waline-disable-bgcolor: #f3faff;
+  --waline-info-bgcolor: #edf8ff;
+  --waline-info-color: #8aaec3;
+  --waline-border: 1px solid #dceff8;
+
+  color: #526b7d;
+}
+
+/* 2. 评论输入框 */
+#waline .wl-panel {
+  border: 1px solid #dceff8;
+  border-radius: 14px;
+  background: #ffffff;
+  box-shadow: 0 4px 16px rgba(105, 185, 220, 0.08);
+  transition: border-color 0.2s ease,
+              box-shadow 0.2s ease;
+}
+
+#waline .wl-panel:focus-within {
+  border-color: #91d3f1;
+  box-shadow: 0 4px 18px rgba(105, 185, 220, 0.16);
+}
+
+/* 3. 输入框与占位文字 */
+#waline .wl-editor {
+  color: #526b7d;
+  line-height: 1.8;
+}
+
+#waline .wl-editor::placeholder,
+#waline input::placeholder {
+  color: #a6c3d5;
+}
+
+#waline .wl-header-item input {
+  border-radius: 9px;
+  border-color: #dceff8;
+  transition: border-color 0.2s ease;
+}
+
+#waline .wl-header-item input:focus {
+  border-color: #91d3f1;
+  outline: none;
+}
+
+/* 4. 发表按钮与其他按钮 */
+#waline .wl-btn {
+  border-radius: 999px;
+  transition: background 0.2s ease,
+              transform 0.2s ease;
+}
+
+#waline .wl-btn.primary {
+  color: #ffffff;
+  background: #79c9ef;
+  border-color: #79c9ef;
+}
+
+#waline .wl-btn.primary:hover {
+  color: #ffffff;
+  background: #48b4e8;
+  border-color: #48b4e8;
+  transform: translateY(-1px);
+}
+
+#waline .wl-btn:not(.primary):hover {
+  color: #48a9d8;
+  border-color: #b9e4f7;
+  background: #f3faff;
+}
+
+/* 5. 评论列表
+   不给整条评论额外添加卡片背景、阴影或外边距 */
+#waline .wl-item {
+  background: transparent;
+}
+
+#waline .wl-user {
+  flex-shrink: 0;
+}
+
+#waline .wl-card {
+  min-width: 0;
+  background: transparent;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+/* 保留 Waline 原有评论分隔线，仅调整颜色 */
+#waline .wl-card {
+  border-bottom-color: #e0f0f8;
+}
+
+/* 6. 头像：只增加细腻的浅蓝色边框 */
+#waline .wl-user img {
+  border: 2px solid #e1f4fd;
+  box-shadow: none;
+  transition: border-color 0.2s ease;
+}
+
+#waline .wl-user img:hover {
+  border-color: #91d3f1;
+}
+
+/* 7. 昵称、时间和评论正文 */
+#waline .wl-nick {
+  color: #4b9bc3;
+}
+
+#waline .wl-time,
+#waline .wl-meta,
+#waline .wl-count,
+#waline .wl-power {
+  color: #91aebf;
+}
+
+#waline .wl-content {
+  color: #526b7d;
+  line-height: 1.85;
+  overflow-wrap: anywhere;
+}
+
+/* 8. 链接与交互文字 */
+#waline a {
+  color: #4caedc;
+  transition: color 0.2s ease;
+}
+
+#waline a:hover {
+  color: #258fca;
+}
+
+/* 9. 引用块
+   保留真实引用内容，避免空引用显示为白条 */
+#waline blockquote {
+  background: #f3faff;
+  border-left: 3px solid #b9e4f7;
+  border-radius: 0 8px 8px 0;
+  padding: 8px 12px;
+  color: #718fa2;
+}
+
+/* 只隐藏真正为空的引用块 */
+#waline blockquote:empty,
+#waline .wl-quote:empty {
+  display: none !important;
+}
+
+/* 10. 表情面板 */
+#waline .wl-emoji-popup {
+  border: 1px solid #dceff8;
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(105, 185, 220, 0.12);
+}
+
+/* 11. 反应按钮 */
+#waline .wl-reaction-item {
+  border-radius: 12px;
+  transition: background 0.2s ease,
+              transform 0.2s ease;
+}
+
+#waline .wl-reaction-item:hover {
+  background: #eff9ff;
+  transform: translateY(-1px);
+}
+
+/* 12. 分页 */
+#waline .wl-pagination button {
+  border-radius: 9px;
+}
+
+/* 13. 手机端适配 */
+@media (max-width: 600px) {
+  #waline .wl-panel {
+    border-radius: 12px;
+  }
+
+  #waline .wl-content {
+    line-height: 1.8;
+  }
+}
+
+/* 14. 尊重系统减少动态效果设置 */
+@media (prefers-reduced-motion: reduce) {
+  #waline *,
+  #waline *::before,
+  #waline *::after {
+    transition: none !important;
+    animation: none !important;
+  }
+}
+
+/* 玉桂狗：替换 Waline 默认头像 */
+#waline .wl-user img[src*="seccdn.libravatar.org/avatar/b2d7d2d13aed54c2ed7feb538b382b42"] {
+  content: url("/img/user_avatar.jpg");
+  object-fit: cover;
+}
+
+```css
+/* ========================================
+   Waline 玉桂狗天空蓝主题：夜间模式
+   通过 html.dark 自动识别网站夜间模式
+======================================== */
+
+html.dark #waline {
+  --waline-theme-color: #79c9ef;
+  --waline-active-color: #a0dcf7;
+  --waline-color: #d2e3ed;
+  --waline-bgcolor: #192633;
+  --waline-bgcolor-light: #223442;
+  --waline-border-color: #354b5b;
+  --waline-disable-bgcolor: #223442;
+  --waline-info-bgcolor: #243847;
+  --waline-info-color: #9bb9cb;
+  --waline-border: 1px solid #354b5b;
+
+  color: #d2e3ed;
+}
+
+/* 评论输入面板 */
+html.dark #waline .wl-panel {
+  background: #192633;
+  border-color: #354b5b;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+}
+
+html.dark #waline .wl-panel:focus-within {
+  border-color: #79c9ef;
+  box-shadow: 0 4px 18px rgba(65, 160, 205, 0.15);
+}
+
+/* 输入框与评论编辑区 */
+html.dark #waline .wl-editor,
+html.dark #waline .wl-header-item input {
+  color: #d2e3ed;
+  background-color: #192633;
+}
+
+html.dark #waline .wl-header-item input {
+  border-color: #354b5b;
+}
+
+html.dark #waline .wl-editor::placeholder,
+html.dark #waline input::placeholder {
+  color: #829eaf;
+}
+
+/* 评论昵称、时间与正文 */
+html.dark #waline .wl-nick {
+  color: #8ed5f5;
+}
+
+html.dark #waline .wl-time,
+html.dark #waline .wl-meta,
+html.dark #waline .wl-count,
+html.dark #waline .wl-power {
+  color: #91a9b9;
+}
+
+html.dark #waline .wl-content {
+  color: #d2e3ed;
+}
+
+/* 评论分隔线 */
+html.dark #waline .wl-card {
+  border-bottom-color: #354b5b;
+}
+
+/* 引用内容 */
+html.dark #waline blockquote {
+  background: #223442;
+  border-left-color: #5aabcF;
+  color: #b4cad8;
+}
+
+/* 链接 */
+html.dark #waline a {
+  color: #8ed5f5;
+}
+
+html.dark #waline a:hover {
+  color: #b6e8ff;
+}
+
+/* 按钮 */
+html.dark #waline .wl-btn.primary {
+  color: #132532;
+  background: #79c9ef;
+  border-color: #79c9ef;
+}
+
+html.dark #waline .wl-btn.primary:hover {
+  background: #a0dcf7;
+  border-color: #a0dcf7;
+}
+
+html.dark #waline .wl-btn:not(.primary) {
+  color: #c3dbe8;
+  background: #223442;
+  border-color: #354b5b;
+}
+
+html.dark #waline .wl-btn:not(.primary):hover {
+  color: #a0dcf7;
+  background: #2b4252;
+  border-color: #5aabcF;
+}
+
+/* 反应表情 */
+html.dark #waline .wl-reaction-item:hover {
+  background: #2b4252;
+}
+
+/* 表情面板 */
+html.dark #waline .wl-emoji-popup {
+  background: #192633;
+  border-color: #354b5b;
+}
+
+/* 分页 */
+html.dark #waline .wl-pagination button {
+  color: #d2e3ed;
+  background: #223442;
+  border-color: #354b5b;
+}
+
+/* 评论头像边框 */
+html.dark #waline .wl-user img {
+  border-color: #354b5b;
+}
+
+html.dark #waline .wl-user img:hover {
+  border-color: #79c9ef;
+}
+
+/* 减少动画时尊重系统设置 */
+@media (prefers-reduced-motion: reduce) {
+  html.dark #waline *,
+  html.dark #waline *::before,
+  html.dark #waline *::after {
+    transition: none !important;
+    animation: none !important;
+  }
+}
+```
+</style>
+
     <script type="module">
       import { init } from 'https://unpkg.com/@waline/client@v2/dist/waline.mjs';
 
@@ -1017,7 +1383,7 @@
         const token = ++walineInitToken;
         const walineEl = document.getElementById('waline');
 
-        // 当前页面没有评论容器时，清理旧实例。
+        // 当前页面没有评论容器时，清理旧实例
         if (!walineEl) {
           if (walineInstance && typeof walineInstance.destroy === 'function') {
             walineInstance.destroy();
@@ -1026,45 +1392,92 @@
           return;
         }
 
-        // 切换页面前销毁旧实例，避免重复挂载。
+        // 切换页面前销毁旧实例，避免重复挂载
         if (walineInstance && typeof walineInstance.destroy === 'function') {
           walineInstance.destroy();
         }
         walineInstance = null;
 
-        // 防止快速连续 PJAX 跳转时，旧页面的初始化覆盖新页面。
-        if (token !== walineInitToken || document.getElementById('waline') !== walineEl) {
+        // 防止快速连续 PJAX 跳转时旧页面初始化覆盖新页面
+        if (
+          token !== walineInitToken ||
+          document.getElementById('waline') !== walineEl
+        ) {
           return;
         }
 
         walineInstance = init({
           el: walineEl,
           serverURL: "https://c.umr2333.com",
+          dark: 'html.dark',
           path: window.location.pathname,
-          reaction: true,
+
+          // 保留原有功能
+          reaction: [
+  '/img/reaction/1.gif',
+  '/img/reaction/2.gif',
+  '/img/reaction/3.gif',
+  '/img/reaction/4.gif',
+  '/img/reaction/5.webp',
+  '/img/reaction/6.webp'
+],
           pageview: true,
           comment: true,
           meta: ['nick', 'mail', 'link'],
-          requiredMeta: ['nick','mail'],
+          requiredMeta: ['nick', 'mail'],
           lang: 'zh-CN',
-// 💡 在這裡加上 emoji 配置：
-        emoji: [
-          'https://unpkg.com/@waline/emojis@1.4.0/qq',
-          'https://unpkg.com/@waline/emojis@1.4.0/bilibili',   // 哔哩哔哩小黄脸
-          'https://unpkg.com/@waline/emojis@1.4.0/weibo',
-          'https://unpkg.com/@waline/emojis@1.4.0/tieba',
-          'https://unpkg.com/@waline/emojis@1.4.0/alus'      // 可愛阿鲁表情
+
+          // 玉桂狗可爱治愈风文案
+          locale: {
+            // 文章反应区标题
+            reactionTitle: '留下您的反应',
+
+            // 评论框提示
+            placeholder: '写下你想说的话吧～',
+
+            // 暂无评论时的提示
+            sofa: '这里还没有留言，来留下第一条吧～',
+
+            // 评论区按钮及常用文字
+            comment: '留言',
+            submit: '发送',
+            refresh: '刷新',
+            more: '加载更多～',
+            nick: '昵称',
+            mail: '邮箱',
+            link: '个人网站（选填）',
+            optional: '选填',
+            preview: '预览',
+            emoji: '表情',
+            uploading: '正在上传～',
+            anonymous: '云朵访客',
+            admin: '博主',
+            oldest: '最早',
+            latest: '最新',
+            hottest: '最热'
+          },
+
+          // 保留原有表情包配置
+          emoji: [
+            'https://unpkg.com/@waline/emojis@1.4.0/qq',
+            'https://cdn.jsdelivr.net/gh/walinejs/emojis@main/wechat',
+            'https://unpkg.com/@waline/emojis@1.4.0/bilibili',
+            'https://cdn.jsdelivr.net/gh/walinejs/emojis@main/douyin',
+            'https://unpkg.com/@waline/emojis@1.4.0/tieba',
+            'https://unpkg.com/@waline/emojis@1.4.0/alus'
           ]
         });
       };
 
+      // 首次加载初始化
       if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', window.initWaline);
       } else {
         window.initWaline();
       }
     </script>
-  
+
+```
 
 </body>
 </html>
