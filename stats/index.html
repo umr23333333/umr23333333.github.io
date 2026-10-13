@@ -359,7 +359,8 @@
             </div>
           </div>
 
-          <!-- 精确到秒的运行时间 -->
+          <!-- 智能获取建站时间的运行时间统计 -->
+          
           <div class="stat-card" style="padding: 15px; background: rgba(0,0,0,0.03); border-radius: 10px; border: 1px solid rgba(0,0,0,0.06); text-align: center;">
             <div style="font-size: 0.85rem; color: rgba(0,0,0,0.6); margin-bottom: 5px;">
               <i class="fa-solid fa-hourglass-start" style="margin-right: 5px;"></i> 运行时间
@@ -371,11 +372,11 @@
 
         </div>
 
-        <!-- 2. 今年进度条 -->
-        <h3 style="margin-top: 30px; font-size: 1.2rem; font-weight: 600;">⏳ 今年进度</h3>
+        <!-- 2. 年度动态进度条 -->
+        <h3 style="margin-top: 30px; font-size: 1.2rem; font-weight: 600;">⏳ 年度进度</h3>
         <div class="stat-card" style="padding: 20px; background: rgba(0,0,0,0.03); border-radius: 10px; border: 1px solid rgba(0,0,0,0.06); margin: 15px 0 30px 0;">
           <div style="display: flex; justify-content: space-between; font-size: 0.9rem; color: rgba(0,0,0,0.6); margin-bottom: 8px;">
-            <span><i class="fa-regular fa-calendar-days" style="margin-right: 5px;"></i> 2026年已过去</span>
+            <span><i class="fa-regular fa-calendar-days" style="margin-right: 5px;"></i> <span id="current-year-label">今年</span>已过去</span>
             <span id="year-progress-text" style="font-weight: bold; color: inherit;">0%</span>
           </div>
           <!-- 进度条轨道 -->
@@ -437,8 +438,8 @@
 <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 <script>
   function updateDashboardData() {
-    // 1. 精确到秒的运行时间计算
-    var siteStartTime = new Date("2025-01-01 00:00:00"); // 💡 可修改为你的建站时间
+    // 1. 从后端动态传入的建站起始时间
+    var siteStartTime = new Date("Fri Jun 07 2019 08:00:00 GMT+0800 (中国标准时间)");
     var now = new Date();
     var diff = now - siteStartTime;
     
@@ -452,8 +453,13 @@
       runtimeEl.innerHTML = days + "天 " + hours + "小时 " + minutes + "分 " + seconds + "秒";
     }
 
-    // 2. 今年进度条计算
+    // 2. 动态获取今年年份并计算进度条
     var currentYear = now.getFullYear();
+    var yearLabelEl = document.getElementById('current-year-label');
+    if (yearLabelEl) {
+      yearLabelEl.innerText = currentYear + '年';
+    }
+
     var yearStart = new Date(currentYear, 0, 1);
     var yearEnd = new Date(currentYear + 1, 0, 1);
     var yearTotal = yearEnd - yearStart;
