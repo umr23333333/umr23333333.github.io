@@ -318,20 +318,535 @@
   <!-- 主体内容容器 (Pjax 替换区域) -->
   <main class="main-container" id="pjax-container">
     
-  <!-- 当 links.enable: false 时展示关闭/404提示 -->
-  <div class="mdui-container" style="padding-top: 60px; padding-bottom: 60px;">
+
+<style>
+  /* ==========================
+     友情链接页面基础样式
+     ========================== */
+
+  .links-wrapper {
+    padding-top: 20px;
+    padding-bottom: 30px;
+  }
+
+  .links-wrapper .custom-card {
+    background: rgba(255, 255, 255, 0.9);
+    color: #333;
+    border-radius: 12px;
+    padding: 16px 20px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    transition: background 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .links-wrapper .link-card-item {
+    display: flex;
+    align-items: center;
+    min-width: 0;
+    padding: 14px 16px;
+    border-radius: 12px;
+    text-decoration: none;
+    color: inherit;
+    background: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1),
+                background 0.3s ease,
+                box-shadow 0.3s ease;
+  }
+
+  .links-wrapper .link-card-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+  }
+
+  /* 友链头像 */
+
+  .links-wrapper .link-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    object-fit: cover;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+    transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .links-wrapper .link-card-item:hover .link-avatar {
+    transform: rotate(360deg);
+  }
+
+  /* 友链描述文字 */
+
+  .links-wrapper .link-desc-container {
+    overflow: hidden;
+    white-space: nowrap;
+    width: 100%;
+    min-width: 0;
+    position: relative;
+  }
+
+  .links-wrapper .link-desc-text {
+    display: inline-block;
+    font-size: 0.85rem;
+    color: #666;
+    white-space: nowrap;
+  }
+
+  .links-wrapper .link-card-item:hover .link-desc-text.is-overflow {
+    animation: links-scroll-text 6s linear infinite;
+  }
+
+  @keyframes links-scroll-text {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-50%);
+    }
+  }
+
+  .links-wrapper .links-content-card > *:first-child {
+    margin-top: 0 !important;
+  }
+
+  /* 页面关闭提示 */
+
+  .links-closed-card {
+    text-align: center;
+    padding: 40px 20px !important;
+  }
+
+  .links-closed-card .links-closed-title {
+    font-size: 1.5rem;
+    color: #555;
+    margin: 0 0 8px;
+  }
+
+  .links-closed-card .links-closed-desc {
+    color: #888;
+    margin-bottom: 24px;
+  }
+
+  /* ==========================
+     夜间模式
+     与主题 html.dark 状态同步
+     ========================== */
+
+  html.dark .links-wrapper .custom-card,
+  html.dark .links-closed-card {
+    background: rgba(35, 38, 45, 0.94) !important;
+    color: #e0e6f0 !important;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.18);
+  }
+
+  html.dark .links-wrapper .link-card-item {
+    background: rgba(35, 38, 45, 0.94) !important;
+    color: #e0e6f0 !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
+  }
+
+  html.dark .links-wrapper .link-card-item:hover {
+    background: rgba(48, 53, 64, 0.98) !important;
+  }
+
+  html.dark .links-wrapper .link-desc-text {
+    color: #b7c0d0 !important;
+  }
+
+  html.dark .links-wrapper .link-name {
+    color: #e0e6f0 !important;
+  }
+
+  html.dark .links-wrapper .links-page-title {
+    color: #e0e6f0 !important;
+  }
+
+  html.dark .links-wrapper .links-empty {
+    color: #b7c0d0 !important;
+  }
+
+  html.dark .links-wrapper code {
+    background: rgba(255, 255, 255, 0.08);
+    color: #c9d9ff;
+  }
+
+  html.dark .links-wrapper .links-content-card,
+  html.dark .links-wrapper .links-content-card p,
+  html.dark .links-wrapper .links-content-card li,
+  html.dark .links-wrapper .links-content-card h1,
+  html.dark .links-wrapper .links-content-card h2,
+  html.dark .links-wrapper .links-content-card h3,
+  html.dark .links-wrapper .links-content-card h4 {
+    color: #e0e6f0;
+  }
+
+  html.dark .links-wrapper .links-content-card a {
+    color: #9dc5ff;
+  }
+
+  html.dark .links-closed-title {
+    color: #e0e6f0 !important;
+  }
+
+  html.dark .links-closed-desc {
+    color: #b7c0d0 !important;
+  }
+
+  /* 评论区外框与夜间模式 */
+
+  .links-waline-card {
+    margin-top: 16px;
+    min-width: 0;
+  }
+
+  html.dark .links-waline-card {
+    background: rgba(35, 38, 45, 0.94) !important;
+    color: #e0e6f0 !important;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .links-wrapper .link-card-item,
+    .links-wrapper .link-avatar {
+      transition: none;
+    }
+
+    .links-wrapper .link-card-item:hover {
+      transform: none;
+    }
+
+    .links-wrapper .link-card-item:hover .link-desc-text.is-overflow {
+      animation: none;
+    }
+  }
+</style>
+
+
+
+  <!-- 友情链接主页面 -->
+  <div class="mdui-container links-wrapper">
     <div class="mdui-row">
-      <div class="mdui-col-xs-12 mdui-col-md-6 mdui-col-offset-md-3">
-        <div class="custom-card mdui-text-center" style="padding: 40px 20px;">
-          <i class="mdui-icon material-icons" style="font-size: 64px; color: #ccc; margin-bottom: 16px;">block</i>
-          <h2 style="font-size: 1.5rem; color: #555; margin: 0 0 8px 0;">页面已关闭</h2>
-          <p style="color: #888; margin-bottom: 24px;">暂未开启友情链接功能</p>
-          <a href="/" class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent" style="border-radius: 8px;">返回首页</a>
+      <div class="mdui-col-xs-12 mdui-col-md-10 mdui-col-offset-md-1">
+
+        <!-- 页面标题 -->
+        <div class="custom-card" style="margin-bottom: 16px;">
+          <div class="links-page-title"
+               style="display: flex; align-items: center; gap: 10px; font-size: 1.3rem; font-weight: bold; color: #333;">
+
+            
+              
+                <i class="fa fa-link"
+                   style="font-size: 1.1em; display: inline-flex; align-items: center;"></i>
+              
+            
+
+            <span>友情链接</span>
+          </div>
         </div>
+
+        <!-- 友情链接列表 -->
+        
+
+          <div class="mdui-row-xs-1 mdui-row-sm-2 mdui-row-md-3"
+               style="margin-left: -6px; margin-right: -6px;">
+
+            
+              
+
+              <div class="mdui-col" style="padding: 6px;">
+                <a href="https://www.senayuki.moe/"
+                   target="_blank"
+                   rel="noopener noreferrer"
+                   class="link-card-item">
+
+                  <!-- 站点头像 -->
+                  <div style="flex-shrink: 0; margin-right: 12px; display: flex; align-items: center;">
+                    <img src="https://secure.gravatar.com/avatar/def59c346d39a78db70a92db657ed565?s=500&amp;r=X&amp;d="
+                         alt="纷飞的小屋"
+                         class="link-avatar"
+                         loading="lazy"
+                         onerror="this.onerror=null;this.src='/img/user_avatar.jpg';">
+                  </div>
+
+                  <!-- 站点信息 -->
+                  <div style="overflow: hidden; flex-grow: 1; min-width: 0; display: flex; flex-direction: column; justify-content: center;">
+
+                    <div class="link-name"
+                         style="font-weight: bold; font-size: 1.02rem; color: #222; line-height: 1.3; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 4px;">
+                      纷飞的小屋
+                    </div>
+
+                    <div class="link-desc-container">
+                      <span class="link-desc-text">悲しい歌で溢れないように。</span>
+                    </div>
+
+                  </div>
+                </a>
+              </div>
+            
+              
+
+              <div class="mdui-col" style="padding: 6px;">
+                <a href="https://xtlsoft.top/"
+                   target="_blank"
+                   rel="noopener noreferrer"
+                   class="link-card-item">
+
+                  <!-- 站点头像 -->
+                  <div style="flex-shrink: 0; margin-right: 12px; display: flex; align-items: center;">
+                    <img src="https://avatars.githubusercontent.com/u/16159830?v=4"
+                         alt="Tianle Xu"
+                         class="link-avatar"
+                         loading="lazy"
+                         onerror="this.onerror=null;this.src='/img/user_avatar.jpg';">
+                  </div>
+
+                  <!-- 站点信息 -->
+                  <div style="overflow: hidden; flex-grow: 1; min-width: 0; display: flex; flex-direction: column; justify-content: center;">
+
+                    <div class="link-name"
+                         style="font-weight: bold; font-size: 1.02rem; color: #222; line-height: 1.3; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 4px;">
+                      Tianle Xu
+                    </div>
+
+                    <div class="link-desc-container">
+                      <span class="link-desc-text">您好！ 我是徐天乐 （也作 xtlsoft）。</span>
+                    </div>
+
+                  </div>
+                </a>
+              </div>
+            
+              
+
+              <div class="mdui-col" style="padding: 6px;">
+                <a href="https://shengcv.xyz/"
+                   target="_blank"
+                   rel="noopener noreferrer"
+                   class="link-card-item">
+
+                  <!-- 站点头像 -->
+                  <div style="flex-shrink: 0; margin-right: 12px; display: flex; align-items: center;">
+                    <img src="https://cdn.jsdelivr.net/gh/Shengcv/ShengcvCDN@1.0/shengcvcs.jpg"
+                         alt="御树树的小窝"
+                         class="link-avatar"
+                         loading="lazy"
+                         onerror="this.onerror=null;this.src='/img/user_avatar.jpg';">
+                  </div>
+
+                  <!-- 站点信息 -->
+                  <div style="overflow: hidden; flex-grow: 1; min-width: 0; display: flex; flex-direction: column; justify-content: center;">
+
+                    <div class="link-name"
+                         style="font-weight: bold; font-size: 1.02rem; color: #222; line-height: 1.3; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 4px;">
+                      御树树的小窝
+                    </div>
+
+                    <div class="link-desc-container">
+                      <span class="link-desc-text">一个记录我学习和成长的地方.</span>
+                    </div>
+
+                  </div>
+                </a>
+              </div>
+            
+              
+
+              <div class="mdui-col" style="padding: 6px;">
+                <a href="https://blog.ning.moe/"
+                   target="_blank"
+                   rel="noopener noreferrer"
+                   class="link-card-item">
+
+                  <!-- 站点头像 -->
+                  <div style="flex-shrink: 0; margin-right: 12px; display: flex; align-items: center;">
+                    <img src="https://blog.ning.moe/upload/72d4e506-d053-4f89-9e83-b62f1acba5de.png"
+                         alt="某科学的贝壳"
+                         class="link-avatar"
+                         loading="lazy"
+                         onerror="this.onerror=null;this.src='/img/user_avatar.jpg';">
+                  </div>
+
+                  <!-- 站点信息 -->
+                  <div style="overflow: hidden; flex-grow: 1; min-width: 0; display: flex; flex-direction: column; justify-content: center;">
+
+                    <div class="link-name"
+                         style="font-weight: bold; font-size: 1.02rem; color: #222; line-height: 1.3; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 4px;">
+                      某科学的贝壳
+                    </div>
+
+                    <div class="link-desc-container">
+                      <span class="link-desc-text">Get busy living or get busy dying.</span>
+                    </div>
+
+                  </div>
+                </a>
+              </div>
+            
+              
+
+              <div class="mdui-col" style="padding: 6px;">
+                <a href="https://akarin.moe/"
+                   target="_blank"
+                   rel="noopener noreferrer"
+                   class="link-card-item">
+
+                  <!-- 站点头像 -->
+                  <div style="flex-shrink: 0; margin-right: 12px; display: flex; align-items: center;">
+                    <img src="https://akarin.moe/images/avatar.png"
+                         alt="阿卡林服务器"
+                         class="link-avatar"
+                         loading="lazy"
+                         onerror="this.onerror=null;this.src='/img/user_avatar.jpg';">
+                  </div>
+
+                  <!-- 站点信息 -->
+                  <div style="overflow: hidden; flex-grow: 1; min-width: 0; display: flex; flex-direction: column; justify-content: center;">
+
+                    <div class="link-name"
+                         style="font-weight: bold; font-size: 1.02rem; color: #222; line-height: 1.3; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 4px;">
+                      阿卡林服务器
+                    </div>
+
+                    <div class="link-desc-container">
+                      <span class="link-desc-text">阿卡林服务器博客本体。</span>
+                    </div>
+
+                  </div>
+                </a>
+              </div>
+            
+
+          </div>
+
+        
+
+        <!-- 页面正文 -->
+        
+          <div class="custom-card links-content-card mdui-typo"
+               style="margin-top: 16px;">
+            <h3 id="申请友链要求"><a href="#申请友链要求" class="headerlink" title="申请友链要求"></a>申请友链要求</h3><ul>
+<li><p>站点稳定运行且内容健康。</p>
+</li>
+<li><p>请先在贵站添加本站链接。</p>
+</li>
+<li><p>本站将不定时抽查友情链接情况，如无法访问或将本站友链撤下本站有权在不通知的情况下移除贵站友链</p>
+</li>
+<li><p>申请请发 <a href="mailto:admin@example.com">admin@umr2333.com</a> 或评论区</p>
+</li>
+<li><p>申请格式</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">- name: 飞天鼠鼠大王の小破站</span><br><span class="line">      <span class="built_in">link</span>: https://www.umr2333.com/</span><br><span class="line">      avatar: https://www.umr2333.com/avatar.jpg</span><br><span class="line">      descr: 𝓐𝓵𝓵 𝓽𝓱𝓮 𝓪𝓬𝓬𝓲𝓭𝓮𝓷𝓽𝓼 𝓲𝓷 𝓵𝓲𝓯𝓮 𝓪𝓻𝓮 𝓪𝓬𝓽𝓾𝓪𝓵𝓵𝔂 𝓹𝓻𝓮𝓭𝓮𝓼𝓽𝓲𝓷𝓮𝓭.</span><br></pre></td></tr></table></figure></li>
+</ul>
+
+          </div>
+        
+
+        <!-- Waline 评论区 -->
+        
+          <div class="custom-card links-waline-card">
+            <div id="waline"></div>
+          </div>
+        
+
       </div>
     </div>
   </div>
 
+
+
+<script>
+(function () {
+  /* 防止 PJAX 切换页面后重复绑定事件 */
+  if (window.linksPageCleanup) {
+    window.linksPageCleanup();
+  }
+
+  var linksPageObserver = null;
+  var linksPageResizeHandler = null;
+  var linksPageTimer = null;
+
+  function setupLinkDescriptions() {
+    var containers = document.querySelectorAll(
+      '.links-wrapper .link-desc-container'
+    );
+
+    containers.forEach(function (container) {
+      var textSpan = container.querySelector('.link-desc-text');
+      if (!textSpan) return;
+
+      /* 避免重复克隆文字 */
+      if (!textSpan.dataset.originalText) {
+        textSpan.dataset.originalText = textSpan.textContent.trim();
+      }
+
+      var originalText = textSpan.dataset.originalText;
+
+      textSpan.classList.remove('is-overflow');
+      textSpan.textContent = originalText;
+
+      var containerWidth = container.clientWidth;
+      var textWidth = textSpan.scrollWidth;
+
+      if (containerWidth > 0 && textWidth > containerWidth + 1) {
+        textSpan.textContent =
+          originalText + '\u00A0\u00A0\u00A0\u00A0\u00A0' + originalText;
+
+        textSpan.classList.add('is-overflow');
+      }
+    });
+  }
+
+  function scheduleSetup() {
+    if (linksPageTimer) {
+      window.clearTimeout(linksPageTimer);
+    }
+
+    linksPageTimer = window.setTimeout(function () {
+      setupLinkDescriptions();
+    }, 100);
+  }
+
+  function cleanup() {
+    if (linksPageTimer) {
+      window.clearTimeout(linksPageTimer);
+      linksPageTimer = null;
+    }
+
+    if (linksPageObserver) {
+      linksPageObserver.disconnect();
+      linksPageObserver = null;
+    }
+
+    if (linksPageResizeHandler) {
+      window.removeEventListener('resize', linksPageResizeHandler);
+      linksPageResizeHandler = null;
+    }
+  }
+
+  window.linksPageCleanup = cleanup;
+
+  /* 延迟测量，等待字体、图片及布局完成 */
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', scheduleSetup, { once: true });
+  } else {
+    scheduleSetup();
+  }
+
+  linksPageResizeHandler = scheduleSetup;
+  window.addEventListener('resize', linksPageResizeHandler);
+
+  /* 监听 PJAX 页面切换后动态插入的友链内容 */
+  if (window.MutationObserver) {
+    linksPageObserver = new MutationObserver(function () {
+      if (document.querySelector('.links-wrapper')) {
+        scheduleSetup();
+      }
+    });
+
+    linksPageObserver.observe(document.body, {
+      childList: true,
+      subtree: true
+    });
+  }
+})();
+</script>
   </main>
 
   <!-- 页脚 -->
