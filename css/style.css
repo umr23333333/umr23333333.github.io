@@ -160,7 +160,7 @@ html.dark .profile-divider {
 .about-detail {
   padding: 5px 10px 15px !important;
   line-height: 1.8 !important;
-  text-align: center !important;
+  text-align: left !important;
 }
 
 /* ================= 7. 圆角胶囊按钮 ================= */
