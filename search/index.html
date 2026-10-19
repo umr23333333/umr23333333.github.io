@@ -1,0 +1,1652 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta name="description" content="飞天鼠鼠大王の小破站">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="search - 飞天鼠鼠大王の小破站">
+  <meta property="og:description" content="飞天鼠鼠大王の小破站">
+  <meta property="og:url" content="https://www.umr2333.com/search/index.html">
+  <meta property="og:site_name" content="飞天鼠鼠大王の小破站">
+  <meta property="og:locale" content="zh_CN">
+  
+    <meta property="og:image" content="https://www.umr2333.com/img/avatar.jpg">
+    <meta property="og:image:secure_url" content="https://www.umr2333.com/img/avatar.jpg">
+    <meta property="og:image:alt" content="search - 飞天鼠鼠大王の小破站">
+  
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="search - 飞天鼠鼠大王の小破站">
+  <meta name="twitter:description" content="飞天鼠鼠大王の小破站">
+  
+    <meta name="twitter:image" content="https://www.umr2333.com/img/avatar.jpg">
+    <meta name="twitter:image:alt" content="search - 飞天鼠鼠大王の小破站">
+  
+
+  <!-- 引入 Pjax 库 -->
+  <script src="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js"></script>
+
+  
+  <title>search - 飞天鼠鼠大王の小破站</title>
+  
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="https://unpkg.com/mdui@1.0.2/dist/css/mdui.min.css"/>
+  
+<link rel="stylesheet" href="/css/style.css">
+
+
+  <!-- 代码块及毛玻璃大卡片全局样式 -->
+  <style>
+    .highlight {
+      position: relative;
+      border-radius: 12px !important;
+      margin: 1.2em 0 !important;
+      background: rgba(246, 248, 250, 0.75) !important;
+      backdrop-filter: blur(10px) !important;
+      -webkit-backdrop-filter: blur(10px) !important;
+      overflow: hidden !important;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.05) !important;
+      border: 1px solid rgba(255, 255, 255, 0.6) !important;
+      text-align: left !important;
+    }
+    html.dark .highlight {
+      background: rgba(30, 30, 30, 0.75) !important;
+      border: 1px solid rgba(255, 255, 255, 0.1) !important;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.4) !important;
+    }
+
+    .code-header {
+      position: sticky !important;
+      left: 0 !important;
+      top: 0 !important;
+      z-index: 10 !important;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 14px;
+      background: rgba(230, 235, 240, 0.9);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      font-size: 0.8rem;
+      color: #586069;
+      user-select: none;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+      width: 100% !important;
+      box-sizing: border-box;
+    }
+    html.dark .code-header {
+      background: rgba(40, 40, 40, 0.9);
+      color: #aaa;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .code-header .code-title-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .code-header .code-title-group:hover {
+      color: #24292e;
+    }
+    html.dark .code-header .code-title-group:hover {
+      color: #fff;
+    }
+
+    .code-header .fold-arrow {
+      transition: transform 0.25s ease;
+      font-size: 0.7rem;
+    }
+
+    .highlight.collapsed .fold-arrow {
+      transform: rotate(-90deg);
+    }
+    .highlight.collapsed .code-scroll-wrap,
+    .highlight.collapsed table {
+      display: none !important;
+    }
+
+    .code-copy-btn {
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      color: #586069;
+      font-size: 0.9rem;
+      padding: 4px 6px;
+      border-radius: 4px;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    html.dark .code-copy-btn {
+      color: #aaa;
+    }
+    .code-copy-btn:hover {
+      background: rgba(0, 0, 0, 0.08);
+      color: #24292e;
+    }
+    html.dark .code-copy-btn:hover {
+      background: rgba(255, 255, 255, 0.15);
+      color: #fff;
+    }
+
+    .code-scroll-wrap {
+      width: 100%;
+      overflow-x: auto !important;
+      overflow-y: hidden !important;
+      position: relative;
+    }
+
+    .highlight, 
+    .highlight figure, 
+    .highlight table, 
+    .highlight tr, 
+    .highlight td, 
+    .highlight pre,
+    .highlight code {
+      border: none !important;
+      background: transparent !important;
+      box-shadow: none !important;
+      text-align: left !important;
+      margin: 0 !important;
+    }
+    
+    .highlight table {
+      width: max-content !important;
+      min-width: 100% !important;
+      table-layout: auto !important;
+      border-collapse: collapse !important;
+    }
+
+    .highlight td.code,
+    .highlight td.code pre {
+      width: max-content !important;
+      max-width: none !important;
+      white-space: pre !important;
+      overflow: visible !important;
+    }
+
+    .highlight td.code .line {
+      white-space: pre !important;
+    }
+    
+    .highlight td {
+      padding: 6px 8px !important;
+      border: none !important;
+      text-align: left !important;
+      vertical-align: top !important;
+      white-space: pre !important;
+    }
+
+    .highlight td.gutter {
+      position: sticky !important;
+      left: 0 !important;
+      z-index: 5 !important;
+      width: 32px !important;
+      min-width: 32px !important;
+      max-width: 32px !important;
+      padding-left: 4px !important;
+      padding-right: 6px !important;
+      text-align: right !important;
+      color: rgba(27, 31, 35, 0.35);
+      border-right: 1px solid rgba(27, 31, 35, 0.08) !important;
+      user-select: none;
+      background: rgba(246, 248, 250, 0.98) !important;
+      backdrop-filter: blur(10px) !important;
+      vertical-align: top !important;
+      overflow: hidden !important;
+    }
+    
+    .highlight td.gutter pre {
+      overflow: hidden !important;
+      overflow-x: hidden !important;
+      overflow-y: hidden !important;
+      max-width: 30px !important;
+    }
+
+    html.dark .highlight td.gutter {
+      background: rgba(30, 30, 30, 0.98) !important;
+      color: rgba(255, 255, 255, 0.35);
+      border-right: 1px solid rgba(255, 255, 255, 0.08) !important;
+    }
+
+    .code-scroll-wrap::-webkit-scrollbar {
+      height: 6px !important;
+    }
+    .code-scroll-wrap::-webkit-scrollbar-thumb {
+      background: rgba(0, 0, 0, 0.18) !important;
+      border-radius: 4px !important;
+    }
+    html.dark .code-scroll-wrap::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.25) !important;
+    }
+    .code-scroll-wrap::-webkit-scrollbar-track {
+      background: rgba(0, 0, 0, 0.03) !important;
+    }
+    html.dark .code-scroll-wrap::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.03) !important;
+    }
+  </style>
+<meta name="generator" content="Hexo 7.3.0"></head>
+<body>
+
+  
+  <div class="full-bg" style="background-image: url('/img/back.jpg');"></div>
+
+  <!-- 顶部导航栏触发按钮 -->
+  <div class="mdui-appbar mdui-appbar-fixed mdui-shadow-0 appbar-transparent">
+    <div class="mdui-toolbar">
+      
+        <span class="mdui-btn mdui-btn-icon" mdui-drawer="{target: '#left-drawer'}">
+          <i class="mdui-icon material-icons">menu</i>
+        </span>
+      
+      <div class="mdui-toolbar-spacer"></div>
+    </div>
+  </div>
+
+  <!-- 侧边栏菜单 -->
+  
+    <div class="mdui-drawer mdui-drawer-close custom-drawer" id="left-drawer">
+      <ul class="mdui-list">
+        
+          
+            <a href="/" class="mdui-list-item mdui-ripple" mdui-drawer-close>
+              
+                
+                  <i class="mdui-list-item-icon mdui-icon material-icons">home</i>
+                
+              
+              <div class="mdui-list-item-content">首页</div>
+            </a>
+          
+            <a href="/archives/" class="mdui-list-item mdui-ripple" mdui-drawer-close>
+              
+                
+                  <i class="mdui-list-item-icon mdui-icon material-icons">archive</i>
+                
+              
+              <div class="mdui-list-item-content">归档 / 文章</div>
+            </a>
+          
+            <a href="/search/" class="mdui-list-item mdui-ripple" mdui-drawer-close>
+              
+                
+                  <i class="mdui-list-item-icon fa fa-search" style="display: flex; align-items: center; justify-content: center; font-size: 1.25rem;"></i>
+                
+              
+              <div class="mdui-list-item-content">搜索</div>
+            </a>
+          
+            <a href="/announcement/" class="mdui-list-item mdui-ripple" mdui-drawer-close>
+              
+                
+                  <i class="mdui-list-item-icon fas fa-bullhorn" style="display: flex; align-items: center; justify-content: center; font-size: 1.25rem;"></i>
+                
+              
+              <div class="mdui-list-item-content">网站公告</div>
+            </a>
+          
+            <a href="/history/" class="mdui-list-item mdui-ripple" mdui-drawer-close>
+              
+                
+                  <i class="mdui-list-item-icon fa fa-bookmark" style="display: flex; align-items: center; justify-content: center; font-size: 1.25rem;"></i>
+                
+              
+              <div class="mdui-list-item-content">网站历史</div>
+            </a>
+          
+            <a href="/links/" class="mdui-list-item mdui-ripple" mdui-drawer-close>
+              
+                
+                  <i class="mdui-list-item-icon fa fa-link" style="display: flex; align-items: center; justify-content: center; font-size: 1.25rem;"></i>
+                
+              
+              <div class="mdui-list-item-content">友情链接</div>
+            </a>
+          
+            <a href="/messages/" class="mdui-list-item mdui-ripple" mdui-drawer-close>
+              
+                
+                  <i class="mdui-list-item-icon fa fa-comments" style="display: flex; align-items: center; justify-content: center; font-size: 1.25rem;"></i>
+                
+              
+              <div class="mdui-list-item-content">留言板</div>
+            </a>
+          
+            <a target="_blank" rel="noopener" href="https://stats.uptimerobot.com/Q0Cdf2ohVv" class="mdui-list-item mdui-ripple" mdui-drawer-close>
+              
+                
+                  <i class="mdui-list-item-icon fa fa-tachometer" style="display: flex; align-items: center; justify-content: center; font-size: 1.25rem;"></i>
+                
+              
+              <div class="mdui-list-item-content">今天寄了没</div>
+            </a>
+          
+            <a href="/stats/" class="mdui-list-item mdui-ripple" mdui-drawer-close>
+              
+                
+                  <i class="mdui-list-item-icon fa fa-bar-chart" style="display: flex; align-items: center; justify-content: center; font-size: 1.25rem;"></i>
+                
+              
+              <div class="mdui-list-item-content">本站统计</div>
+            </a>
+          
+        
+      </ul>
+    </div>
+  
+
+  <!-- 主体内容容器 (Pjax 替换区域) -->
+  <main class="main-container" id="pjax-container">
+    
+<div class="mdui-row main-post-container">
+  <div class="mdui-col-xs-12 mdui-col-md-8 mdui-col-offset-md-2">
+    <article class="post-detail-card">
+      <h1 class="post-detail-title">搜索</h1>
+
+      <div style="padding: 16px 0;">
+        <div class="mdui-textfield">
+          <input
+            class="mdui-textfield-input"
+            type="search"
+            id="site-search-input"
+            placeholder="输入关键词搜索文章..."
+            autocomplete="off"
+          >
+        </div>
+        <div id="site-search-results" aria-live="polite"></div>
+      </div>
+    </article>
+  </div>
+</div>
+
+<script>
+(function () {
+  const input = document.getElementById('site-search-input');
+  const results = document.getElementById('site-search-results');
+
+  if (!input || !results) return;
+
+  const posts = [
+    
+    {
+      title: "Waline美化之自定义邮件模板",
+      url: "/2026/10/17/Waline%E7%BE%8E%E5%8C%96%E4%B9%8B%E8%87%AA%E5%AE%9A%E4%B9%89%E9%82%AE%E4%BB%B6%E6%A8%A1%E6%9D%BF/",
+      content: "<p>众所周知，知所众周</p>\n<p>Waline的默认邮件模板就是一坨</p>\n<p>简陋得不能再简陋，而官方文档的配置写得又非常难懂。</p>\n<p>接下来主包将手把手教你自定义Waline的邮件模板，话不多说，直接耍起</p>\n<p>先看看修改前后的效果对比：</p>\n<p><img src=\"/img/old.png\" alt=\"old.png\"></p>\n<p><img src=\"/img/new.png\" alt=\"new.png\"></p>\n<center>为节省篇幅，仅展示注册邮件这一项</center>\n\n<br>\n\n<p>想学就接着往下看</p>\n<p>先说最简单的：</p>\n<p>如何让Waline发送的邮件发件人为自定义名称？</p>\n<p>官方文档只告诉你要在vercel的Environment Variables中写入SENDER_NAME的变量，（Key：SENDER_NAME，Value：你想显示的发件人名称）</p>\n<p>但是没告诉你必须同时要写入SENDER_EMAIL才能生效</p>\n<p>别以为你写了SMTP_USER就不用写SENDER_EMAIL了，不写是不会生效的。</p>\n<br>\n\n<p>接下来的改动都要在你github的Waline项目仓库中进行</p>\n<p>主要就是改动这个index.cjs</p>\n<p>别看他只有几行字就以为没什么用，你的改动就是要在这里进行的</p>\n<p>这里展示一下主包跟chatgpt改完的index.cjs，可以直接抄作业</p>\n<figure class=\"highlight bash\"><table><tr><td class=\"gutter\"><pre><span class=\"line\">1</span><br><span class=\"line\">2</span><br><span class=\"line\">3</span><br><span class=\"line\">4</span><br><span class=\"line\">5</span><br><span class=\"line\">6</span><br><span class=\"line\">7</span><br><span class=\"line\">8</span><br><span class=\"line\">9</span><br><span class=\"line\">10</span><br><span class=\"line\">11</span><br><span class=\"line\">12</span><br><span class=\"line\">13</span><br><span class=\"line\">14</span><br><span class=\"line\">15</span><br><span class=\"line\">16</span><br><span class=\"line\">17</span><br><span class=\"line\">18</span><br><span class=\"line\">19</span><br><span class=\"line\">20</span><br><span class=\"line\">21</span><br><span class=\"line\">22</span><br><span class=\"line\">23</span><br><span class=\"line\">24</span><br><span class=\"line\">25</span><br><span class=\"line\">26</span><br><span class=\"line\">27</span><br><span class=\"line\">28</span><br><span class=\"line\">29</span><br><span class=\"line\">30</span><br><span class=\"line\">31</span><br><span class=\"line\">32</span><br><span class=\"line\">33</span><br><span class=\"line\">34</span><br><span class=\"line\">35</span><br><span class=\"line\">36</span><br><span class=\"line\">37</span><br><span class=\"line\">38</span><br><span class=\"line\">39</span><br><span class=\"line\">40</span><br><span class=\"line\">41</span><br><span class=\"line\">42</span><br><span class=\"line\">43</span><br><span class=\"line\">44</span><br><span class=\"line\">45</span><br><span class=\"line\">46</span><br><span class=\"line\">47</span><br><span class=\"line\">48</span><br><span class=\"line\">49</span><br><span class=\"line\">50</span><br><span class=\"line\">51</span><br><span class=\"line\">52</span><br><span class=\"line\">53</span><br><span class=\"line\">54</span><br><span class=\"line\">55</span><br><span class=\"line\">56</span><br><span class=\"line\">57</span><br><span class=\"line\">58</span><br><span class=\"line\">59</span><br><span class=\"line\">60</span><br><span class=\"line\">61</span><br><span class=\"line\">62</span><br><span class=\"line\">63</span><br><span class=\"line\">64</span><br><span class=\"line\">65</span><br><span class=\"line\">66</span><br><span class=\"line\">67</span><br><span class=\"line\">68</span><br><span class=\"line\">69</span><br><span class=\"line\">70</span><br><span class=\"line\">71</span><br><span class=\"line\">72</span><br><span class=\"line\">73</span><br><span class=\"line\">74</span><br><span class=\"line\">75</span><br><span class=\"line\">76</span><br><span class=\"line\">77</span><br><span class=\"line\">78</span><br><span class=\"line\">79</span><br><span class=\"line\">80</span><br><span class=\"line\">81</span><br><span class=\"line\">82</span><br><span class=\"line\">83</span><br><span class=\"line\">84</span><br><span class=\"line\">85</span><br><span class=\"line\">86</span><br><span class=\"line\">87</span><br><span class=\"line\">88</span><br><span class=\"line\">89</span><br><span class=\"line\">90</span><br><span class=\"line\">91</span><br><span class=\"line\">92</span><br><span class=\"line\">93</span><br><span class=\"line\">94</span><br><span class=\"line\">95</span><br><span class=\"line\">96</span><br><span class=\"line\">97</span><br><span class=\"line\">98</span><br><span class=\"line\">99</span><br><span class=\"line\">100</span><br><span class=\"line\">101</span><br><span class=\"line\">102</span><br><span class=\"line\">103</span><br><span class=\"line\">104</span><br><span class=\"line\">105</span><br><span class=\"line\">106</span><br><span class=\"line\">107</span><br><span class=\"line\">108</span><br><span class=\"line\">109</span><br><span class=\"line\">110</span><br><span class=\"line\">111</span><br><span class=\"line\">112</span><br><span class=\"line\">113</span><br><span class=\"line\">114</span><br><span class=\"line\">115</span><br><span class=\"line\">116</span><br><span class=\"line\">117</span><br><span class=\"line\">118</span><br><span class=\"line\">119</span><br><span class=\"line\">120</span><br><span class=\"line\">121</span><br><span class=\"line\">122</span><br><span class=\"line\">123</span><br><span class=\"line\">124</span><br><span class=\"line\">125</span><br><span class=\"line\">126</span><br><span class=\"line\">127</span><br><span class=\"line\">128</span><br><span class=\"line\">129</span><br><span class=\"line\">130</span><br><span class=\"line\">131</span><br><span class=\"line\">132</span><br><span class=\"line\">133</span><br><span class=\"line\">134</span><br><span class=\"line\">135</span><br><span class=\"line\">136</span><br><span class=\"line\">137</span><br><span class=\"line\">138</span><br><span class=\"line\">139</span><br><span class=\"line\">140</span><br><span class=\"line\">141</span><br><span class=\"line\">142</span><br><span class=\"line\">143</span><br><span class=\"line\">144</span><br><span class=\"line\">145</span><br><span class=\"line\">146</span><br><span class=\"line\">147</span><br><span class=\"line\">148</span><br><span class=\"line\">149</span><br><span class=\"line\">150</span><br><span class=\"line\">151</span><br><span class=\"line\">152</span><br><span class=\"line\">153</span><br><span class=\"line\">154</span><br><span class=\"line\">155</span><br><span class=\"line\">156</span><br><span class=\"line\">157</span><br><span class=\"line\">158</span><br><span class=\"line\">159</span><br><span class=\"line\">160</span><br><span class=\"line\">161</span><br><span class=\"line\">162</span><br><span class=\"line\">163</span><br><span class=\"line\">164</span><br><span class=\"line\">165</span><br><span class=\"line\">166</span><br><span class=\"line\">167</span><br><span class=\"line\">168</span><br><span class=\"line\">169</span><br><span class=\"line\">170</span><br><span class=\"line\">171</span><br><span class=\"line\">172</span><br><span class=\"line\">173</span><br><span class=\"line\">174</span><br><span class=\"line\">175</span><br><span class=\"line\">176</span><br><span class=\"line\">177</span><br><span class=\"line\">178</span><br><span class=\"line\">179</span><br><span class=\"line\">180</span><br><span class=\"line\">181</span><br><span class=\"line\">182</span><br><span class=\"line\">183</span><br><span class=\"line\">184</span><br><span class=\"line\">185</span><br></pre></td><td class=\"code\"><pre><span class=\"line\">// ================================</span><br><span class=\"line\">// 测试模板是否载入，显示waline版本</span><br><span class=\"line\">// ================================</span><br><span class=\"line\">console.log(<span class=\"string\">&#x27;[PREVIEW CHECK] custom Waline index loaded&#x27;</span>);</span><br><span class=\"line\">console.log(<span class=\"string\">&#x27;[WALINE VERSION]&#x27;</span>, require(<span class=\"string\">&#x27;@waline/vercel/package.json&#x27;</span>).version);</span><br><span class=\"line\"></span><br><span class=\"line\">const Application = require(<span class=\"string\">&#x27;@waline/vercel&#x27;</span>);</span><br><span class=\"line\"></span><br><span class=\"line\">// ================================</span><br><span class=\"line\">// 注册验证邮件模板</span><br><span class=\"line\">// ================================</span><br><span class=\"line\">const registrationMailTemplate = `</span><br><span class=\"line\">&lt;div style=<span class=\"string\">&quot;margin:0;padding:28px 12px;background:#f0f9ff;font-family:-apple-system,BlinkMacSystemFont,&#x27;Segoe UI&#x27;,Arial,&#x27;Microsoft YaHei&#x27;,sans-serif;color:#35566b;&quot;</span>&gt;</span><br><span class=\"line\">  &lt;div style=<span class=\"string\">&quot;max-width:560px;margin:0 auto;background:#ffffff;border:1px solid #d9effb;border-radius:18px;overflow:hidden;&quot;</span>&gt;</span><br><span class=\"line\">    &lt;div style=<span class=\"string\">&quot;padding:26px 24px;background:#dff3ff;text-align:center;&quot;</span>&gt;</span><br><span class=\"line\">      &lt;div style=<span class=\"string\">&quot;font-size:28px;line-height:1.5;&quot;</span>&gt;☁️ 🩵 ☁️&lt;/div&gt;</span><br><span class=\"line\">      &lt;h2 style=<span class=\"string\">&quot;margin:8px 0 6px;font-size:22px;color:#276b96;&quot;</span>&gt;欢迎来到飞天鼠鼠大王の小破站！&lt;/h2&gt;</span><br><span class=\"line\">      &lt;p style=<span class=\"string\">&quot;margin:0;font-size:13px;line-height:1.8;color:#628aa2;&quot;</span>&gt;请确认你的邮箱，开启温柔的留言之旅&lt;/p&gt;</span><br><span class=\"line\">    &lt;/div&gt;</span><br><span class=\"line\">    &lt;div style=<span class=\"string\">&quot;padding:26px 24px;&quot;</span>&gt;</span><br><span class=\"line\">      &lt;p style=<span class=\"string\">&quot;margin:0 0 14px;font-size:14px;line-height:1.9;&quot;</span>&gt;你好呀，欢迎来到这里！🩵&lt;/p&gt;</span><br><span class=\"line\">      &lt;p style=<span class=\"string\">&quot;margin:0 0 22px;font-size:14px;line-height:1.9;&quot;</span>&gt;只差最后一步啦。请点击下面的按钮确认你的邮箱地址，完成注册。&lt;/p&gt;</span><br><span class=\"line\">      &lt;div style=<span class=\"string\">&quot;text-align:center;margin:28px 0;&quot;</span>&gt;</span><br><span class=\"line\">        &lt;a href=<span class=\"string\">&quot;&#123;&#123;url&#125;&#125;&quot;</span> style=<span class=\"string\">&quot;display:inline-block;padding:13px 28px;background:#78c8ef;color:#ffffff;text-decoration:none;font-size:14px;font-weight:600;border-radius:24px;&quot;</span>&gt;确认邮箱→&lt;/a&gt;</span><br><span class=\"line\">      &lt;/div&gt;</span><br><span class=\"line\">      &lt;div style=<span class=\"string\">&quot;padding:14px 16px;background:#f3faff;border:1px solid #e1f1fb;border-radius:12px;font-size:12px;line-height:1.9;color:#628aa2;&quot;</span>&gt;</span><br><span class=\"line\">        &lt;p style=<span class=\"string\">&quot;margin:0 0 6px;font-weight:600;&quot;</span>&gt;☁️ 温馨提示&lt;/p&gt;</span><br><span class=\"line\">        &lt;p style=<span class=\"string\">&quot;margin:0;&quot;</span>&gt;此验证链接有效期为 1 小时。如果按钮无法打开，可以复制下面的链接到浏览器中访问：&lt;/p&gt;</span><br><span class=\"line\">        &lt;p style=<span class=\"string\">&quot;margin:8px 0 0;overflow-wrap:anywhere;&quot;</span>&gt;&lt;a href=<span class=\"string\">&quot;&#123;&#123;url&#125;&#125;&quot;</span> style=<span class=\"string\">&quot;color:#398bb8;word-break:break-all;&quot;</span>&gt;&#123;&#123;url&#125;&#125;&lt;/a&gt;&lt;/p&gt;</span><br><span class=\"line\">      &lt;/div&gt;</span><br><span class=\"line\">      &lt;p style=<span class=\"string\">&quot;margin:22px 0 0;text-align:center;font-size:12px;line-height:1.8;color:#9ab1bf;&quot;</span>&gt;如果你没有申请注册，请忽略这封邮件，无需进行任何操作。&lt;/p&gt;</span><br><span class=\"line\">    &lt;/div&gt;</span><br><span class=\"line\">  &lt;/div&gt;</span><br><span class=\"line\">  &lt;p style=<span class=\"string\">&quot;margin:16px auto 0;text-align:center;font-size:11px;color:#9ab1bf;&quot;</span>&gt;鼠鼠邮局 ☁️&lt;/p&gt;</span><br><span class=\"line\">&lt;/div&gt;</span><br><span class=\"line\">`;</span><br><span class=\"line\"></span><br><span class=\"line\">// ================================</span><br><span class=\"line\">// 重设密码邮件模板</span><br><span class=\"line\">// ================================</span><br><span class=\"line\">const resetPasswordMailTemplate = `</span><br><span class=\"line\">&lt;div style=<span class=\"string\">&quot;margin:0;padding:28px 12px;background:#f0f9ff;font-family:-apple-system,BlinkMacSystemFont,&#x27;Segoe UI&#x27;,Arial,&#x27;Microsoft YaHei&#x27;,sans-serif;color:#35566b;&quot;</span>&gt;</span><br><span class=\"line\">  &lt;div style=<span class=\"string\">&quot;max-width:560px;margin:0 auto;background:#ffffff;border:1px solid #d9effb;border-radius:18px;overflow:hidden;&quot;</span>&gt;</span><br><span class=\"line\">    &lt;div style=<span class=\"string\">&quot;padding:26px 24px;background:#dff3ff;text-align:center;&quot;</span>&gt;</span><br><span class=\"line\">      &lt;div style=<span class=\"string\">&quot;font-size:28px;line-height:1.5;&quot;</span>&gt;☁️ 🩵 ☁️&lt;/div&gt;</span><br><span class=\"line\">      &lt;h2 style=<span class=\"string\">&quot;margin:8px 0 6px;font-size:22px;color:#276b96;&quot;</span>&gt;找回密码的小纸条&lt;/h2&gt;</span><br><span class=\"line\">      &lt;p style=<span class=\"string\">&quot;margin:0;font-size:13px;line-height:1.8;color:#628aa2;&quot;</span>&gt;别担心，我们来帮你找回账号～&lt;/p&gt;</span><br><span class=\"line\">    &lt;/div&gt;</span><br><span class=\"line\">    &lt;div style=<span class=\"string\">&quot;padding:26px 24px;&quot;</span>&gt;</span><br><span class=\"line\">      &lt;p style=<span class=\"string\">&quot;margin:0 0 14px;font-size:14px;line-height:1.9;&quot;</span>&gt;你好呀！🩵&lt;/p&gt;</span><br><span class=\"line\">      &lt;p style=<span class=\"string\">&quot;margin:0 0 22px;font-size:14px;line-height:1.9;&quot;</span>&gt;我们收到了重设密码的请求。请点击下面的按钮，前往页面设置新密码。&lt;/p&gt;</span><br><span class=\"line\">      &lt;div style=<span class=\"string\">&quot;text-align:center;margin:28px 0;&quot;</span>&gt;</span><br><span class=\"line\">        &lt;a href=<span class=\"string\">&quot;&#123;&#123;url&#125;&#125;&quot;</span> style=<span class=\"string\">&quot;display:inline-block;padding:13px 28px;background:#78c8ef;color:#ffffff;text-decoration:none;font-size:14px;font-weight:600;border-radius:24px;&quot;</span>&gt;前往重设密码 →&lt;/a&gt;</span><br><span class=\"line\">      &lt;/div&gt;</span><br><span class=\"line\">      &lt;div style=<span class=\"string\">&quot;padding:14px 16px;background:#f3faff;border:1px solid #e1f1fb;border-radius:12px;font-size:12px;line-height:1.9;color:#628aa2;&quot;</span>&gt;</span><br><span class=\"line\">        &lt;p style=<span class=\"string\">&quot;margin:0 0 6px;font-weight:600;&quot;</span>&gt;🩵 安全小提醒&lt;/p&gt;</span><br><span class=\"line\">        &lt;p style=<span class=\"string\">&quot;margin:0;&quot;</span>&gt;请妥善保管这封邮件中的链接，不要转发给他人。如果不是你本人申请重设密码，请忽略这封邮件。&lt;/p&gt;</span><br><span class=\"line\">        &lt;p style=<span class=\"string\">&quot;margin:10px 0 0;&quot;</span>&gt;如果按钮无法打开，可以复制下面的链接到浏览器中访问：&lt;/p&gt;</span><br><span class=\"line\">        &lt;p style=<span class=\"string\">&quot;margin:8px 0 0;overflow-wrap:anywhere;&quot;</span>&gt;&lt;a href=<span class=\"string\">&quot;&#123;&#123;url&#125;&#125;&quot;</span> style=<span class=\"string\">&quot;color:#398bb8;word-break:break-all;&quot;</span>&gt;&#123;&#123;url&#125;&#125;&lt;/a&gt;&lt;/p&gt;</span><br><span class=\"line\">      &lt;/div&gt;</span><br><span class=\"line\">      &lt;p style=<span class=\"string\">&quot;margin:22px 0 0;text-align:center;font-size:12px;line-height:1.8;color:#9ab1bf;&quot;</span>&gt;愿你在本站的每一次停留，都轻松而安心。&lt;/p&gt;</span><br><span class=\"line\">    &lt;/div&gt;</span><br><span class=\"line\">  &lt;/div&gt;</span><br><span class=\"line\">  &lt;p style=<span class=\"string\">&quot;margin:16px auto 0;text-align:center;font-size:11px;color:#9ab1bf;&quot;</span>&gt;鼠鼠邮局 ☁️&lt;/p&gt;</span><br><span class=\"line\">&lt;/div&gt;</span><br><span class=\"line\">`;</span><br><span class=\"line\"></span><br><span class=\"line\">// ================================</span><br><span class=\"line\">// 评论回复通知邮件模板</span><br><span class=\"line\">// ================================</span><br><span class=\"line\">const replyMailTemplate = `</span><br><span class=\"line\">&lt;div style=<span class=\"string\">&quot;margin:0;padding:28px 12px;background:#f0f9ff;font-family:-apple-system,BlinkMacSystemFont,&#x27;Segoe UI&#x27;,Arial,&#x27;Microsoft YaHei&#x27;,sans-serif;color:#35566b;&quot;</span>&gt;</span><br><span class=\"line\">  &lt;div style=<span class=\"string\">&quot;max-width:560px;margin:0 auto;background:#ffffff;border:1px solid #d9effb;border-radius:18px;overflow:hidden;&quot;</span>&gt;</span><br><span class=\"line\">    &lt;div style=<span class=\"string\">&quot;padding:26px 24px;background:#dff3ff;text-align:center;&quot;</span>&gt;</span><br><span class=\"line\">      &lt;div style=<span class=\"string\">&quot;font-size:28px;line-height:1.5;&quot;</span>&gt;☁️ 🩵 ☁️&lt;/div&gt;</span><br><span class=\"line\">      &lt;h2 style=<span class=\"string\">&quot;margin:8px 0 6px;font-size:22px;color:#276b96;&quot;</span>&gt;你的评论收到回复啦！&lt;/h2&gt;</span><br><span class=\"line\">      &lt;p style=<span class=\"string\">&quot;margin:0;font-size:13px;line-height:1.8;color:#628aa2;&quot;</span>&gt;云朵捎来了一封新的留言&lt;/p&gt;</span><br><span class=\"line\">    &lt;/div&gt;</span><br><span class=\"line\">    &lt;div style=<span class=\"string\">&quot;padding:26px 24px;&quot;</span>&gt;</span><br><span class=\"line\">      &lt;p style=<span class=\"string\">&quot;margin:0 0 14px;font-size:14px;line-height:1.8;&quot;</span>&gt;你好呀，&lt;strong style=<span class=\"string\">&quot;color:#398bb8;&quot;</span>&gt;&#123;&#123;parent.nick | safe&#125;&#125;&lt;/strong&gt;！&lt;/p&gt;</span><br><span class=\"line\">      &lt;p style=<span class=\"string\">&quot;margin:0 0 18px;font-size:14px;line-height:1.9;&quot;</span>&gt;</span><br><span class=\"line\">        &lt;strong&gt;&#123;&#123;self.nick | safe&#125;&#125;&lt;/strong&gt; 回复了你在</span><br><span class=\"line\">        &lt;a href=<span class=\"string\">&quot;&#123;&#123;site.url&#125;&#125;&quot;</span> style=<span class=\"string\">&quot;color:#398bb8;text-decoration:none;font-weight:600;&quot;</span>&gt;&#123;&#123;site.name | safe&#125;&#125;&lt;/a&gt;</span><br><span class=\"line\">        留下的评论：</span><br><span class=\"line\">      &lt;/p&gt;</span><br><span class=\"line\">      &lt;div style=<span class=\"string\">&quot;margin:0 0 18px;padding:14px 16px;background:#f3faff;border:1px solid #e1f1fb;border-radius:12px;&quot;</span>&gt;</span><br><span class=\"line\">        &lt;p style=<span class=\"string\">&quot;margin:0 0 8px;font-size:12px;color:#8aa9bc;&quot;</span>&gt;你之前说&lt;/p&gt;</span><br><span class=\"line\">        &lt;div style=<span class=\"string\">&quot;font-size:14px;line-height:1.9;overflow-wrap:anywhere;&quot;</span>&gt;&#123;&#123;parent.comment | safe&#125;&#125;&lt;/div&gt;</span><br><span class=\"line\">      &lt;/div&gt;</span><br><span class=\"line\">      &lt;div style=<span class=\"string\">&quot;margin:0 0 22px;padding:14px 16px;background:#eaf7ff;border-left:4px solid #80ccef;border-radius:10px;&quot;</span>&gt;</span><br><span class=\"line\">        &lt;p style=<span class=\"string\">&quot;margin:0 0 8px;font-size:12px;color:#6296b3;&quot;</span>&gt;对方回复&lt;/p&gt;</span><br><span class=\"line\">        &lt;div style=<span class=\"string\">&quot;font-size:14px;line-height:1.9;overflow-wrap:anywhere;&quot;</span>&gt;&#123;&#123;self.comment | safe&#125;&#125;&lt;/div&gt;</span><br><span class=\"line\">      &lt;/div&gt;</span><br><span class=\"line\">      &lt;div style=<span class=\"string\">&quot;text-align:center;margin:24px 0;&quot;</span>&gt;</span><br><span class=\"line\">        &lt;a href=<span class=\"string\">&quot;&#123;&#123;site.postUrl&#125;&#125;&quot;</span> style=<span class=\"string\">&quot;display:inline-block;padding:12px 25px;background:#78c8ef;color:#ffffff;text-decoration:none;font-size:14px;font-weight:600;border-radius:24px;&quot;</span>&gt;查看完整对话 →&lt;/a&gt;</span><br><span class=\"line\">      &lt;/div&gt;</span><br><span class=\"line\">      &lt;p style=<span class=\"string\">&quot;margin:22px 0 0;text-align:center;font-size:12px;line-height:1.8;color:#9ab1bf;&quot;</span>&gt;愿每一份分享，都能收到温柔的回应。&lt;br&gt;这是一封自动发送的通知邮件。&lt;/p&gt;</span><br><span class=\"line\">    &lt;/div&gt;</span><br><span class=\"line\">  &lt;/div&gt;</span><br><span class=\"line\">  &lt;p style=<span class=\"string\">&quot;margin:16px auto 0;text-align:center;font-size:11px;color:#9ab1bf;&quot;</span>&gt;鼠鼠邮局&lt;/p&gt;</span><br><span class=\"line\">&lt;/div&gt;</span><br><span class=\"line\">`;</span><br><span class=\"line\"></span><br><span class=\"line\">// ================================</span><br><span class=\"line\">// 管理员收到新评论通知邮件模板</span><br><span class=\"line\">// ================================</span><br><span class=\"line\">const adminMailTemplate = `</span><br><span class=\"line\">&lt;div style=<span class=\"string\">&quot;margin:0;padding:28px 12px;background:#f0f9ff;font-family:-apple-system,BlinkMacSystemFont,&#x27;Segoe UI&#x27;,Arial,&#x27;Microsoft YaHei&#x27;,sans-serif;color:#35566b;&quot;</span>&gt;</span><br><span class=\"line\">  &lt;div style=<span class=\"string\">&quot;max-width:560px;margin:0 auto;background:#ffffff;border:1px solid #d9effb;border-radius:18px;overflow:hidden;&quot;</span>&gt;</span><br><span class=\"line\">    &lt;div style=<span class=\"string\">&quot;padding:26px 24px;background:#dff3ff;text-align:center;&quot;</span>&gt;</span><br><span class=\"line\">      &lt;div style=<span class=\"string\">&quot;font-size:28px;line-height:1.5;&quot;</span>&gt;☁️ 🩵 ☁️&lt;/div&gt;</span><br><span class=\"line\">      &lt;h2 style=<span class=\"string\">&quot;margin:8px 0 6px;font-size:22px;color:#276b96;&quot;</span>&gt;收到一条新评论！&lt;/h2&gt;</span><br><span class=\"line\">      &lt;p style=<span class=\"string\">&quot;margin:0;font-size:13px;line-height:1.8;color:#628aa2;&quot;</span>&gt;您的网站又有新访客啦&lt;/p&gt;</span><br><span class=\"line\">    &lt;/div&gt;</span><br><span class=\"line\">    &lt;div style=<span class=\"string\">&quot;padding:26px 24px;&quot;</span>&gt;</span><br><span class=\"line\">      &lt;div style=<span class=\"string\">&quot;margin:0 0 18px;padding:15px 16px;background:#f3faff;border:1px solid #e1f1fb;border-radius:12px;&quot;</span>&gt;</span><br><span class=\"line\">        &lt;p style=<span class=\"string\">&quot;margin:0 0 8px;font-size:12px;color:#8aa9bc;&quot;</span>&gt;留言来自&lt;/p&gt;</span><br><span class=\"line\">        &lt;p style=<span class=\"string\">&quot;margin:0;font-size:16px;font-weight:700;color:#398bb8;overflow-wrap:anywhere;&quot;</span>&gt;&#123;&#123;self.nick | safe&#125;&#125;&lt;/p&gt;</span><br><span class=\"line\">      &lt;/div&gt;</span><br><span class=\"line\">      &lt;p style=<span class=\"string\">&quot;margin:0 0 10px;font-size:14px;font-weight:600;color:#47738d;&quot;</span>&gt;TA 写下了：&lt;/p&gt;</span><br><span class=\"line\">      &lt;div style=<span class=\"string\">&quot;margin:0 0 22px;padding:16px;background:#eaf7ff;border-left:4px solid #80ccef;border-radius:10px;font-size:14px;line-height:1.9;overflow-wrap:anywhere;&quot;</span>&gt;&#123;&#123;self.comment | safe&#125;&#125;&lt;/div&gt;</span><br><span class=\"line\">      &lt;div style=<span class=\"string\">&quot;text-align:center;margin:24px 0;&quot;</span>&gt;</span><br><span class=\"line\">        &lt;a href=<span class=\"string\">&quot;&#123;&#123;site.postUrl&#125;&#125;&quot;</span> style=<span class=\"string\">&quot;display:inline-block;padding:12px 25px;background:#78c8ef;color:#ffffff;text-decoration:none;font-size:14px;font-weight:600;border-radius:24px;&quot;</span>&gt;前往查看评论 →&lt;/a&gt;</span><br><span class=\"line\">      &lt;/div&gt;</span><br><span class=\"line\">      &lt;p style=<span class=\"string\">&quot;margin:22px 0 0;text-align:center;font-size:12px;line-height:1.8;color:#9ab1bf;&quot;</span>&gt;记得去看看这份来自访客的留言哦。&lt;br&gt;这是一封自动发送的通知邮件。&lt;/p&gt;</span><br><span class=\"line\">    &lt;/div&gt;</span><br><span class=\"line\">  &lt;/div&gt;</span><br><span class=\"line\">  &lt;p style=<span class=\"string\">&quot;margin:16px auto 0;text-align:center;font-size:11px;color:#9ab1bf;&quot;</span>&gt;鼠鼠邮局&lt;/p&gt;</span><br><span class=\"line\">&lt;/div&gt;</span><br><span class=\"line\">`;</span><br><span class=\"line\"></span><br><span class=\"line\">// ================================</span><br><span class=\"line\">// 注册与重设密码邮件语言配置</span><br><span class=\"line\">// ================================</span><br><span class=\"line\">const cloudMailLocale = &#123;</span><br><span class=\"line\">  <span class=\"string\">&#x27;[&#123;&#123;name | safe&#125;&#125;] Registration Confirm Mail&#x27;</span>:</span><br><span class=\"line\">    <span class=\"string\">&#x27;☁️ 欢迎来到&#123;&#123;name | safe&#125;&#125;｜请确认你的邮箱&#x27;</span>,</span><br><span class=\"line\"></span><br><span class=\"line\">  // 保留 Waline 原始翻译键，供自定义模板匹配</span><br><span class=\"line\">  <span class=\"string\">&#x27;Please click &lt;a href=&quot;&#123;&#123;url&#125;&#125;&quot;&gt;&#123;&#123;url&#125;&#125;&lt;a/&gt; to confirm registration, the link is valid for 1 hour. If you are not registering, please ignore this email.&#x27;</span>:</span><br><span class=\"line\">    registrationMailTemplate,</span><br><span class=\"line\"></span><br><span class=\"line\">  <span class=\"string\">&#x27;[&#123;&#123;name | safe&#125;&#125;] Reset Password&#x27;</span>:</span><br><span class=\"line\">    <span class=\"string\">&#x27;🩵 找回密码的小纸条｜&#123;&#123;name | safe&#125;&#125;&#x27;</span>,</span><br><span class=\"line\"></span><br><span class=\"line\">  <span class=\"string\">&#x27;Please click &lt;a href=&quot;&#123;&#123;url&#125;&#125;&quot;&gt;&#123;&#123;url&#125;&#125;&lt;/a&gt; to login and change your password as soon as possible!&#x27;</span>:</span><br><span class=\"line\">    resetPasswordMailTemplate,</span><br><span class=\"line\"></span><br><span class=\"line\">  USER_EXIST: <span class=\"string\">&#x27;这个账号已经注册过啦，请直接登录哦～&#x27;</span>,</span><br><span class=\"line\">&#125;;</span><br><span class=\"line\"></span><br><span class=\"line\">// ================================</span><br><span class=\"line\">// Waline 服务端配置</span><br><span class=\"line\">// ================================</span><br><span class=\"line\">module.exports = Application(&#123;</span><br><span class=\"line\">  plugins: [],</span><br><span class=\"line\"></span><br><span class=\"line\">  // 语言代码使用小写</span><br><span class=\"line\">  locales: &#123;</span><br><span class=\"line\">    <span class=\"string\">&#x27;zh-cn&#x27;</span>: cloudMailLocale,</span><br><span class=\"line\">    <span class=\"string\">&#x27;zh-tw&#x27;</span>: cloudMailLocale,</span><br><span class=\"line\">    <span class=\"string\">&#x27;en-us&#x27;</span>: cloudMailLocale,</span><br><span class=\"line\">    <span class=\"string\">&#x27;id&#x27;</span>: cloudMailLocale,</span><br><span class=\"line\">    <span class=\"string\">&#x27;de&#x27;</span>: cloudMailLocale,</span><br><span class=\"line\">    <span class=\"string\">&#x27;es-mx&#x27;</span>: cloudMailLocale,</span><br><span class=\"line\">    <span class=\"string\">&#x27;fr&#x27;</span>: cloudMailLocale,</span><br><span class=\"line\">    <span class=\"string\">&#x27;it&#x27;</span>: cloudMailLocale,</span><br><span class=\"line\">    <span class=\"string\">&#x27;jp&#x27;</span>: cloudMailLocale,</span><br><span class=\"line\">    <span class=\"string\">&#x27;ko-kr&#x27;</span>: cloudMailLocale,</span><br><span class=\"line\">    <span class=\"string\">&#x27;pt-br&#x27;</span>: cloudMailLocale,</span><br><span class=\"line\">    <span class=\"string\">&#x27;ru&#x27;</span>: cloudMailLocale,</span><br><span class=\"line\">    <span class=\"string\">&#x27;vi&#x27;</span>: cloudMailLocale,</span><br><span class=\"line\">  &#125;,</span><br><span class=\"line\"></span><br><span class=\"line\">  // 评论回复通知邮件</span><br><span class=\"line\">  mailSubject: <span class=\"string\">&#x27;☁️ 你的评论收到新回复啦｜&#123;&#123;site.name | safe&#125;&#125;&#x27;</span>,</span><br><span class=\"line\">  mailTemplate: replyMailTemplate,</span><br><span class=\"line\"></span><br><span class=\"line\">  // 管理员收到的新评论通知</span><br><span class=\"line\">  mailSubjectAdmin: <span class=\"string\">&#x27;💌 &#123;&#123;site.name | safe&#125;&#125;收到新留言啦~&#x27;</span>,</span><br><span class=\"line\">  mailTemplateAdmin: adminMailTemplate,</span><br><span class=\"line\"></span><br><span class=\"line\">  // 保留空 postSave，不额外添加通知逻辑</span><br><span class=\"line\">  async postSave(comment) &#123;&#125;,</span><br><span class=\"line\">&#125;);</span><br></pre></td></tr></table></figure>\n\n<p>如果改动完直接提交是不会生效的</p>\n<p>他会自动帮你部署一个Preview环境，当然你也可以直接测试</p>\n<p><img src=\"/img/pv.png\" alt=\"pv.png\"></p>\n<p><img src=\"/img/pv2.png\" alt=\"pv2.png\"></p>\n<p>测试没问题以后打开你的vercel的Deployments，找到你测试过的Preview分支，并点击Promote to Production</p>\n<p>直接在之前的Production点Reploy是没用的</p>\n<p><img src=\"/img/pm.png\" alt=\"pm.png\"></p>\n<br>\n\n<p>邮件模板说明：</p>\n<p>关于<code>&#123;&#123;name | safe&#125;&#125;&#123;&#123;site.name | safe&#125;&#125;&#123;&#123;parent.nick | safe&#125;&#125;&#123;&#123;self.nick | safe&#125;&#125;</code></p>\n<p><code>&#123;&#123;name | safe&#125;&#125;和&#123;&#123;site.name | safe&#125;&#125;</code>都是你的网站名称，但是在不同的邮件中写法不一样</p>\n<p>有的要写<code>&#123;&#123;name | safe&#125;&#125;有的要写&#123;&#123;name | safe&#125;&#125;</code></p>\n<p>甚至标题跟正文都有不一样的情况</p>\n<br>\n\n<p>以下是主包整理的测试结果：</p>\n<p>&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;</p>\n<p>管理员邮件标题测试 A：；测试 B：飞天鼠鼠大王の小破站<br>管理员通知正文变量测试<br>测试 A：name &#x3D;</p>\n<p>测试 B：site.name &#x3D; 飞天鼠鼠大王の小破站</p>\n<p>测试 C：self.nick &#x3D; test</p>\n<p>测试 D：self.comment &#x3D;</p>\n<p>我是评论</p>\n<p>注册标题测试 A：飞天鼠鼠大王の小破站；测试 B：<br>注册邮件正文变量测试<br>注册邮件正文变量测试<br>测试 A：name &#x3D;</p>\n<p>测试 B：site.name &#x3D;</p>\n<p>测试 C：url &#x3D; <a href=\"https://xxxx.vercel.app/verification?token=xxxx\">https://xxxx.vercel.app/verification?token=xxxx</a> （该结果正常）</p>\n<p>测试 D：self.nick &#x3D;</p>\n<p>测试 E：parent.nick &#x3D;</p>\n<p>点击确认邮箱</p>\n<p>重设密码标题测试 A：飞天鼠鼠大王の小破站；测试 B：<br>重设密码正文变量测试<br>测试 A：name &#x3D;</p>\n<p>测试 B：site.name &#x3D;</p>\n<p>测试 C：url &#x3D; <a href=\"https://xxxx.vercel.app/verification?token=xxxx\">https://xxxx.vercel.app/verification?token=xxxx</a> （该结果正常）</p>\n<p>测试 D：self.nick &#x3D;</p>\n<p>测试 E：parent.nick &#x3D;</p>\n<p>点击重设密码</p>\n<p>回复邮件标题测试 A：；测试 B：飞天鼠鼠大王の小破站<br>评论回复正文变量测试<br>测试 A：name &#x3D;<br>测试 B：site.name &#x3D; 飞天鼠鼠大王の小破站<br>测试 C：parent.nick &#x3D; Alice<br>测试 D：self.nick &#x3D; test<br>测试 E：self.comment &#x3D;<br>我是评论</p>\n<p>&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;</p>\n<br>\n\n<p>大家可以根据以上内容自定义自己的邮件模板</p>\n<p>接下来放出测试专用的index.cjs来测试你的邮件模板编写</p>\n<figure class=\"highlight bash\"><table><tr><td class=\"gutter\"><pre><span class=\"line\">1</span><br><span class=\"line\">2</span><br><span class=\"line\">3</span><br><span class=\"line\">4</span><br><span class=\"line\">5</span><br><span class=\"line\">6</span><br><span class=\"line\">7</span><br><span class=\"line\">8</span><br><span class=\"line\">9</span><br><span class=\"line\">10</span><br><span class=\"line\">11</span><br><span class=\"line\">12</span><br><span class=\"line\">13</span><br><span class=\"line\">14</span><br><span class=\"line\">15</span><br><span class=\"line\">16</span><br><span class=\"line\">17</span><br><span class=\"line\">18</span><br><span class=\"line\">19</span><br><span class=\"line\">20</span><br><span class=\"line\">21</span><br><span class=\"line\">22</span><br><span class=\"line\">23</span><br><span class=\"line\">24</span><br><span class=\"line\">25</span><br><span class=\"line\">26</span><br><span class=\"line\">27</span><br><span class=\"line\">28</span><br><span class=\"line\">29</span><br><span class=\"line\">30</span><br><span class=\"line\">31</span><br><span class=\"line\">32</span><br><span class=\"line\">33</span><br><span class=\"line\">34</span><br><span class=\"line\">35</span><br><span class=\"line\">36</span><br><span class=\"line\">37</span><br><span class=\"line\">38</span><br><span class=\"line\">39</span><br><span class=\"line\">40</span><br><span class=\"line\">41</span><br><span class=\"line\">42</span><br><span class=\"line\">43</span><br><span class=\"line\">44</span><br><span class=\"line\">45</span><br><span class=\"line\">46</span><br><span class=\"line\">47</span><br><span class=\"line\">48</span><br><span class=\"line\">49</span><br><span class=\"line\">50</span><br><span class=\"line\">51</span><br><span class=\"line\">52</span><br><span class=\"line\">53</span><br><span class=\"line\">54</span><br><span class=\"line\">55</span><br><span class=\"line\">56</span><br><span class=\"line\">57</span><br><span class=\"line\">58</span><br><span class=\"line\">59</span><br><span class=\"line\">60</span><br><span class=\"line\">61</span><br><span class=\"line\">62</span><br><span class=\"line\">63</span><br><span class=\"line\">64</span><br><span class=\"line\">65</span><br><span class=\"line\">66</span><br><span class=\"line\">67</span><br><span class=\"line\">68</span><br><span class=\"line\">69</span><br><span class=\"line\">70</span><br><span class=\"line\">71</span><br><span class=\"line\">72</span><br><span class=\"line\">73</span><br><span class=\"line\">74</span><br><span class=\"line\">75</span><br><span class=\"line\">76</span><br><span class=\"line\">77</span><br><span class=\"line\">78</span><br><span class=\"line\">79</span><br><span class=\"line\">80</span><br><span class=\"line\">81</span><br><span class=\"line\">82</span><br><span class=\"line\">83</span><br><span class=\"line\">84</span><br><span class=\"line\">85</span><br><span class=\"line\">86</span><br><span class=\"line\">87</span><br><span class=\"line\">88</span><br><span class=\"line\">89</span><br><span class=\"line\">90</span><br><span class=\"line\">91</span><br><span class=\"line\">92</span><br><span class=\"line\">93</span><br><span class=\"line\">94</span><br><span class=\"line\">95</span><br><span class=\"line\">96</span><br><span class=\"line\">97</span><br><span class=\"line\">98</span><br></pre></td><td class=\"code\"><pre><span class=\"line\">const Application = require(<span class=\"string\">&#x27;@waline/vercel&#x27;</span>);</span><br><span class=\"line\"></span><br><span class=\"line\">// 注册邮件测试模板</span><br><span class=\"line\">const registrationMailTemplate = `</span><br><span class=\"line\">&lt;div style=<span class=\"string\">&quot;font-family:Arial,sans-serif;padding:20px;&quot;</span>&gt;</span><br><span class=\"line\">  &lt;h2&gt;注册邮件正文变量测试&lt;/h2&gt;</span><br><span class=\"line\">  &lt;p&gt;测试 A：name = &#123;&#123;name | safe&#125;&#125;&lt;/p&gt;</span><br><span class=\"line\">  &lt;p&gt;测试 B：site.name = &#123;&#123;site.name | safe&#125;&#125;&lt;/p&gt;</span><br><span class=\"line\">  &lt;p&gt;测试 C：url = &#123;&#123;url&#125;&#125;&lt;/p&gt;</span><br><span class=\"line\">  &lt;p&gt;测试 D：self.nick = &#123;&#123;self.nick | safe&#125;&#125;&lt;/p&gt;</span><br><span class=\"line\">  &lt;p&gt;测试 E：parent.nick = &#123;&#123;parent.nick | safe&#125;&#125;&lt;/p&gt;</span><br><span class=\"line\">  &lt;p&gt;&lt;a href=<span class=\"string\">&quot;&#123;&#123;url&#125;&#125;&quot;</span>&gt;点击确认邮箱&lt;/a&gt;&lt;/p&gt;</span><br><span class=\"line\">&lt;/div&gt;</span><br><span class=\"line\">`;</span><br><span class=\"line\"></span><br><span class=\"line\">// 重设密码测试模板</span><br><span class=\"line\">const resetPasswordMailTemplate = `</span><br><span class=\"line\">&lt;div style=<span class=\"string\">&quot;font-family:Arial,sans-serif;padding:20px;&quot;</span>&gt;</span><br><span class=\"line\">  &lt;h2&gt;重设密码正文变量测试&lt;/h2&gt;</span><br><span class=\"line\">  &lt;p&gt;测试 A：name = &#123;&#123;name | safe&#125;&#125;&lt;/p&gt;</span><br><span class=\"line\">  &lt;p&gt;测试 B：site.name = &#123;&#123;site.name | safe&#125;&#125;&lt;/p&gt;</span><br><span class=\"line\">  &lt;p&gt;测试 C：url = &#123;&#123;url&#125;&#125;&lt;/p&gt;</span><br><span class=\"line\">  &lt;p&gt;测试 D：self.nick = &#123;&#123;self.nick | safe&#125;&#125;&lt;/p&gt;</span><br><span class=\"line\">  &lt;p&gt;测试 E：parent.nick = &#123;&#123;parent.nick | safe&#125;&#125;&lt;/p&gt;</span><br><span class=\"line\">  &lt;p&gt;&lt;a href=<span class=\"string\">&quot;&#123;&#123;url&#125;&#125;&quot;</span>&gt;点击重设密码&lt;/a&gt;&lt;/p&gt;</span><br><span class=\"line\">&lt;/div&gt;</span><br><span class=\"line\">`;</span><br><span class=\"line\"></span><br><span class=\"line\">// 评论回复测试模板</span><br><span class=\"line\">const replyMailTemplate = `</span><br><span class=\"line\">&lt;div style=<span class=\"string\">&quot;font-family:Arial,sans-serif;padding:20px;&quot;</span>&gt;</span><br><span class=\"line\">  &lt;h2&gt;评论回复正文变量测试&lt;/h2&gt;</span><br><span class=\"line\">  &lt;p&gt;测试 A：name = &#123;&#123;name | safe&#125;&#125;&lt;/p&gt;</span><br><span class=\"line\">  &lt;p&gt;测试 B：site.name = &#123;&#123;site.name | safe&#125;&#125;&lt;/p&gt;</span><br><span class=\"line\">  &lt;p&gt;测试 C：parent.nick = &#123;&#123;parent.nick | safe&#125;&#125;&lt;/p&gt;</span><br><span class=\"line\">  &lt;p&gt;测试 D：self.nick = &#123;&#123;self.nick | safe&#125;&#125;&lt;/p&gt;</span><br><span class=\"line\">  &lt;p&gt;测试 E：self.comment = &#123;&#123;self.comment | safe&#125;&#125;&lt;/p&gt;</span><br><span class=\"line\">&lt;/div&gt;</span><br><span class=\"line\">`;</span><br><span class=\"line\"></span><br><span class=\"line\">// 管理员通知测试模板</span><br><span class=\"line\">const adminMailTemplate = `</span><br><span class=\"line\">&lt;div style=<span class=\"string\">&quot;font-family:Arial,sans-serif;padding:20px;&quot;</span>&gt;</span><br><span class=\"line\">  &lt;h2&gt;管理员通知正文变量测试&lt;/h2&gt;</span><br><span class=\"line\">  &lt;p&gt;测试 A：name = &#123;&#123;name | safe&#125;&#125;&lt;/p&gt;</span><br><span class=\"line\">  &lt;p&gt;测试 B：site.name = &#123;&#123;site.name | safe&#125;&#125;&lt;/p&gt;</span><br><span class=\"line\">  &lt;p&gt;测试 C：self.nick = &#123;&#123;self.nick | safe&#125;&#125;&lt;/p&gt;</span><br><span class=\"line\">  &lt;p&gt;测试 D：self.comment = &#123;&#123;self.comment | safe&#125;&#125;&lt;/p&gt;</span><br><span class=\"line\">&lt;/div&gt;</span><br><span class=\"line\">`;</span><br><span class=\"line\"></span><br><span class=\"line\">// 注册与重设密码邮件语言配置</span><br><span class=\"line\">const cloudMailLocale = &#123;</span><br><span class=\"line\">  <span class=\"string\">&#x27;[&#123;&#123;name | safe&#125;&#125;] Registration Confirm Mail&#x27;</span>:</span><br><span class=\"line\">    <span class=\"string\">&#x27;注册标题测试 A：&#123;&#123;name | safe&#125;&#125;；测试 B：&#123;&#123;site.name | safe&#125;&#125;&#x27;</span>,</span><br><span class=\"line\"></span><br><span class=\"line\">  <span class=\"string\">&#x27;Please click &lt;a href=&quot;&#123;&#123;url&#125;&#125;&quot;&gt;&#123;&#123;url&#125;&#125;&lt;a/&gt; to confirm registration, the link is valid for 1 hour. If you are not registering, please ignore this email.&#x27;</span>:</span><br><span class=\"line\">    registrationMailTemplate,</span><br><span class=\"line\"></span><br><span class=\"line\">  <span class=\"string\">&#x27;[&#123;&#123;name | safe&#125;&#125;] Reset Password&#x27;</span>:</span><br><span class=\"line\">    <span class=\"string\">&#x27;重设密码标题测试 A：&#123;&#123;name | safe&#125;&#125;；测试 B：&#123;&#123;site.name | safe&#125;&#125;&#x27;</span>,</span><br><span class=\"line\"></span><br><span class=\"line\">  <span class=\"string\">&#x27;Please click &lt;a href=&quot;&#123;&#123;url&#125;&#125;&quot;&gt;&#123;&#123;url&#125;&#125;&lt;/a&gt; to login and change your password as soon as possible!&#x27;</span>:</span><br><span class=\"line\">    resetPasswordMailTemplate,</span><br><span class=\"line\"></span><br><span class=\"line\">  USER_EXIST: <span class=\"string\">&#x27;这个账号已经注册过啦，请直接登录哦～&#x27;</span>,</span><br><span class=\"line\">&#125;;</span><br><span class=\"line\"></span><br><span class=\"line\">module.exports = Application(&#123;</span><br><span class=\"line\">  plugins: [],</span><br><span class=\"line\"></span><br><span class=\"line\">  locales: &#123;</span><br><span class=\"line\">    <span class=\"string\">&#x27;zh-cn&#x27;</span>: cloudMailLocale,</span><br><span class=\"line\">    <span class=\"string\">&#x27;zh-tw&#x27;</span>: cloudMailLocale,</span><br><span class=\"line\">    <span class=\"string\">&#x27;en-us&#x27;</span>: cloudMailLocale,</span><br><span class=\"line\">    <span class=\"string\">&#x27;id&#x27;</span>: cloudMailLocale,</span><br><span class=\"line\">    <span class=\"string\">&#x27;de&#x27;</span>: cloudMailLocale,</span><br><span class=\"line\">    <span class=\"string\">&#x27;es-mx&#x27;</span>: cloudMailLocale,</span><br><span class=\"line\">    <span class=\"string\">&#x27;fr&#x27;</span>: cloudMailLocale,</span><br><span class=\"line\">    <span class=\"string\">&#x27;it&#x27;</span>: cloudMailLocale,</span><br><span class=\"line\">    <span class=\"string\">&#x27;jp&#x27;</span>: cloudMailLocale,</span><br><span class=\"line\">    <span class=\"string\">&#x27;ko-kr&#x27;</span>: cloudMailLocale,</span><br><span class=\"line\">    <span class=\"string\">&#x27;pt-br&#x27;</span>: cloudMailLocale,</span><br><span class=\"line\">    <span class=\"string\">&#x27;ru&#x27;</span>: cloudMailLocale,</span><br><span class=\"line\">    <span class=\"string\">&#x27;vi&#x27;</span>: cloudMailLocale,</span><br><span class=\"line\">  &#125;,</span><br><span class=\"line\"></span><br><span class=\"line\">  mailSubject: <span class=\"string\">&#x27;回复邮件标题测试 A：&#123;&#123;name | safe&#125;&#125;；测试 B：&#123;&#123;site.name | safe&#125;&#125;&#x27;</span>,</span><br><span class=\"line\">  mailTemplate: replyMailTemplate,</span><br><span class=\"line\"></span><br><span class=\"line\">  mailSubjectAdmin: <span class=\"string\">&#x27;管理员邮件标题测试 A：&#123;&#123;name | safe&#125;&#125;；测试 B：&#123;&#123;site.name | safe&#125;&#125;&#x27;</span>,</span><br><span class=\"line\">  mailTemplateAdmin: adminMailTemplate,</span><br><span class=\"line\"></span><br><span class=\"line\">  async postSave(comment) &#123;</span><br><span class=\"line\">    // 保留原有配置</span><br><span class=\"line\">  &#125;,</span><br><span class=\"line\">&#125;);</span><br><span class=\"line\"></span><br></pre></td></tr></table></figure>\n\n<p>接下来就自行发挥想象力了</p>\n<p>散会。</p>\n",
+      date: "2026-10-17"
+    },
+    
+    {
+      title: "umr2333主题 1.3版本发布",
+      url: "/2026/10/14/1-3%E7%89%88%E6%9C%AC%E5%8F%91%E5%B8%83/",
+      content: "<p>Hello又是我</p>\n<br>\n\n<p><del>这好像有点废话，除了我还能是谁</del></p>\n<br>\n\n<p>在上个版本（1.2.9）发布后我又忍不住加入新功能了</p>\n<p><del>跟Gemini说话真的血压好高，跟那个雷霆豆包一样，不愧是美国豆包</del></p>\n<br>\n\n<p>1.3版本更新内容：</p>\n<p>新增文章修改时间的展示</p>\n<p>新增浏览量的展示</p>\n<p>新增评论功能的支持</p>\n<p>新增文章置顶功能</p>\n<p>新增站点统计页面</p>\n<p>新增bash页面复制框</p>\n<br>\n\n<p>关于新功能：</p>\n<p>评论系统可在_config.umr2333.yml中# Waline 评论与浏览量统计配置 选项中配置，关于Waline评论系统可自行前往<a href=\"https://github.com/walinejs/waline\">官方仓库</a>及<a href=\"https://waline.js.org/\">官方文档</a>进行了解。如果想关闭评论区，请在Front-matter中添加一行</p>\n<figure class=\"highlight bash\"><table><tr><td class=\"gutter\"><pre><span class=\"line\">1</span><br></pre></td><td class=\"code\"><pre><span class=\"line\">comment：<span class=\"literal\">false</span></span><br></pre></td></tr></table></figure>\n\n<br>\n\n<p>站点统计功能中的运行时间读取_config.umr2333.yml中# 网站建站时间（如果不填，会自动读取博客第一篇文章的发表日期）</p>\n<p>文章置顶功能：请在请在Front-matter中添加一行</p>\n<figure class=\"highlight bash\"><table><tr><td class=\"gutter\"><pre><span class=\"line\">1</span><br></pre></td><td class=\"code\"><pre><span class=\"line\">top：1</span><br></pre></td></tr></table></figure>\n\n<p>top后跟的数字是序号，比如上面的top: 1为置顶到第一个</p>\n<br>\n\n<p>站点统计页面新建：</p>\n<p>请在你的博客根目录执行：</p>\n<figure class=\"highlight bash\"><table><tr><td class=\"gutter\"><pre><span class=\"line\">1</span><br></pre></td><td class=\"code\"><pre><span class=\"line\">hexo new page stats</span><br></pre></td></tr></table></figure>\n\n<p>打开新生成的source\\stats\\index.md文件</p>\n<p>请在Front-matter中添加一行</p>\n<figure class=\"highlight bash\"><table><tr><td class=\"gutter\"><pre><span class=\"line\">1</span><br></pre></td><td class=\"code\"><pre><span class=\"line\">layout：stats</span><br></pre></td></tr></table></figure>\n\n<br>\n\n<p>接下来是碎碎念环节：</p>\n<p>本主题的核心内容都是通过修改layout.ejs实现的</p>\n<p>如果你有什么想修改但是_config.umr2333.yml没得改的可以直接修改layout.ejs或相关资源。</p>\n<p>如Waline的主题，预设文字，reaction的表情（也可以直接修改主题source&#x2F;img或目录source&#x2F;img实现，目录里的优先级更高）</p>\n<p>爆肝两天累死我了</p>\n<p>光是加bash框这个功能Gemini改了23次都没好，让chatgpt改一次就过了</p>\n<p>至于我为什么老用Gemini呢，<del>喜欢找虐</del>，那是因为可以随便扔图片让他自己看，gpt没会员上传图片额度有限，动不动就不能发了</p>\n<p>虽然说可以邪修，就是把图片搞成一个可访问的url发给他，比如传到自己网站的img目录里。但是这样太麻烦了</p>\n<p>好了，散会</p>\n",
+      date: "2026-10-14"
+    },
+    
+    {
+      title: "umr2333主题介绍",
+      url: "/2026/10/13/umr2333%E4%B8%BB%E9%A2%98%E4%BB%8B%E7%BB%8D/",
+      content: "<p>因为突发奇想想搞一个简单的网页介绍<br>但是没有合适的主题<br>在现有的主题下修改一直出错</p>\n<p><del>所以跟Gemini畅聊了一晚上</del></p>\n<p>灵感来源：</p>\n<p><a href=\"https://github.com/jerryc127/hexo-theme-butterfly\">Butterfly</a> 、 <a href=\"https://github.com/kuricl/hexo-theme-kuri\">Kuri</a></p>\n<br>\n\n<p>主题特性：</p>\n<p>首页单页个人简介</p>\n<p>可隐藏的博客文章入口</p>\n<p>自定义友情链接页面</p>\n<br>\n\n<p>食用方法：</p>\n<p>1.在你的Hexo根目录执行：</p>\n<figure class=\"highlight bash\"><table><tr><td class=\"gutter\"><pre><span class=\"line\">1</span><br></pre></td><td class=\"code\"><pre><span class=\"line\">git <span class=\"built_in\">clone</span> -b master https://github.com/umr23333333/hexo-theme-umr2333.git themes/umr2333</span><br></pre></td></tr></table></figure>\n\n<p>或手动下载解压到Hexo\\themes目录，文件夹命名为umr2333</p>\n<br>\n\n<p>2.修改Hexo根目录下_config.yml 选项 theme: umr2333</p>\n<p>在 hexo 的根目录创建一个文件 _config.umr2333.yml，并把<strong>主题目录的 _config.yml</strong> 内容复制到 _config.umr2333.yml</p>\n<p>注意不要删除根目录下的 _config.yml以及主题目录下的 _config.yml文件</p>\n<p>如果不做这步配置请修改Hexo\\themes\\umr2333\\_config.yml中的内容，做了的话可以直接修改根目录下 _config.umr2333.yml中的内容</p>\n<br>\n\n<p>3.修改Hexo根目录下_config.yml中的theme</p>\n<figure class=\"highlight bash\"><table><tr><td class=\"gutter\"><pre><span class=\"line\">1</span><br></pre></td><td class=\"code\"><pre><span class=\"line\">theme: umr2333</span><br></pre></td></tr></table></figure>\n\n<br>\n\n<p>4.修改Hexo根目录下_config.yml中的title、subtitle、author等内容</p>\n<p>#个人介绍页面生成</p>\n<p>在你的hexo根目录执行：</p>\n<figure class=\"highlight bash\"><table><tr><td class=\"gutter\"><pre><span class=\"line\">1</span><br></pre></td><td class=\"code\"><pre><span class=\"line\">hexo new page about </span><br></pre></td></tr></table></figure>\n<p>生成，请自行修改source\\about\\index.md中的内容</p>\n<p>#友情链接页面生成</p>\n<p>1.在你的hexo根目录执行：</p>\n<figure class=\"highlight bash\"><table><tr><td class=\"gutter\"><pre><span class=\"line\">1</span><br></pre></td><td class=\"code\"><pre><span class=\"line\">hexo new page links</span><br></pre></td></tr></table></figure>\n\n<p>修改source\\links\\index.md</p>\n<p>在title: links下方另起一行：</p>\n<figure class=\"highlight bash\"><table><tr><td class=\"gutter\"><pre><span class=\"line\">1</span><br></pre></td><td class=\"code\"><pre><span class=\"line\">layout: links</span><br></pre></td></tr></table></figure>\n\n<p>title内容可修改，如 title: 友情链接</p>\n<p>下方可写申请友链相关要求</p>\n<p>2.新建文件：(如无文件夹请自行创建)</p>\n<p>source\\_data\\links.yml</p>\n<p>links.yml文件模板：</p>\n<figure class=\"highlight bash\"><table><tr><td class=\"gutter\"><pre><span class=\"line\">1</span><br><span class=\"line\">2</span><br><span class=\"line\">3</span><br><span class=\"line\">4</span><br><span class=\"line\">5</span><br></pre></td><td class=\"code\"><pre><span class=\"line\">link_list:</span><br><span class=\"line\">    - name: 飞天鼠鼠大王の小破站</span><br><span class=\"line\">      <span class=\"built_in\">link</span>: https://www.umr2333.com/</span><br><span class=\"line\">      avatar: https://www.umr2333.com/img/avatar.jpg</span><br><span class=\"line\">      descr: 𝓐𝓵𝓵 𝓽𝓱𝓮 𝓪𝓬𝓬𝓲𝓭𝓮𝓷𝓽𝓼 𝓲𝓷 𝓵𝓲𝓯𝓮 𝓪𝓻𝓮 𝓪𝓬𝓽𝓾𝓪𝓵𝓵𝔂 𝓹𝓻𝓮𝓭𝓮𝓼𝓽𝓲𝓷𝓮𝓭.</span><br></pre></td></tr></table></figure>\n\n<br>\n\n<p>#评论系统</p>\n<p>评论系统可在_config.umr2333.yml中# Waline 评论与浏览量统计配置 选项中配置，关于Waline评论系统可自行前往<a href=\"https://github.com/walinejs/waline\">官方仓库</a>及<a href=\"https://waline.js.org/\">官方文档</a>进行了解。如果想关闭评论区，请在Front-matter中添加一行</p>\n<figure class=\"highlight bash\"><table><tr><td class=\"gutter\"><pre><span class=\"line\">1</span><br></pre></td><td class=\"code\"><pre><span class=\"line\">comment：<span class=\"literal\">false</span></span><br></pre></td></tr></table></figure>\n\n<br>\n\n<p>#站点统计</p>\n<p>站点统计功能中的运行时间读取_config.umr2333.yml中# 网站建站时间（如果不填，会自动读取博客第一篇文章的发表日期）</p>\n<br>\n\n<p>文章置顶功能：请在Front-matter中添加一行</p>\n<figure class=\"highlight bash\"><table><tr><td class=\"gutter\"><pre><span class=\"line\">1</span><br></pre></td><td class=\"code\"><pre><span class=\"line\">top：1</span><br></pre></td></tr></table></figure>\n\n<p>top后跟的数字是序号，比如上面的top: 1为置顶到第一个</p>\n<br>\n\n<p>#站点统计页面新建：</p>\n<p>请在你的博客根目录执行：</p>\n<figure class=\"highlight bash\"><table><tr><td class=\"gutter\"><pre><span class=\"line\">1</span><br></pre></td><td class=\"code\"><pre><span class=\"line\">hexo new page stats</span><br></pre></td></tr></table></figure>\n\n<p>打开新生成的source\\stats\\index.md文件</p>\n<p>请在Front-matter中添加一行</p>\n<figure class=\"highlight bash\"><table><tr><td class=\"gutter\"><pre><span class=\"line\">1</span><br></pre></td><td class=\"code\"><pre><span class=\"line\">layout：stats</span><br></pre></td></tr></table></figure>\n\n<br>\n\n<p>演示站点（可能使用最新测试中版本）：</p>\n<p><a href=\"https://www.umr2333.com/\">umr2333.com</a></p>\n<p><img src=\"/img/show.png\" alt=\"show\"><br><img src=\"/img/links.png\" alt=\"show\"></p>\n<p>*素材所用背景、头像、图标等内容来源于互联网，版权归原作者所有</p>\n",
+      date: "2026-10-13"
+    },
+    
+    {
+      title: "umr2333主题 1.2版本发布",
+      url: "/2026/10/08/1-2%E7%89%88%E6%9C%AC%E5%8F%91%E5%B8%83/",
+      content: "<p>别问我为什么1.0和1.1版本的时候没写</p>\n<p>问就是懒</p>\n<p>主包作为一个懒癌晚期患者+重度拖延症患者是这样的</p>\n<p>熟悉我的朋友都知道我是一只大鸽子ovo</p>\n<br>\n\n<p>本次更新内容：</p>\n<p>新增背景音乐播放和樱花&#x2F;爱心&#x2F;雪花飘落的特效</p>\n<p>可以通过配置文件中# 飘落特效设定 # 背景音乐配置 的选项进行设置</p>\n<br>\n\n<p>接下来是碎碎念</p>\n<p>虽然更新两个功能听起来很少，但是也折腾了好久</p>\n<p>添加特效这个功能倒是处理得挺快的</p>\n<p>但是自动播放音乐的事情折腾了很久，发现确实不可能，一定要有交互才能触发</p>\n<p>并且这雷霆ai老是修好了这忘了那，先是切换不同页面音乐重新播放的问题，然后是夜间模式按钮和回到顶部按钮作废的问题</p>\n<p>修这个夜间模式按钮折腾死我了，最后把1.1的layout.ejs原文发给他他才想起来应该是怎么样的</p>\n<p><del>而且我一开始让他加个花瓣飘落的特效他搞个爱心跟我说这是樱花</del></p>\n<br>\n\n<p>介绍一下这个主题：</p>\n<p>本主题发布于2026年9月8日，因为看到几个朋友都在搞自介的主页突发奇想</p>\n<p>我能不能就用hexo搞一个，正好把网站首页扔过来了，因为服务器不稳定说炸就炸</p>\n<p>找了半天别人的感觉还是差点意思，于是打算自己搞了</p>\n<p>说干就干，于是这个雷霆主题就诞生了</p>\n<p>1.0版本非常简陋，只有一个雷霆大主页</p>\n<p>1.1版本重写readme.md <del>（写1.0的时候我不知道可以直接新建修改根目录下_config.主题.yml达到配置的效果，还以为这个要特别设置）</del><br>博客文章按钮可自定义<br>新增简繁体切换开关<br>新增友情链接页面创建<br>新增回到顶部按钮<br>新增首页头像旋转功能<br>新增版本号显示<br>修复了删除线不穿过超链接的bug<br>优化了文件结构</p>\n<p>至于这个1.1.0只是小改动，发布以后发现漏了东西。更新readme.md以及补充link.yml相关内容</p>\n<br>\n\n<p>本次更新是觉得主页不够酷炫加一点新功能，下次更新不知道啥时候了，嗯对就这样</p>\n<p>散会。</p>\n",
+      date: "2026-10-08"
+    },
+    
+    {
+      title: "ovo",
+      url: "/2026/09/08/ovo/",
+      content: "<p>这是一个测试文章</p>\n",
+      date: "2026-09-08"
+    },
+    
+  ];
+
+  function escapeHTML(value) {
+    return String(value).replace(/[&<>"']/g, function (char) {
+      return {
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#39;'
+      }[char];
+    });
+  }
+
+  function search() {
+    const keyword = input.value.trim().toLowerCase();
+
+    if (!keyword) {
+      results.innerHTML = '<p>输入关键词开始搜索。</p>';
+      return;
+    }
+
+    const matched = posts.filter(function (post) {
+      return (post.title + ' ' + post.content)
+        .toLowerCase()
+        .includes(keyword);
+    }).slice(0, 50);
+
+    if (!matched.length) {
+      results.innerHTML = '<p>没有找到相关文章。</p>';
+      return;
+    }
+
+    results.innerHTML = '<p>找到 ' + matched.length +
+      ' 篇相关文章：</p>' + matched.map(function (post) {
+        const text = post.content.replace(/<[^>]*>/g, ' ')
+          .replace(/\s+/g, ' ')
+          .slice(0, 160);
+
+        return '<div style="padding:12px 0;border-bottom:1px solid var(--border-color, #ddd);">' +
+          '<a href="' + escapeHTML(post.url) + '">' +
+          escapeHTML(post.title) + '</a>' +
+          '<div style="font-size:0.85em;opacity:.7;margin:6px 0;">' +
+          escapeHTML(post.date) + '</div>' +
+          '<div>' + escapeHTML(text) + '</div></div>';
+      }).join('');
+  }
+
+  input.addEventListener('input', search);
+
+  const params = new URLSearchParams(window.location.search);
+  if (params.get('q')) {
+    input.value = params.get('q');
+    search();
+  } else {
+    results.innerHTML = '<p>输入关键词开始搜索。</p>';
+  }
+})();
+</script>
+
+  </main>
+
+  <!-- 页脚 -->
+  <footer class="site-footer">
+    
+      <div class="footer-custom">
+        Copyright ©2019-2026 umr2333.com All Rights Reserved.<br><a target="_blank" rel="noopener" href='https://icp.gov.moe/?keyword=20200222'><img class='icp-icon' src='https://icp.gov.moe/images/ico64.png' width='20px'><span>萌ICP备 20200222号</span></a>
+      </div>
+    
+    <div class="footer-copyright">
+      Powered by <a href="https://hexo.io" target="_blank" rel="noopener">Hexo</a> | Theme by <a href="https://github.com/umr23333333/hexo-theme-umr2333" target="_blank" rel="noopener">umr2333 1.3.3 Beta</a>
+    </div>
+  </footer>
+
+  <!-- 悬浮功能按钮组 (FAB) -->
+  <div class="fab-group-fixed">
+    
+      <button id="bgm-toggle-btn" class="fab-btn" mdui-tooltip="{content: '背景音乐', position: 'left'}" style="width: 42px; height: 42px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; border: none; outline: none; background: rgba(255, 255, 255, 0.9); box-shadow: 0 2px 8px rgba(0,0,0,0.15); -webkit-tap-highlight-color: transparent;">
+        <i class="mdui-icon material-icons" id="bgm-icon" style="font-size: 20px; color: #777; transition: transform 0.3s ease;">volume_off</i>
+      </button>
+    
+
+    
+    
+      <button id="lang-toggle-btn" class="fab-btn" mdui-tooltip="{content: '切换繁简体', position: 'left'}">
+        <span id="lang-toggle-text" style="font-weight: bold; font-size: 1.1rem;">繁</span>
+      </button>
+    
+
+    <button id="dark-mode-toggle" class="fab-btn" mdui-tooltip="{content: '切换夜间模式', position: 'left'}">
+      <i class="mdui-icon material-icons" id="dark-icon">brightness_4</i>
+    </button>
+    
+    <button id="scroll-top-btn" class="fab-btn" mdui-tooltip="{content: '回到顶部', position: 'left'}">
+      <span id="scroll-progress-text" style="display: inline-block;">0%</span>
+      <i class="mdui-icon material-icons" id="scroll-top-icon" style="display: none !important;">keyboard_arrow_up</i>
+    </button>
+  </div>
+
+  <script src="https://unpkg.com/mdui@1.0.2/dist/js/mdui.min.js"></script>
+
+  <!-- PJAX 引擎初始化与全局事件调度 -->
+  <script>
+    var pjax;
+    document.addEventListener('DOMContentLoaded', function () {
+      if (window.Pjax && window.pjax) {
+        try { window.pjax.destroy(); } catch (e) {}
+      }
+
+      pjax = new Pjax({
+        selectors: [
+          'title',
+          '#pjax-container'
+        ],
+        cacheBust: false
+      });
+
+      if (pjax && typeof pjax.loadUrl === 'function') {
+        const originalLoadUrl = pjax.loadUrl.bind(pjax);
+        pjax.loadUrl = function(destination, options) {
+          try {
+            const urlObj = new URL(destination, window.location.origin);
+            urlObj.protocol = window.location.protocol;
+            destination = urlObj.href;
+          } catch (err) {}
+          return originalLoadUrl(destination, options);
+        };
+      }
+    });
+
+    document.addEventListener('pjax:error', function (event) {
+      if (event.triggerElement && event.triggerElement.href) {
+        let fallbackUrl = event.triggerElement.href;
+        try {
+          const urlObj = new URL(fallbackUrl, window.location.origin);
+          urlObj.protocol = window.location.protocol;
+          fallbackUrl = urlObj.href;
+        } catch (e) {}
+        window.location.href = fallbackUrl;
+      }
+    });
+
+    // 💡 核心：Pjax 完成时自动触发 UI 刷新与全局 Waline 初始化
+    document.addEventListener('pjax:complete', function () {
+      if (window.mdui) {
+        mdui.mutation();
+      }
+      if (typeof window.syncBgmUI === 'function') {
+        window.syncBgmUI();
+      }
+      if (typeof window.initWaline === 'function') {
+        window.initWaline();
+      }
+      if (typeof window.initDashboardData === 'function') {
+        window.initDashboardData();
+      }
+    });
+  </script>
+
+  <!-- 统计页脚本统一放在 layout 中，确保 PJAX 切换页面后也能执行 -->
+  <script>
+    (function () {
+      function updateDashboardData() {
+        var dashboard = document.querySelector('[data-dashboard-since]');
+        if (!dashboard) return;
+
+        var siteStartTime = new Date(dashboard.getAttribute('data-dashboard-since'));
+        var now = new Date();
+        var diff = now - siteStartTime;
+        if (!Number.isFinite(diff) || diff < 0) diff = 0;
+
+        var days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        var hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        var minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        var seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+        var runtimeEl = document.getElementById('runtime');
+        if (runtimeEl) {
+          runtimeEl.textContent = days + '天 ' + hours + '小时 ' + minutes + '分 ' + seconds + '秒';
+        }
+
+        var currentYear = now.getFullYear();
+        var yearLabelEl = document.getElementById('current-year-label');
+        if (yearLabelEl) yearLabelEl.textContent = currentYear + '年';
+
+        var yearStart = new Date(currentYear, 0, 1);
+        var yearEnd = new Date(currentYear + 1, 0, 1);
+        var yearPercent = Math.min(100, Math.max(0, ((now - yearStart) / (yearEnd - yearStart)) * 100)).toFixed(2);
+        var progressBar = document.getElementById('year-progress-bar');
+        var progressText = document.getElementById('year-progress-text');
+        if (progressBar && progressText) {
+          progressBar.style.width = yearPercent + '%';
+          progressText.textContent = yearPercent + '%';
+        }
+      }
+
+      window.initDashboardData = function () {
+        if (window.dashboardTimer) {
+          clearInterval(window.dashboardTimer);
+          window.dashboardTimer = null;
+        }
+        if (!document.querySelector('[data-dashboard-since]')) return;
+        updateDashboardData();
+        window.dashboardTimer = setInterval(updateDashboardData, 1000);
+      };
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', window.initDashboardData);
+      } else {
+        window.initDashboardData();
+      }
+    })();
+  </script>
+
+  
+
+  <!-- 代码块自动化增强脚本 -->
+  <script>
+    (function() {
+      function enhanceCodeBlocks() {
+        const blocks = document.querySelectorAll('figure.highlight');
+        
+        blocks.forEach(block => {
+          const gutters = block.querySelectorAll('td.gutter');
+          gutters.forEach(gutter => {
+            const lines = gutter.querySelectorAll('.line');
+            lines.forEach(line => {
+              if (!/\d/.test(line.innerText)) {
+                line.style.setProperty('display', 'none', 'important');
+              }
+            });
+          });
+
+          if (block.querySelector('.code-header')) return;
+
+          let lang = 'CODE';
+          const classList = block.className.split(' ');
+          for (let cls of classList) {
+            if (cls !== 'highlight' && cls !== 'gutter') {
+              lang = cls;
+              break;
+            }
+          }
+          if (lang === 'CODE') {
+            const tableClass = block.querySelector('table');
+            if (tableClass) {
+              for (let cls of tableClass.classList) {
+                if (cls !== 'hljs') {
+                  lang = cls;
+                  break;
+                }
+              }
+            }
+          }
+
+          const header = document.createElement('div');
+          header.className = 'code-header';
+          
+          header.innerHTML = `
+            <div class="code-title-group" title="点击展开/收起">
+              <i class="fa-solid fa-chevron-down fold-arrow"></i>
+              <span>${lang.toUpperCase()}</span>
+            </div>
+            <button class="code-copy-btn" title="复制代码">
+              <i class="fa-regular fa-copy"></i>
+            </button>
+          `;
+
+          block.insertBefore(header, block.firstChild);
+
+          const codeTable = block.querySelector('table');
+          if (codeTable && !codeTable.parentElement.classList.contains('code-scroll-wrap')) {
+            const scrollWrap = document.createElement('div');
+            scrollWrap.className = 'code-scroll-wrap';
+            codeTable.parentNode.insertBefore(scrollWrap, codeTable);
+            scrollWrap.appendChild(codeTable);
+          }
+
+          const titleGroup = header.querySelector('.code-title-group');
+          titleGroup.addEventListener('click', function() {
+            block.classList.toggle('collapsed');
+          });
+
+          const copyBtn = header.querySelector('.code-copy-btn');
+          copyBtn.addEventListener('click', function (e) {
+            e.stopPropagation();
+
+            let codeText = '';
+            const codeLines = block.querySelectorAll('.code .line');
+            if (codeLines.length > 0) {
+              codeText = Array.from(codeLines).map(line => line.innerText).join('\n');
+            } else {
+              const tdCode = block.querySelector('td.code') || block;
+              codeText = tdCode.innerText;
+            }
+
+            navigator.clipboard.writeText(codeText).then(() => {
+              copyBtn.innerHTML = '<i class="fa-solid fa-check" style="color: #4caf50;"></i>';
+              setTimeout(() => {
+                copyBtn.innerHTML = '<i class="fa-regular fa-copy"></i>';
+              }, 2000);
+            }).catch(err => {
+              console.warn('复制失败', err);
+            });
+          });
+        });
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', enhanceCodeBlocks);
+      } else {
+        enhanceCodeBlocks();
+      }
+
+      document.addEventListener('pjax:complete', enhanceCodeBlocks);
+    })();
+  </script>
+
+  <!-- 繁简转换脚本 -->
+  
+    <script src="https://cdn.jsdelivr.net/npm/opencc-js@1.0.5/dist/umd/full.js"></script>
+    <script>
+      (function() {
+        const defaultIsTraditional = false;
+        const converterS2T = OpenCC.Converter({ from: 'cn', to: 'hk' });
+        const converterT2S = OpenCC.Converter({ from: 'hk', to: 'cn' });
+
+        function convertTextNodes(converter) {
+          const walk = document.createTreeWalker(
+            document.body,
+            NodeFilter.SHOW_TEXT,
+            {
+              acceptNode: function(node) {
+                const parentName = node.parentElement ? node.parentElement.tagName : '';
+                if (['SCRIPT', 'STYLE', 'NOSCRIPT'].includes(parentName)) {
+                  return NodeFilter.FILTER_REJECT;
+                }
+                if (node.parentElement && (node.parentElement.id === 'lang-toggle-text' || node.parentElement.id === 'scroll-progress-text')) {
+                  return NodeFilter.FILTER_REJECT;
+                }
+                return NodeFilter.FILTER_ACCEPT;
+              }
+            },
+            false
+          );
+
+          let node;
+          while ((node = walk.nextNode())) {
+            if (node.nodeValue && node.nodeValue.trim().length > 0) {
+              node.nodeValue = converter(node.nodeValue);
+            }
+          }
+        }
+
+        function applyCurrentLanguage() {
+          const langText = document.getElementById('lang-toggle-text');
+          const currentTarget = localStorage.getItem('theme_lang_target');
+          
+          if (!currentTarget) {
+            if (langText) langText.innerText = defaultIsTraditional ? '简' : '繁';
+            return;
+          }
+
+          if (currentTarget === 'zh-TW') {
+            if (langText) langText.innerText = '简';
+            convertTextNodes(converterS2T);
+          } else if (currentTarget === 'zh-CN') {
+            if (langText) langText.innerText = '繁';
+            convertTextNodes(converterT2S);
+          }
+        }
+
+        applyCurrentLanguage();
+        document.addEventListener('pjax:complete', applyCurrentLanguage);
+
+        function bindLangToggleEvent() {
+          const langBtn = document.getElementById('lang-toggle-btn');
+          if (!langBtn) return;
+
+          langBtn.onclick = function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            const currentTarget = localStorage.getItem('theme_lang_target') || (defaultIsTraditional ? 'zh-TW' : 'zh-CN');
+            let nextTarget = (currentTarget === 'zh-CN') ? 'zh-TW' : 'zh-CN';
+
+            localStorage.setItem('theme_lang_target', nextTarget);
+            applyCurrentLanguage();
+          };
+        }
+
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', bindLangToggleEvent);
+        } else {
+          bindLangToggleEvent();
+        }
+        document.addEventListener('pjax:complete', bindLangToggleEvent);
+      })();
+    </script>
+  
+
+  <!-- 夜间模式与滚动进度脚本 -->
+  <script>
+    (function() {
+      function applyTheme(isDark) {
+        const darkIcon = document.getElementById('dark-icon');
+        if (isDark) {
+          document.documentElement.classList.add('dark');
+          if (darkIcon) darkIcon.innerText = 'brightness_7';
+        } else {
+          document.documentElement.classList.remove('dark');
+          if (darkIcon) darkIcon.innerText = 'brightness_4';
+        }
+      }
+
+      const savedTheme = localStorage.getItem('theme_dark') === 'true';
+      applyTheme(savedTheme);
+
+      function bindDarkToggleEvent() {
+        const toggleBtn = document.getElementById('dark-mode-toggle');
+        if (!toggleBtn) return;
+
+        toggleBtn.onclick = function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+
+          const isDark = document.documentElement.classList.toggle('dark');
+          const darkIcon = document.getElementById('dark-icon');
+          if (darkIcon) darkIcon.innerText = isDark ? 'brightness_7' : 'brightness_4';
+          localStorage.setItem('theme_dark', isDark);
+        };
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', bindDarkToggleEvent);
+      } else {
+        bindDarkToggleEvent();
+      }
+
+      const scrollTopBtn = document.getElementById('scroll-top-btn');
+      const progressText = document.getElementById('scroll-progress-text');
+      const scrollTopIcon = document.getElementById('scroll-top-icon');
+
+      function updateScrollProgress() {
+        const scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
+        const scrollHeight = document.documentElement.scrollHeight || document.body.scrollHeight || 0;
+        const clientHeight = document.documentElement.clientHeight || window.innerHeight || 0;
+
+        const maxScroll = scrollHeight - clientHeight;
+        let progress = 0;
+
+        if (maxScroll > 0) {
+          progress = Math.min(100, Math.max(0, Math.round((scrollTop / maxScroll) * 100)));
+        } else {
+          progress = 100;
+        }
+
+        if (progress >= 100) {
+          if (progressText) progressText.style.setProperty('display', 'none', 'important');
+          if (scrollTopIcon) scrollTopIcon.style.setProperty('display', 'inline-block', 'important');
+        } else {
+          if (progressText) {
+            progressText.style.setProperty('display', 'inline-block', 'important');
+            progressText.innerText = progress + '%';
+          }
+          if (scrollTopIcon) scrollTopIcon.style.setProperty('display', 'none', 'important');
+        }
+      }
+
+      window.addEventListener('scroll', updateScrollProgress);
+      window.addEventListener('resize', updateScrollProgress);
+      document.addEventListener('DOMContentLoaded', updateScrollProgress);
+
+      if (scrollTopBtn) {
+        scrollTopBtn.onclick = function() {
+          window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+          });
+        };
+      }
+
+      document.addEventListener('pjax:complete', function() {
+        const isDark = localStorage.getItem('theme_dark') === 'true';
+        applyTheme(isDark);
+        updateScrollProgress();
+        bindDarkToggleEvent();
+      });
+    })();
+  </script>
+
+  <!-- 背景音乐控制脚本 -->
+  
+    <style>
+      @keyframes music-rotate {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+      }
+      .bgm-playing #bgm-icon {
+        animation: music-rotate 3s linear infinite;
+        color: #3f51b5 !important;
+      }
+    </style>
+
+    <script>
+      (function () {
+        const BGM_TIME_KEY = 'umr_blog_bgm_time';
+        const BGM_STATE_KEY = 'umr_blog_bgm_playing';
+
+        if (!window.__globalBgmPlayer) {
+          window.__globalBgmPlayer = document.createElement('audio');
+          window.__globalBgmPlayer.src = '/bgm/bydj.mp3';
+          window.__globalBgmPlayer.loop = true;
+          window.__globalBgmPlayer.preload = 'auto';
+          
+          var savedTime = localStorage.getItem(BGM_TIME_KEY);
+          if (savedTime) {
+            window.__globalBgmPlayer.currentTime = parseFloat(savedTime);
+          }
+          
+          document.body.appendChild(window.__globalBgmPlayer);
+        }
+
+        var bgmPlayer = window.__globalBgmPlayer;
+        var isAutoplay = true;
+
+        bgmPlayer.addEventListener('timeupdate', function () {
+          if (!bgmPlayer.paused) {
+            localStorage.setItem(BGM_TIME_KEY, bgmPlayer.currentTime);
+          }
+        });
+
+        window.syncBgmUI = function() {
+          var bgmBtn = document.getElementById('bgm-toggle-btn');
+          var bgmIcon = document.getElementById('bgm-icon');
+          if (!bgmBtn || !bgmIcon) return;
+
+          if (!bgmPlayer.paused) {
+            bgmBtn.classList.add('bgm-playing');
+            bgmIcon.textContent = 'music_note';
+          } else {
+            bgmBtn.classList.remove('bgm-playing');
+            bgmIcon.textContent = 'volume_off';
+          }
+        };
+
+        function tryPlayBgm() {
+          var promise = bgmPlayer.play();
+          if (promise !== undefined) {
+            promise.then(function () {
+              localStorage.setItem(BGM_STATE_KEY, 'true');
+              window.syncBgmUI();
+            }).catch(function (err) {
+              window.syncBgmUI();
+            });
+          }
+        }
+
+        document.addEventListener('click', function (e) {
+          var btn = e.target.closest('#bgm-toggle-btn');
+          if (btn) {
+            e.preventDefault();
+            e.stopPropagation();
+            if (bgmPlayer.paused) {
+              bgmPlayer.play().then(function() {
+                localStorage.setItem(BGM_STATE_KEY, 'true');
+                window.syncBgmUI();
+              });
+            } else {
+              bgmPlayer.pause();
+              localStorage.setItem(BGM_STATE_KEY, 'false');
+              window.syncBgmUI();
+            }
+          }
+        });
+
+        window.addEventListener('beforeunload', function () {
+          localStorage.setItem(BGM_TIME_KEY, bgmPlayer.currentTime);
+          localStorage.setItem(BGM_STATE_KEY, !bgmPlayer.paused);
+        });
+
+        var wasPlaying = localStorage.getItem(BGM_STATE_KEY) === 'true';
+        if (wasPlaying || isAutoplay) {
+          tryPlayBgm();
+
+          var unlockHandler = function () {
+            if (bgmPlayer.paused && localStorage.getItem(BGM_STATE_KEY) === 'true') {
+              tryPlayBgm();
+            }
+            ['click', 'touchstart', 'pointerdown', 'mousedown', 'keydown'].forEach(function (evt) {
+              document.removeEventListener(evt, unlockHandler, true);
+            });
+          };
+          ['click', 'touchstart', 'pointerdown', 'mousedown', 'keydown'].forEach(function (evt) {
+            document.addEventListener(evt, unlockHandler, true);
+          });
+        }
+
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', window.syncBgmUI);
+        } else {
+          window.syncBgmUI();
+        }
+      })();
+    </script>
+  
+
+  <!-- 飘落特效脚本 -->
+  
+    <style>
+      #falling-canvas {
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        width: 100vw !important;
+        height: 100vh !important;
+        pointer-events: none !important;
+        z-index: 999999 !important;
+      }
+    </style>
+
+    <script>
+      (function () {
+        function initFallingEffect() {
+          if (document.getElementById('falling-canvas')) return;
+
+          var config = {
+            type: 'heart',
+            count: 30
+          };
+
+          var canvas = document.createElement('canvas');
+          canvas.id = 'falling-canvas';
+          document.body.appendChild(canvas);
+
+          var ctx = canvas.getContext('2d');
+          var width = (canvas.width = window.innerWidth);
+          var height = (canvas.height = window.innerHeight);
+
+          window.addEventListener('resize', function () {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+          });
+
+          var particles = [];
+          var particleCount = config.count;
+
+          function Particle() {
+            this.reset();
+          }
+
+          Particle.prototype.reset = function () {
+            this.x = Math.random() * width;
+            this.y = Math.random() * -height;
+            this.size = Math.random() * 8 + 6;
+            this.speedY = Math.random() * 1.2 + 0.8;
+            this.speedX = Math.random() * 1 - 0.5;
+            this.rotation = Math.random() * 360;
+            this.rotationSpeed = (Math.random() - 0.5) * 1.5;
+            this.opacity = Math.random() * 0.5 + 0.5;
+          };
+
+          Particle.prototype.update = function () {
+            this.y += this.speedY;
+            this.x += Math.sin(this.y / 30) + this.speedX;
+            this.rotation += this.rotationSpeed;
+
+            if (this.y > height || this.x < -20 || this.x > width + 20) {
+              this.reset();
+              this.y = -10;
+            }
+          };
+
+          Particle.prototype.draw = function () {
+            ctx.save();
+            ctx.translate(this.x, this.y);
+            ctx.rotate((this.rotation * Math.PI) / 180);
+            ctx.globalAlpha = this.opacity;
+
+            if (config.type === 'snow') {
+              ctx.beginPath();
+              ctx.arc(0, 0, this.size / 2.5, 0, Math.PI * 2);
+              ctx.fillStyle = '#ffffff';
+              ctx.shadowBlur = 4;
+              ctx.shadowColor = 'rgba(255, 255, 255, 0.8)';
+              ctx.fill();
+            } else if (config.type === 'heart') {
+              ctx.beginPath();
+              ctx.moveTo(0, 0);
+              ctx.bezierCurveTo(-this.size / 2, -this.size / 2, -this.size, this.size / 3, 0, this.size);
+              ctx.bezierCurveTo(this.size, this.size / 3, this.size / 2, -this.size / 2, 0, 0);
+              ctx.fillStyle = '#ffb7c5';
+              ctx.fill();
+            } else {
+              ctx.beginPath();
+              ctx.moveTo(0, 0);
+              ctx.quadraticCurveTo(-this.size / 2, this.size / 2, 0, this.size);
+              ctx.quadraticCurveTo(this.size / 2, this.size / 2, 0, 0);
+              ctx.fillStyle = '#ffc0cb';
+              ctx.fill();
+            }
+
+            ctx.restore();
+          };
+
+          for (var i = 0; i < particleCount; i++) {
+            var p = new Particle();
+            p.y = Math.random() * height;
+            particles.push(p);
+          }
+
+          function render() {
+            ctx.clearRect(0, 0, width, height);
+            for (var i = 0; i < particles.length; i++) {
+              particles[i].update();
+              particles[i].draw();
+            }
+            requestAnimationFrame(render);
+          }
+
+          render();
+        }
+
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', initFallingEffect);
+        } else {
+          initFallingEffect();
+        }
+      })();
+    </script>
+  
+
+
+    <!-- Waline 评论样式 -->
+    <link rel="stylesheet" href="https://unpkg.com/@waline/client@v2/dist/waline.css"/>
+<!-- Waline Meta 图标 -->
+<link rel="stylesheet" href="https://unpkg.com/@waline/client@v2/dist/waline-meta.css" />
+<style>
+/* ========================================
+   Waline 玉桂狗天空蓝主题
+   适用于 Waline v2
+   保留原有布局与评论功能
+======================================== */
+
+/* 1. 全局主题配色 */
+#waline {
+  --waline-theme-color: #79c9ef;
+  --waline-active-color: #48b4e8;
+  --waline-color: #526b7d;
+  --waline-bgcolor: #ffffff;
+  --waline-bgcolor-light: #f3faff;
+  --waline-border-color: #dceff8;
+  --waline-disable-bgcolor: #f3faff;
+  --waline-info-bgcolor: #edf8ff;
+  --waline-info-color: #8aaec3;
+  --waline-border: 1px solid #dceff8;
+
+  color: #526b7d;
+}
+
+/* 2. 评论输入框 */
+#waline .wl-panel {
+  border: 1px solid #dceff8;
+  border-radius: 14px;
+  background: #ffffff;
+  box-shadow: 0 4px 16px rgba(105, 185, 220, 0.08);
+  transition: border-color 0.2s ease,
+              box-shadow 0.2s ease;
+}
+
+#waline .wl-panel:focus-within {
+  border-color: #91d3f1;
+  box-shadow: 0 4px 18px rgba(105, 185, 220, 0.16);
+}
+
+/* 3. 输入框与占位文字 */
+#waline .wl-editor {
+  color: #526b7d;
+  line-height: 1.8;
+}
+
+#waline .wl-editor::placeholder,
+#waline input::placeholder {
+  color: #a6c3d5;
+}
+
+#waline .wl-header-item input {
+  border-radius: 9px;
+  border-color: #dceff8;
+  transition: border-color 0.2s ease;
+}
+
+#waline .wl-header-item input:focus {
+  border-color: #91d3f1;
+  outline: none;
+}
+
+/* 4. 发表按钮与其他按钮 */
+#waline .wl-btn {
+  border-radius: 999px;
+  transition: background 0.2s ease,
+              transform 0.2s ease;
+}
+
+#waline .wl-btn.primary {
+  color: #ffffff;
+  background: #79c9ef;
+  border-color: #79c9ef;
+}
+
+#waline .wl-btn.primary:hover {
+  color: #ffffff;
+  background: #48b4e8;
+  border-color: #48b4e8;
+  transform: translateY(-1px);
+}
+
+#waline .wl-btn:not(.primary):hover {
+  color: #48a9d8;
+  border-color: #b9e4f7;
+  background: #f3faff;
+}
+
+/* 5. 评论列表
+   不给整条评论额外添加卡片背景、阴影或外边距 */
+#waline .wl-item {
+  background: transparent;
+}
+
+#waline .wl-user {
+  flex-shrink: 0;
+}
+
+#waline .wl-card {
+  min-width: 0;
+  background: transparent;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+/* 保留 Waline 原有评论分隔线，仅调整颜色 */
+#waline .wl-card {
+  border-bottom-color: #e0f0f8;
+}
+
+/* 6. 头像：只增加细腻的浅蓝色边框 */
+#waline .wl-user img {
+  border: 2px solid #e1f4fd;
+  box-shadow: none;
+  transition: border-color 0.2s ease;
+}
+
+#waline .wl-user img:hover {
+  border-color: #91d3f1;
+}
+
+/* 7. 昵称、时间和评论正文 */
+#waline .wl-nick {
+  color: #4b9bc3;
+}
+
+#waline .wl-time,
+#waline .wl-meta,
+#waline .wl-count,
+#waline .wl-power {
+  color: #91aebf;
+}
+
+#waline .wl-content {
+  color: #526b7d;
+  line-height: 1.85;
+  overflow-wrap: anywhere;
+}
+
+/* 8. 链接与交互文字 */
+#waline a {
+  color: #4caedc;
+  transition: color 0.2s ease;
+}
+
+#waline a:hover {
+  color: #258fca;
+}
+
+/* 9. 引用块
+   保留真实引用内容，避免空引用显示为白条 */
+#waline blockquote {
+  background: #f3faff;
+  border-left: 3px solid #b9e4f7;
+  border-radius: 0 8px 8px 0;
+  padding: 8px 12px;
+  color: #718fa2;
+}
+
+/* 只隐藏真正为空的引用块 */
+#waline blockquote:empty,
+#waline .wl-quote:empty {
+  display: none !important;
+}
+
+/* 10. 表情面板 */
+#waline .wl-emoji-popup {
+  border: 1px solid #dceff8;
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(105, 185, 220, 0.12);
+}
+
+/* 11. 反应按钮 */
+#waline .wl-reaction-item {
+  border-radius: 12px;
+  transition: background 0.2s ease,
+              transform 0.2s ease;
+}
+
+#waline .wl-reaction-item:hover {
+  background: #eff9ff;
+  transform: translateY(-1px);
+}
+
+/* 12. 分页 */
+#waline .wl-pagination button {
+  border-radius: 9px;
+}
+
+/* 13. 手机端适配 */
+@media (max-width: 600px) {
+  #waline .wl-panel {
+    border-radius: 12px;
+  }
+
+  #waline .wl-content {
+    line-height: 1.8;
+  }
+}
+
+/* 14. 尊重系统减少动态效果设置 */
+@media (prefers-reduced-motion: reduce) {
+  #waline *,
+  #waline *::before,
+  #waline *::after {
+    transition: none !important;
+    animation: none !important;
+  }
+}
+
+/* ========================================
+   Waline 玉桂狗天空蓝主题：夜间模式
+   通过 html.dark 自动识别网站夜间模式
+======================================== */
+
+html.dark #waline {
+  --waline-theme-color: #79c9ef;
+  --waline-active-color: #a0dcf7;
+  --waline-color: #d2e3ed;
+  --waline-bgcolor: #192633;
+  --waline-bgcolor-light: #223442;
+  --waline-border-color: #354b5b;
+  --waline-disable-bgcolor: #223442;
+  --waline-info-bgcolor: #243847;
+  --waline-info-color: #9bb9cb;
+  --waline-border: 1px solid #354b5b;
+
+  color: #d2e3ed;
+}
+
+/* 评论输入面板 */
+html.dark #waline .wl-panel {
+  background: #192633;
+  border-color: #354b5b;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+}
+
+html.dark #waline .wl-panel:focus-within {
+  border-color: #79c9ef;
+  box-shadow: 0 4px 18px rgba(65, 160, 205, 0.15);
+}
+
+/* 输入框与评论编辑区 */
+html.dark #waline .wl-editor,
+html.dark #waline .wl-header-item input {
+  color: #d2e3ed;
+  background-color: #192633;
+}
+
+html.dark #waline .wl-header-item input {
+  border-color: #354b5b;
+}
+
+html.dark #waline .wl-editor::placeholder,
+html.dark #waline input::placeholder {
+  color: #829eaf;
+}
+
+/* 评论昵称、时间与正文 */
+html.dark #waline .wl-nick {
+  color: #8ed5f5;
+}
+
+html.dark #waline .wl-time,
+html.dark #waline .wl-meta,
+html.dark #waline .wl-count,
+html.dark #waline .wl-power {
+  color: #91a9b9;
+}
+
+html.dark #waline .wl-content {
+  color: #d2e3ed;
+}
+
+/* 评论分隔线 */
+html.dark #waline .wl-card {
+  border-bottom-color: #354b5b;
+}
+
+/* 引用内容 */
+html.dark #waline blockquote {
+  background: #223442;
+  border-left-color: #5aabcF;
+  color: #b4cad8;
+}
+
+/* 链接 */
+html.dark #waline a {
+  color: #8ed5f5;
+}
+
+html.dark #waline a:hover {
+  color: #b6e8ff;
+}
+
+/* 按钮 */
+html.dark #waline .wl-btn.primary {
+  color: #132532;
+  background: #79c9ef;
+  border-color: #79c9ef;
+}
+
+html.dark #waline .wl-btn.primary:hover {
+  background: #a0dcf7;
+  border-color: #a0dcf7;
+}
+
+html.dark #waline .wl-btn:not(.primary) {
+  color: #c3dbe8;
+  background: #223442;
+  border-color: #354b5b;
+}
+
+html.dark #waline .wl-btn:not(.primary):hover {
+  color: #a0dcf7;
+  background: #2b4252;
+  border-color: #5aabcF;
+}
+
+/* 反应表情 */
+html.dark #waline .wl-reaction-item:hover {
+  background: #2b4252;
+}
+
+/* 表情面板 */
+html.dark #waline .wl-emoji-popup {
+  background: #192633;
+  border-color: #354b5b;
+}
+
+/* 分页 */
+html.dark #waline .wl-pagination button {
+  color: #d2e3ed;
+  background: #223442;
+  border-color: #354b5b;
+}
+
+/* 评论头像边框 */
+html.dark #waline .wl-user img {
+  border-color: #354b5b;
+}
+
+html.dark #waline .wl-user img:hover {
+  border-color: #79c9ef;
+}
+
+/* 减少动画时尊重系统设置 */
+@media (prefers-reduced-motion: reduce) {
+  html.dark #waline *,
+  html.dark #waline *::before,
+  html.dark #waline *::after {
+    transition: none !important;
+    animation: none !important;
+  }
+}
+
+</style>
+
+    <script type="module">
+      import { init } from 'https://unpkg.com/@waline/client@v2/dist/waline.mjs';
+
+      let walineInstance = null;
+      let walineInitToken = 0;
+      let walineAvatarObserver = null;
+
+      window.initWaline = function () {
+        const token = ++walineInitToken;
+        const walineEl = document.getElementById('waline');
+
+        // 重新初始化前清理旧的头像监听器
+        if (walineAvatarObserver) {
+        walineAvatarObserver.disconnect();
+        walineAvatarObserver = null;
+        }
+
+        // 当前页面没有评论容器时，清理旧实例
+        if (!walineEl) {
+          if (walineInstance && typeof walineInstance.destroy === 'function') {
+            walineInstance.destroy();
+          }
+          walineInstance = null;
+          return;
+        }
+
+        // 切换页面前销毁旧实例，避免重复挂载
+        if (walineInstance && typeof walineInstance.destroy === 'function') {
+          walineInstance.destroy();
+        }
+        walineInstance = null;
+
+        // 防止快速连续 PJAX 跳转时旧页面初始化覆盖新页面
+        if (
+          token !== walineInitToken ||
+          document.getElementById('waline') !== walineEl
+        ) {
+          return;
+        }
+
+        walineInstance = init({
+          el: walineEl,
+          serverURL: "https://c.umr2333.com",
+          dark: 'html.dark',
+          path: window.location.pathname,
+
+          // 保留原有功能
+          reaction: [
+  '/img/reaction/1.gif',
+  '/img/reaction/2.gif',
+  '/img/reaction/3.gif',
+  '/img/reaction/4.gif',
+  '/img/reaction/5.webp',
+  '/img/reaction/6.webp'
+],
+          pageview: true,
+          comment: true,
+          meta: ['nick', 'mail', 'link'],
+          requiredMeta: ['nick', 'mail'],
+          lang: 'zh-CN',
+
+          // 玉桂狗可爱治愈风文案
+          locale: {
+            // 文章反应区标题
+            reactionTitle: '留下您的反应',
+
+            // 评论框提示
+            placeholder: '写下你想说的话吧～',
+
+            // 暂无评论时的提示
+            sofa: '这里还没有留言，来留下第一条吧～',
+
+            // 评论区按钮及常用文字
+            comment: '留言',
+            submit: '发送',
+            refresh: '刷新',
+            more: '加载更多～',
+            nick: '昵称',
+            mail: '邮箱',
+            link: '个人网站（选填）',
+            optional: '选填',
+            preview: '预览',
+            emoji: '表情',
+            uploading: '正在上传～',
+            anonymous: '云朵访客',
+            admin: '管理员',
+            oldest: '最早',
+            latest: '最新',
+            hottest: '最热'
+          },
+
+          // 保留原有表情包配置
+          emoji: [
+            'https://unpkg.com/@waline/emojis@1.4.0/qq',
+            'https://cdn.jsdelivr.net/gh/walinejs/emojis@main/wechat',
+            'https://unpkg.com/@waline/emojis@1.4.0/bilibili',
+            'https://cdn.jsdelivr.net/gh/walinejs/emojis@main/douyin',
+            'https://unpkg.com/@waline/emojis@1.4.0/tieba',
+            'https://unpkg.com/@waline/emojis@1.4.0/alus'
+          ]
+        });
+// 将 Libravatar 默认头像替换为本地图片
+const replaceDefaultWalineAvatar = function () {
+  walineEl.querySelectorAll('.wl-user img').forEach(function (img) {
+    const src = img.getAttribute('src') || '';
+    const currentSrc = img.currentSrc || '';
+
+    const isDefaultAvatar =
+      src.includes('seccdn.libravatar.org/avatar/') ||
+      src.includes('/static/img/nobody/') ||
+      currentSrc.includes('seccdn.libravatar.org/static/img/nobody/');
+
+    if (isDefaultAvatar && !src.includes('/img/user_avatar.jpg')) {
+      img.src = '/img/user_avatar.jpg';
+    }
+  });
+};
+
+// 先替换当前已经生成的头像
+replaceDefaultWalineAvatar();
+
+// 监听 Waline 后续加载的评论和头像
+walineAvatarObserver = new MutationObserver(
+  replaceDefaultWalineAvatar
+);
+
+walineAvatarObserver.observe(walineEl, {
+  childList: true,
+  subtree: true,
+  attributes: true,
+  attributeFilter: ['src']
+});
+      };
+
+      // 首次加载初始化
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', window.initWaline);
+      } else {
+        window.initWaline();
+      }
+    </script>
+
+
+</body>
+</html>

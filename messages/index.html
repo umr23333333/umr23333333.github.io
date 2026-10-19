@@ -276,6 +276,15 @@
               <div class="mdui-list-item-content">归档 / 文章</div>
             </a>
           
+            <a href="/search/" class="mdui-list-item mdui-ripple" mdui-drawer-close>
+              
+                
+                  <i class="mdui-list-item-icon fa fa-search" style="display: flex; align-items: center; justify-content: center; font-size: 1.25rem;"></i>
+                
+              
+              <div class="mdui-list-item-content">搜索</div>
+            </a>
+          
             <a href="/announcement/" class="mdui-list-item mdui-ripple" mdui-drawer-close>
               
                 
@@ -340,12 +349,12 @@
     
 
 <div class="mdui-row main-post-container">
-<div class="mdui-col-xs-12 mdui-col-md-8 mdui-col-offset-md-2">
+  <div class="mdui-col-xs-12 mdui-col-md-8 mdui-col-offset-md-2">
     <article class="post-detail-card">
       <h1 class="post-detail-title">留言板</h1>
-      
+
       <div class="post-detail-meta" style="display: flex; flex-wrap: wrap; gap: 12px; align-items: center; color: rgba(0, 0, 0, 0.6); font-size: 0.85rem; margin-bottom: 20px; user-select: none;">
-        
+
         <span style="display: inline-flex; align-items: center;">
           <i class="fa-regular fa-calendar" style="margin-right: 5px;"></i>
           发表于 2026-10-13
@@ -367,11 +376,33 @@
           </span>
         
 
+      
       </div>
+
+      
 
       <div class="post-detail-content mdui-typo">
         
       </div>
+
+///添加上一篇下一篇
+
+      <nav class="post-prev-next" style="display: flex; justify-content: space-between; gap: 16px; margin-top: 36px; padding-top: 20px; border-top: 1px solid rgba(0,0,0,0.08);">
+        
+          <span style="flex: 1;"></span>
+        
+
+        
+      </nav>
+
+      <style>
+        html.dark .post-prev-next {
+          border-top-color: rgba(255, 255, 255, 0.12) !important;
+        }
+        .post-prev-next a:hover {
+          color: #3988d6 !important;
+        }
+      </style>
 
       
         <div class="post-comments-section" style="margin-top: 40px; border-top: 1px solid rgba(0,0,0,0.08); padding-top: 30px;">
@@ -392,6 +423,33 @@
     border-top-color: rgba(255, 255, 255, 0.1) !important;
   }
 </style>
+
+
+  <link rel="stylesheet" href="https://unpkg.com/@waline/client@v2/dist/waline.css"/>
+  <script type="module">
+    import { init } from 'https://unpkg.com/@waline/client@v2/dist/waline.mjs';
+
+    window.initWaline = function() {
+      const walineEl = document.getElementById('waline');
+      if (!walineEl) return;
+      walineEl.innerHTML = '';
+
+      init({
+        el: '#waline',
+        serverURL: 'https://c.umr2333.com',
+        path: window.location.pathname,
+        reaction: true,
+        pageview: true,
+        comment: true,
+        meta: ['nick', 'mail', 'link'],
+        requiredMeta: ['nick'],
+        lang: 'zh-CN',
+      });
+    };
+
+    window.initWaline();
+  </script>
+
 
 
   </main>
