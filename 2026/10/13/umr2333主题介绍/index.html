@@ -364,7 +364,7 @@
 
         <span style="display: inline-flex; align-items: center;">
           <i class="fa-solid fa-history" style="margin-right: 5px;"></i>
-          更新于 2026-10-14
+          更新于 2026-10-20
         </span>
 
         <span style="opacity: 0.4;">|</span>
@@ -460,7 +460,21 @@
 
 <br>
 
-<p>演示站点（可能使用最新测试中版本）：</p>
+<p>#搜索页面新建：</p>
+<p>请在你的博客根目录执行：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo new page search</span><br></pre></td></tr></table></figure>
+
+<p>打开新生成的source\search\index.md文件</p>
+<p>请在Front-matter中添加两行</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">layout：search</span><br><span class="line">comments: <span class="literal">false</span></span><br></pre></td></tr></table></figure>
+
+<br>
+如果希望每篇文章都有更准确的预览简介，可以在对应文章的 Front-Matter中添加：
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">description: 这是一段显示在 Telegram 链接预览中的文章简介。</span><br><span class="line">cover: /img/example-cover.jpg //预览显示的图片</span><br></pre></td></tr></table></figure>
+<br>
+演示站点（可能使用最新测试中版本）：
+
 <p><a href="https://www.umr2333.com/">umr2333.com</a></p>
 <p><img src="/img/show.png" alt="show"><br><img src="/img/links.png" alt="show"></p>
 <p>*素材所用背景、头像、图标等内容来源于互联网，版权归原作者所有</p>
